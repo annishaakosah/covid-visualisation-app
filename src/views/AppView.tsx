@@ -78,9 +78,6 @@ export class AppView extends React.Component<any, AppState> {
         this.onSelectedListDeaths = this.onSelectedListDeaths.bind(this);
 
         this.onClickTogglePropStats = this.onClickTogglePropStats.bind(this);
-        this.onClickLists = this.onClickLists.bind(this);
-        this.onClickMap = this.onClickMap.bind(this);
-        this.onClickBarGraph = this.onClickBarGraph.bind(this);
 
         this.onClickPlotYAxis = this.onClickPlotYAxis.bind(this);
         this.onClickPlotXAxis = this.onClickPlotXAxis.bind(this);
@@ -155,21 +152,18 @@ export class AppView extends React.Component<any, AppState> {
 
                         <Tooltip background={tipBackground} color={tipForeground}
                             message="Index Chart" >
-                            {/* <IconButton onClick={this.onClickIndexChart} style={toggleThemeStyle} edge="start"> */}
                             <IconButton onClick={() => this.setVisualisation(1)} style={toggleThemeStyle} edge="start" >
                                 <IconPalette.default style={{ fontSize: "1.2rem" }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip background={tipBackground} color={tipForeground}
                             message="Geo Graph" >
-                            {/* <IconButton onClick={this.onClickIndexChart} style={toggleThemeStyle} edge="start" > */}
                             <IconButton onClick={() => this.setVisualisation(2)} style={toggleThemeStyle} edge="start" >
                                 <IconPalette.default style={{ fontSize: "1.2rem" }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip background={tipBackground} color={tipForeground}
                             message="Stacked Bar Graph" >
-                            {/* <IconButton onClick={this.onClickIndexChart} style={toggleThemeStyle} edge="start" > */}
                             <IconButton onClick={() => this.setVisualisation(3)} style={toggleThemeStyle} edge="start" >
                                 <IconPalette.default style={{ fontSize: "1.2rem" }} />
                             </IconButton>
@@ -386,11 +380,6 @@ export class AppView extends React.Component<any, AppState> {
         this.toggleAnimation();
     }
 
-    public onClickIndexChart(event: React.MouseEvent) {
-        // this.setState( {theme: theme },
-        //     () => { this.updateTheme(theme); } );
-        this.setState({ visualisation: 1 })
-    }
     // James
     public setVisualisation(v: number) {
         this.setState({ visualisation: v }, () => {
