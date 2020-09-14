@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import './ChoroplethMap.css';
 import L from 'leaflet';
-import statesData from './us-states'
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import geonet from './custom.geoL.json';
+// import statesData from './us-states'
+// import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import geonet from './../data/custom.geoL.json';
 
   function ChoroplethMap() {
     useEffect(() => {
