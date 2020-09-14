@@ -17,6 +17,7 @@ import { Slider } from "../components/Slider";
 import { Tooltip } from "../components/Tooltip";
 import { SplashScreen } from "../components/SplashScreen"
 import { IgrShapeDataSource, parseBool } from 'igniteui-react-core';
+import {number} from "prop-types";
 
 export class AppView extends React.Component<any, AppState> {
 
@@ -78,9 +79,6 @@ export class AppView extends React.Component<any, AppState> {
         this.onSelectedListDeaths = this.onSelectedListDeaths.bind(this);
 
         this.onClickTogglePropStats = this.onClickTogglePropStats.bind(this);
-        this.onClickLists = this.onClickLists.bind(this);
-        this.onClickMap = this.onClickMap.bind(this);
-        this.onClickBarGraph = this.onClickBarGraph.bind(this);
 
         this.onClickPlotYAxis = this.onClickPlotYAxis.bind(this);
         this.onClickPlotXAxis = this.onClickPlotXAxis.bind(this);
@@ -176,7 +174,7 @@ export class AppView extends React.Component<any, AppState> {
                         </Tooltip>
                     </div>
 
-                    {this.state.showLists && this.state.visualisation === 1 &&
+                    {this.state.visualisation === 1 &&
                         <div className="app-content">
                             {this.state.showLists && this.state.showTotalDeathList &&
                                 <ListView
@@ -256,14 +254,6 @@ export class AppView extends React.Component<any, AppState> {
                     {this.state.visualisation === 3 &&
                         // Add Component Here
                         <div className="app-stack" style={{ flexDirection: this.state.displayMode }}><h1>Annisha, do me a favor pls, gerrarhere! </h1></div>
-                    }
-
-                    {this.state.showMap &&
-                        <Tooltip/>
-                    }
-
-                    {this.state.showBarGraph &&
-                        <Tooltip/>
                     }
 
                     <div className="app-actionbar" style={footerStyle}>
@@ -378,34 +368,22 @@ export class AppView extends React.Component<any, AppState> {
         this.updateData(index);
     }
 
-    public onClickMenu(event: React.MouseEvent) {
-        // this.toggleAnimation();
-    }
-
     public onClickStart(event: React.MouseEvent) {
         this.toggleAnimation();
     }
 
-    public onClickIndexChart(event: React.MouseEvent) {
-        // this.setState( {theme: theme },
-        //     () => { this.updateTheme(theme); } );
-        this.setState({ visualisation: 1 })
-    }
     // James
     public setVisualisation(v: number) {
+        if (v === 1) {
+            this.setState({ showLists: true },
+                () => {
+                    this.updateQuery();
+                    this.refreshAll();
+                });
+        }
         this.setState({ visualisation: v }, () => {
             console.log(this.state.visualisation)
         });
-    }
-
-
-
-    public onClickToggleLists(event: React.MouseEvent) {
-        this.setState({ showLists: !this.state.showLists },
-            () => {
-                this.updateQuery();
-                this.refreshAll();
-            });
     }
 
     public onClickTogglePropStats(event: React.MouseEvent) {
