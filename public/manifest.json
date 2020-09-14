@@ -1,0 +1,8 @@
+{
+  "short_name": "COVID Dashboard",
+  "name": "Dashboard to keep track of COVID stats",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
