@@ -29,17 +29,5 @@
     "prefer-for-of": false,
     "variable-name": false,
     "interface-name" : [true, "never-prefix"]
-  },
-  "jsRules": {
-    "no-console": false,
-    "jsx-no-lambda": false,
-    "ordered-imports": false,
-    "object-literal-sort-keys": false,
-    "curly": [true, "ignore-same-line"],
-    "max-classes-per-file": [true, 15],
-    "prefer-const": false,
-    "prefer-for-of": false,
-    "variable-name": false,
-    "interface-name" : [true, "never-prefix"]
   }
 }
