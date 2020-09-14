@@ -45,6 +45,8 @@ export interface AppState
     countriesStats?: OutbreakLocation[],
     countriesSelected?: string[],
     highlighted?: string[],
+    // James
+    visualisation?: number
 };
 
 // tslint:disable-next-line:interface-name
