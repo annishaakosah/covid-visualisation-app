@@ -78,7 +78,9 @@ export class AppView extends React.Component<any, AppState> {
         this.onSelectedListDeaths = this.onSelectedListDeaths.bind(this);
 
         this.onClickTogglePropStats = this.onClickTogglePropStats.bind(this);
-        this.onClickToggleLists = this.onClickToggleLists.bind(this);
+        this.onClickLists = this.onClickLists.bind(this);
+        this.onClickMap = this.onClickMap.bind(this);
+        this.onClickBarGraph = this.onClickBarGraph.bind(this);
 
         this.onClickPlotYAxis = this.onClickPlotYAxis.bind(this);
         this.onClickPlotXAxis = this.onClickPlotXAxis.bind(this);
@@ -149,19 +151,19 @@ export class AppView extends React.Component<any, AppState> {
 
                         <Tooltip background={tipBackground} color={tipForeground}
                          message="Index Chart" >
-                            <IconButton onClick={this.onClickIndexChart} style={toggleThemeStyle} edge="start" >
+                            <IconButton onClick={this.onClickLists} style={toggleThemeStyle} edge="start" >
                                 <IconPalette.default style={{fontSize: "1.2rem"}}  />
                             </IconButton>
                         </Tooltip>
                         <Tooltip background={tipBackground} color={tipForeground}
                                  message="Geo Graph" >
-                            <IconButton onClick={this.onClickIndexChart} style={toggleThemeStyle} edge="start" >
+                            <IconButton onClick={this.onClickMap} style={toggleThemeStyle} edge="start" >
                                 <IconPalette.default style={{fontSize: "1.2rem"}}  />
                             </IconButton>
                         </Tooltip>
                         <Tooltip background={tipBackground} color={tipForeground}
                                  message="Stacked Bar Graph" >
-                            <IconButton onClick={this.onClickIndexChart} style={toggleThemeStyle} edge="start" >
+                            <IconButton onClick={this.onClickBarGraph} style={toggleThemeStyle} edge="start" >
                                 <IconPalette.default style={{fontSize: "1.2rem"}}  />
                             </IconButton>
                         </Tooltip>
@@ -240,13 +242,13 @@ export class AppView extends React.Component<any, AppState> {
                     </div>
                     }
 
-                    {/*{this.state.showMap &&*/}
+                    {this.state.showMap &&
+                        <Tooltip/>
+                    }
 
-                    {/*}*/}
-
-                    {/*{this.state.showBarChart &&*/}
-
-                    {/*}*/}
+                    {this.state.showBarGraph &&
+                        <Tooltip/>
+                    }
 
                     <div className="app-actionbar" style={footerStyle}>
                         <IconButton onClick={this.onClickStart} style={playStyle} edge="start" >
@@ -368,13 +370,36 @@ export class AppView extends React.Component<any, AppState> {
         this.toggleAnimation();
     }
 
-    public onClickIndexChart(event: React.MouseEvent) {
-        // this.setState( {theme: theme },
-        //     () => { this.updateTheme(theme); } );
+    public onClickMap(event: React.MouseEvent) {
+        this.setState( {
+                showMap: true,
+                showLists: false,
+                showBarGraph: false
+            },
+            () => {
+                this.updateQuery();
+                this.refreshAll();
+            } );
     }
 
-    public onClickToggleLists(event: React.MouseEvent) {
-        this.setState( { showLists: !this.state.showLists },
+    public onClickLists(event: React.MouseEvent) {
+        this.setState( {
+                showLists: true,
+                showBarGraph: false,
+                showMap: false
+            },
+            () => {
+                this.updateQuery();
+                this.refreshAll();
+            } );
+    }
+
+    public onClickBarGraph(event: React.MouseEvent) {
+        this.setState( {
+                showBarGraph: true,
+                showLists: false,
+                showMap: false
+            },
             () => {
                 this.updateQuery();
                 this.refreshAll();
@@ -709,7 +734,8 @@ export class AppView extends React.Component<any, AppState> {
 
         let usePropStats = parameters["1m"] !== undefined ? parseBool(parameters["1m"]) : false;
         let logScale = false;
-        let showMap = parameters.map !== undefined ? parseBool(parameters.map) : true;
+        let showMap = false;
+        let showBarGraph = false;
         let showChart = parameters.chart !== undefined ? parseBool(parameters.chart) : true;
         let showLists = parameters.list !== undefined ? parseBool(parameters.list) : true;
         let themeName = parameters.theme !== undefined ? parameters.theme : "dark";
@@ -745,6 +771,7 @@ export class AppView extends React.Component<any, AppState> {
             highlighted: [],
             usePropStats: usePropStats,
             showChart: showChart,
+            showBarGraph: showBarGraph,
             showMap: showMap,
             showLists: showLists,
             showTotalInfectionList: showTotalInfectionList,
@@ -775,6 +802,7 @@ export class AppView extends React.Component<any, AppState> {
         parameters.push("1m=" + this.state.usePropStats);
         parameters.push("map=" + this.state.showMap);
         parameters.push("chart=" + this.state.showChart);
+        parameters.push("barGraph=" + this.state.showBarGraph);
         parameters.push("list=" + this.state.showLists);
         parameters.push("log=" + this.state.xAxisIsLogarithmic);
         parameters.push("show=" + this.state.xAxisMemberPath.replaceAll("total", "").toLowerCase());

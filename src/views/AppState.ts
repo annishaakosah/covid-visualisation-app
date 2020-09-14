@@ -20,6 +20,7 @@ export interface AppState
     showTotalDeathList?: boolean,
     showTotalInfectionList?: boolean,
     showChart?: boolean,
+    showBarGraph?: boolean,
     showMap?: boolean,
     showCodes?: boolean,
     showIndex?: boolean,

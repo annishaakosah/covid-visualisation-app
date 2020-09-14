@@ -1,4 +1,4 @@
-#SWEN422 2020 Assignment 2
+# SWEN422 2020 Assignment 2
 **Authors: Nevin Jojo, James Del Puerto, and Annisha Akosah**
 
 ## Setup
