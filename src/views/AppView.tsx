@@ -727,8 +727,9 @@ export class AppView extends React.Component<any, AppState> {
         let xAxisMemberPath = parameters.show !== undefined ? parameters.show : "totalInfections";
         xAxisMemberPath = xAxisMemberPath === "deaths" ? "totalDeaths" : "totalInfections";
         let yAxisMemberPath = xAxisMemberPath === "totalDeaths" ? "weeklyDeaths" : "weeklyInfections";
-        let showTotalInfectionList = xAxisMemberPath !== "deaths";
-        let showTotalDeathList = xAxisMemberPath === "deaths";
+        let showTotalInfectionList = xAxisMemberPath === "totalInfections";
+        let showTotalDeathList = xAxisMemberPath !== "totalInfections";
+        console.log("xAxisMemberPath: " + xAxisMemberPath);
         console.log("showTotalInfectionList: " + showTotalInfectionList);
         console.log("showTotalDeathList: " + showTotalDeathList);
 
