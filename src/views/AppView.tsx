@@ -17,6 +17,7 @@ import { Slider } from "../components/Slider";
 import { Tooltip } from "../components/Tooltip";
 import { SplashScreen } from "../components/SplashScreen"
 import { IgrShapeDataSource, parseBool } from 'igniteui-react-core';
+import {number} from "prop-types";
 
 export class AppView extends React.Component<any, AppState> {
 
@@ -170,7 +171,7 @@ export class AppView extends React.Component<any, AppState> {
                         </Tooltip>
                     </div>
 
-                    {this.state.showLists && this.state.visualisation === 1 &&
+                    {this.state.visualisation === 1 &&
                         <div className="app-content">
                             {this.state.showLists && this.state.showTotalDeathList &&
                                 <ListView
@@ -250,14 +251,6 @@ export class AppView extends React.Component<any, AppState> {
                     {this.state.visualisation === 3 &&
                         // Add Component Here
                         <div className="app-stack" style={{ flexDirection: this.state.displayMode }}><h1>Annisha, do me a favor pls, gerrarhere! </h1></div>
-                    }
-
-                    {this.state.showMap &&
-                        <Tooltip/>
-                    }
-
-                    {this.state.showBarGraph &&
-                        <Tooltip/>
                     }
 
                     <div className="app-actionbar" style={footerStyle}>
@@ -372,29 +365,22 @@ export class AppView extends React.Component<any, AppState> {
         this.updateData(index);
     }
 
-    public onClickMenu(event: React.MouseEvent) {
-        // this.toggleAnimation();
-    }
-
     public onClickStart(event: React.MouseEvent) {
         this.toggleAnimation();
     }
 
     // James
     public setVisualisation(v: number) {
+        if (v === 1) {
+            this.setState({ showLists: true },
+                () => {
+                    this.updateQuery();
+                    this.refreshAll();
+                });
+        }
         this.setState({ visualisation: v }, () => {
             console.log(this.state.visualisation)
         });
-    }
-
-
-
-    public onClickToggleLists(event: React.MouseEvent) {
-        this.setState({ showLists: !this.state.showLists },
-            () => {
-                this.updateQuery();
-                this.refreshAll();
-            });
     }
 
     public onClickTogglePropStats(event: React.MouseEvent) {
