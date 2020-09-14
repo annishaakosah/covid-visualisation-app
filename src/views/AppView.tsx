@@ -78,7 +78,9 @@ export class AppView extends React.Component<any, AppState> {
         this.onSelectedListDeaths = this.onSelectedListDeaths.bind(this);
 
         this.onClickTogglePropStats = this.onClickTogglePropStats.bind(this);
-        this.onClickToggleLists = this.onClickToggleLists.bind(this);
+        this.onClickLists = this.onClickLists.bind(this);
+        this.onClickMap = this.onClickMap.bind(this);
+        this.onClickBarGraph = this.onClickBarGraph.bind(this);
 
         this.onClickPlotYAxis = this.onClickPlotYAxis.bind(this);
         this.onClickPlotXAxis = this.onClickPlotXAxis.bind(this);
@@ -256,13 +258,13 @@ export class AppView extends React.Component<any, AppState> {
                         <div className="app-stack" style={{ flexDirection: this.state.displayMode }}><h1>Annisha, do me a favor pls, gerrarhere! </h1></div>
                     }
 
-                    {/*{this.state.showMap &&*/}
+                    {this.state.showMap &&
+                        <Tooltip/>
+                    }
 
-                    {/*}*/}
-
-                    {/*{this.state.showBarChart &&*/}
-
-                    {/*}*/}
+                    {this.state.showBarGraph &&
+                        <Tooltip/>
+                    }
 
                     <div className="app-actionbar" style={footerStyle}>
                         <IconButton onClick={this.onClickStart} style={playStyle} edge="start" >
@@ -737,7 +739,8 @@ export class AppView extends React.Component<any, AppState> {
 
         let usePropStats = parameters["1m"] !== undefined ? parseBool(parameters["1m"]) : false;
         let logScale = false;
-        let showMap = parameters.map !== undefined ? parseBool(parameters.map) : true;
+        let showMap = false;
+        let showBarGraph = false;
         let showChart = parameters.chart !== undefined ? parseBool(parameters.chart) : true;
         let showLists = parameters.list !== undefined ? parseBool(parameters.list) : true;
         let themeName = parameters.theme !== undefined ? parameters.theme : "dark";
@@ -773,6 +776,7 @@ export class AppView extends React.Component<any, AppState> {
             highlighted: [],
             usePropStats: usePropStats,
             showChart: showChart,
+            showBarGraph: showBarGraph,
             showMap: showMap,
             showLists: showLists,
             showTotalInfectionList: showTotalInfectionList,
@@ -807,6 +811,7 @@ export class AppView extends React.Component<any, AppState> {
         parameters.push("1m=" + this.state.usePropStats);
         parameters.push("map=" + this.state.showMap);
         parameters.push("chart=" + this.state.showChart);
+        parameters.push("barGraph=" + this.state.showBarGraph);
         parameters.push("list=" + this.state.showLists);
         parameters.push("log=" + this.state.xAxisIsLogarithmic);
         parameters.push("show=" + this.state.xAxisMemberPath.replaceAll("total", "").toLowerCase());
