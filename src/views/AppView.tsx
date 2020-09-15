@@ -18,6 +18,7 @@ import { Tooltip } from "../components/Tooltip";
 import { SplashScreen } from "../components/SplashScreen"
 import { IgrShapeDataSource, parseBool } from 'igniteui-react-core';
 import ChoroplethMap from './ChoroplethMap';
+import {color} from "@material-ui/system";
 
 export class AppView extends React.Component<any, AppState> {
 
@@ -232,17 +233,20 @@ export class AppView extends React.Component<any, AppState> {
                             </div>
                         </div>
                     }
+
                     {this.state.visualisation === 2 &&
-                        // Add Component Here
-                        // <div className="app-stack" style={{ flexDirection: this.state.displayMode }}><h1>Nevin, do me a favor pls, gerrarhere! </h1></div>
                         <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
                             <ChoroplethMap></ChoroplethMap>
                         </div>
                     }
 
                     {this.state.visualisation === 3 &&
-                        // Add Component Here
-                        <div className="app-stack" style={{ flexDirection: this.state.displayMode }}><h1>Annisha, do me a favor pls, gerrarhere! </h1></div>
+                        <div className="app-content">
+                            <div className="app-center" style={cardStyle}>
+                                // Add your data visualisation here
+                                <h1 style={{color: "pink"}}>Annisha, do me a favor pls, gerrarhere! </h1>
+                            </div>
+                        </div>
                     }
 
                     <div className="app-actionbar" style={footerStyle}>
