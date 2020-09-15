@@ -26,7 +26,6 @@
 }
 
 .app-center {
-    height: 100%;
     width: calc(100% - 1.2rem);
     /* padding-right: 1.2rem; */
     display: flex;

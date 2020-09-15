@@ -26,7 +26,7 @@ export class AppView extends React.Component<any, AppState> {
             name: "dark",
             primary: { color: "white", background: "#1E1F2E" },
             card: { color: "#242241", background: "#262a3c" },
-            tooltip: { color: "white", background: "rgb(33, 34, 38)" },
+            tooltip: { color: "#262a3c", background: "white" },
             toolbar: { color: "white", background: "#1E1F2E" },
             buttons: { color: "#131416", background: "#1d8cf8" },
             list: { color: "#ddddde", background: "#131416", border: "1px solid #222327" },
@@ -144,7 +144,7 @@ export class AppView extends React.Component<any, AppState> {
                         <Tooltip background={tipBackground} color={tipForeground}
                             message="Index Chart" >
                             <IconButton onClick={() => this.setVisualisation(1)} style={toggleThemeStyle} edge="start" >
-                                <i className="tim-icons icon-bullet-list-67" />
+                                <i className="tim-icons icon-sound-wave" />
                             </IconButton>
                         </Tooltip>
                         <Tooltip background={tipBackground} color={tipForeground}
