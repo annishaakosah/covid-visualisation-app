@@ -3,7 +3,7 @@ import './ChoroplethMap.css';
 import L from 'leaflet';
 // import statesData from './us-states'
 // import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import geonet from './../data/custom.geoM.json';
+import geonet from './../data/custom.geoM';
 
   function ChoroplethMap() {
     useEffect(() => {
@@ -145,8 +145,7 @@ import geonet from './../data/custom.geoM.json';
     });
 
     return (
-      // <div id="map"></div>
-      <div>Your mom's gay!</div>
+      <div id="map"></div>
     );
   }
 

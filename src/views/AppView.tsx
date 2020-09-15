@@ -18,7 +18,7 @@ import { Tooltip } from "../components/Tooltip";
 import { SplashScreen } from "../components/SplashScreen"
 import { IgrShapeDataSource, parseBool } from 'igniteui-react-core';
 import {number} from "prop-types";
-// import ChoroplethMap from './ChoroplethMap';
+import ChoroplethMap from './ChoroplethMap';
 
 export class AppView extends React.Component<any, AppState> {
 
@@ -248,7 +248,7 @@ export class AppView extends React.Component<any, AppState> {
                         // Add Component Here
                         // <div className="app-stack" style={{ flexDirection: this.state.displayMode }}><h1>Nevin, do me a favor pls, gerrarhere! </h1></div>
                         <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
-                            {/*<ChoroplethMap></ChoroplethMap>*/}
+                            <ChoroplethMap></ChoroplethMap>
                         </div>
                     }
 
