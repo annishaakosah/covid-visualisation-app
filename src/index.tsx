@@ -13,6 +13,7 @@ import './assets/css/app-chart.css'
 import './assets/css/app-toolbar.css'
 import './assets/css/app-sidebar.css'
 import './assets/css/app-tooltips.css'
+import './assets/css/nucleo-icons.css';
 
 import { AppRouter } from './views/AppRouter'
 import RegisterServiceWorker from './ServiceWorker';

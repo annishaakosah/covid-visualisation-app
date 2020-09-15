@@ -32,12 +32,12 @@ export class AppView extends React.Component<any, AppState> {
             buttons: { color: "#131416", background: "#1d8cf8" },
             list: { color: "#ddddde", background: "#131416", border: "1px solid #222327" },
             listItem: { color: "rgba(255, 255, 255, 0.7)", fontWeight: "normal" },
-            listSelected: { color: "rgba(139, 128, 255, 0.2)", fontWeight: "bold" },
+            listSelected: { color: "rgba(39,103,182, 0.5)", fontWeight: "bold" },
             listValue: { color: "#ddddde", fontWeight: "bold" },
             listFlag: { border: "1px solid #5b5858" },
 
-            buttonSelected: { color: "##1d8cf8", background: "#1d8cf8", border: "1px solid ##1d8cf8" },
-            buttonNormal: { color: "#ffffff", background: "#262a3c", border: "1px solid #1d8cf8" },
+            buttonSelected: { color: "##1d8cf8", background: "#1d8cf8", border: "1px solid ##1d8cf8", width: "auto" },
+            buttonNormal: { color: "#ffffff", background: "#262a3c", border: "1px solid #1d8cf8", width: "auto" },
 
             sourceInfo: { color: "#ffffff" },
             infections: { color: "#1d8cf8" }, // background: "#222327", borderBottom: "1px solid #222327" },
@@ -52,10 +52,7 @@ export class AppView extends React.Component<any, AppState> {
     public listInfections: ListView;
     public listDeaths: ListView;
     public listsUpdating = false;
-
-    public elementRef: Element;
     public splashScreen: SplashScreen;
-    public doReportSize = true;
 
     constructor(props: any) {
         super(props);
@@ -105,13 +102,6 @@ export class AppView extends React.Component<any, AppState> {
         return style;
     }
 
-    public getToggleStyle(isActive: boolean, theme: any): React.CSSProperties {
-        let toggleBackground = "rgba(255, 255, 255, 0.2)";
-        let style = this.getButtonStyle(theme.toolbar.color);
-        style.background = isActive ? toggleBackground : "transparent";
-        return style;
-    }
-
     public render() {
         let theme = this.themes[this.state.theme];
 
@@ -155,19 +145,19 @@ export class AppView extends React.Component<any, AppState> {
                         <Tooltip background={tipBackground} color={tipForeground}
                             message="Index Chart" >
                             <IconButton onClick={() => this.setVisualisation(1)} style={toggleThemeStyle} edge="start" >
-                                <IconPalette.default style={{ fontSize: "1.2rem" }} />
+                                <i className="tim-icons icon-bullet-list-67" />
                             </IconButton>
                         </Tooltip>
                         <Tooltip background={tipBackground} color={tipForeground}
                             message="Geo Graph" >
                             <IconButton onClick={() => this.setVisualisation(2)} style={toggleThemeStyle} edge="start" >
-                                <IconPalette.default style={{ fontSize: "1.2rem" }} />
+                                <i className="tim-icons icon-world" />
                             </IconButton>
                         </Tooltip>
                         <Tooltip background={tipBackground} color={tipForeground}
                             message="Stacked Bar Graph" >
                             <IconButton onClick={() => this.setVisualisation(3)} style={toggleThemeStyle} edge="start" >
-                                <IconPalette.default style={{ fontSize: "1.2rem" }} />
+                                <i className="tim-icons icon-chart-bar-32" />
                             </IconButton>
                         </Tooltip>
                     </div>
@@ -213,7 +203,6 @@ export class AppView extends React.Component<any, AppState> {
                                 <div className="app-button-row" style={tabStyle}>
                                     <div className="app-button-tab" style={tdButtonStyle}
                                         onClick={() => this.onClickPlotDeaths()}>
-                                        {/* {DataService.GetDisplayName("totalDeaths", this.state.usePropStats)} */}
                                         <span>Total Deaths</span>
                                     </div>
                                     <div className="app-button-tab" style={tiButtonStyle}
