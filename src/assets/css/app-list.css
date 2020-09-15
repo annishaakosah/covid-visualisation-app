@@ -56,9 +56,10 @@
     max-height: calc(100vh - 9rem); */
 }
 
-.app-list-dark
+.app-list-dark,
 .app-list-infections {
     color: #ddddde;
-    background: #131416;
+    background: #262a3c;
     border: 1px solid #222327;
+    border-radius: .2857rem;
 }

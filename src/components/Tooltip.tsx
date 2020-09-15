@@ -24,7 +24,7 @@ export class Tooltip extends React.Component<any, any> {
     }
 
     public render() {
-        const tipBackground = this.props.background || "rgba(255, 255, 255, 0.85)"; // "#bebebe";
+        const tipBackground = this.props.background || "#ffffff"; // "#bebebe";
         const tipForeground = this.props.color || "#444444"; // e4e4e4 "#202020";
         const tipBorder = this.props.borderColor || tipBackground;
         const width = this.props.minWidth || "300px"

@@ -36,29 +36,11 @@ IgrNumberAbbreviatorModule.register();
 export class ChartView extends React.Component<any, AppState> {
 
     public themes: any = {
-        light: {
-            name: "light",
-            // series:     { color: "#7D73E6", fill: "white", text: "black" },
-
-            infections: { color: "#8B80FF", fill: "white" },
-            deaths:     { color: "#FF3D60", fill: "white" },
-
-            // primary:    { color: "#242241", background: "#F6F6F9" },
-            // infections: { color: "#7D73E6", background: "#F9F8F9", borderBottom: "1px solid #C7C6CC" },
-            // recoveries: { color: "#22994C", background: "#F9F8F9", borderBottom: "1px solid #C7C6CC" },
-            // deaths:     { color: "#FF3D60", background: "#F9F8F9", borderBottom: "1px solid #C7C6CC" },
-
-            plot:       { color: "#242241", background: "#F6F6F9" }, // background: "#F6F6F9" },
-            tooltip:    { color: "#62626E", background: "#FCFCFC", border: "1px solid #BFBFD4" },
-            axisTitles: { color: "rgba(98, 98, 111, 0.8)" },
-            axisLabels: { color: "rgba(98, 98, 110, 1)" },
-            axisLines:  { color: "rgba(98, 98, 110, 1)" },
-        },
         dark:  {
             name: "dark",
             // series:     { color: "#8B80FF", fill: "black", text: "rgba(98, 98, 110, 1)" },
 
-            infections: { color: "#8B80FF", fill: "#262a3c" },
+            infections: { color: "#1d8cf8", fill: "#262a3c" },
             deaths:     { color: "#FF3D60", fill: "#262a3c" },
 
             // primary:    { color: "white", background: "#131416" },
@@ -67,10 +49,10 @@ export class ChartView extends React.Component<any, AppState> {
             // deaths:     { color: "#FF3D60", background: "#222327", borderBottom: "1px solid #222327"},
 
             plot:       { color: "white", background: "#262a3c" },
-            tooltip:    { color: "rgba(255, 255, 255, 0.6)", background: "#1D1E21", border: "1px solid #565657" },
-            axisTitles: { color: "rgba(255, 255, 255, 0.4)" },
-            axisLabels: { color: "rgba(255, 255, 255, 0.7)" },
-            axisLines:  { color: "rgba(40, 51, 79, 1)" },
+            tooltip:    { color: "#242241", background: "#FFFFFF" },
+            axisTitles: { color: "rgba(255, 255, 255, 0.4)", fontFamily: "Poppins" },
+            axisLabels: { color: "rgba(255, 255, 255, 0.7)", fontFamily: "Poppins" },
+            axisLines:  { color: "rgba(29, 140, 248, 0.25)", border: "0.5px solid" },
 
         },
     };
@@ -229,7 +211,7 @@ export class ChartView extends React.Component<any, AppState> {
 
     public createMarkerSeries(title: string): IgrScatterSeries
     {
-        // let theme = this.themes[this.props.theme || "light"];
+        // let theme = this.themes[this.props.theme || "dark"];
 
         let xAxisMemberPath = this.props.xAxisMemberPath || "totalInfections";
         let yAxisMemberPath = this.props.yAxisMemberPath || "weeklyInfections";
@@ -274,7 +256,7 @@ export class ChartView extends React.Component<any, AppState> {
 
     public updateMarkers() {
 
-        let theme = this.themes[this.props.theme || "light"];
+        let theme = this.themes[this.props.theme || "dark"];
         let xAxisMemberPath = this.props.xAxisMemberPath || "totalInfections";
 
         if (xAxisMemberPath === "totalInfections") {
@@ -359,7 +341,7 @@ export class ChartView extends React.Component<any, AppState> {
 
         // console.log("getTooltip " + dataItem.country);
 
-        let theme = this.themes[this.props.theme || "light"];
+        let theme = this.themes[this.props.theme || "dark"];
         // let recoveries = { color: theme.recoveries.color } as React.CSSProperties;
         // let title = { color: seriesBrush } as React.CSSProperties;
 

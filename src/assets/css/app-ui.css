@@ -35,6 +35,7 @@
     align-items: stretch;
     /* padding-left: 1rem; */
     border: 1px solid transparent;
+    border-radius: .2857rem;
     /* background: orange; */
 }
 
@@ -102,14 +103,10 @@
     /* overflow-y: hidden; */
     /* overflow-x: hidden; */
     /* background: rgb(241, 160, 160); */
-    width: calc(100% - 1.2rem);
     height: 100%;
     /* height: calc(100% - 1.5rem); */
     /* width: calc(100% - 0.75rem); */
-    padding-left: 1.2rem;
-    /* padding-right: 0.75rem; */
-    padding-top: 1.2rem;
-    padding-bottom: 1.2rem;
+    padding: 1.2rem;
 
     display: flex;
     flex-direction: row;

@@ -17,7 +17,6 @@ import { Slider } from "../components/Slider";
 import { Tooltip } from "../components/Tooltip";
 import { SplashScreen } from "../components/SplashScreen"
 import { IgrShapeDataSource, parseBool } from 'igniteui-react-core';
-import {number} from "prop-types";
 import ChoroplethMap from './ChoroplethMap';
 
 export class AppView extends React.Component<any, AppState> {
@@ -140,7 +139,7 @@ export class AppView extends React.Component<any, AppState> {
 
                 <div className="app-main" style={contentStyle}>
                     <div className="app-toolbar" style={toolbarStyle}>
-                        <div className="app-toolbar-title">Dashboard</div>
+                        <div className="app-toolbar-title">COVID Dashboard</div>
 
                         <Tooltip background={tipBackground} color={tipForeground}
                             message="Index Chart" >
