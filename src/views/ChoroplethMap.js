@@ -43,9 +43,9 @@ import geonet from './../data/custom.geoM';
       };
 
       info.update = function (props) {
-        this._div.innerHTML = '<h4>US Population Density</h4>' + (props ?
+        this._div.innerHTML = '<h4>Global COVID-19 Density</h4>' + (props ?
           '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-          : 'Hover over a state');
+          : 'Hover over a country');
       };
 
       info.addTo(map);
