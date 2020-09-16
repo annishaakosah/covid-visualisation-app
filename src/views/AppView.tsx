@@ -37,7 +37,7 @@ export class AppView extends React.Component<any, AppState> {
             listValue: { color: "#ddddde", fontWeight: "bold" },
             listFlag: { border: "1px solid #5b5858" },
 
-            buttonSelected: { color: "##1d8cf8", background: "#1d8cf8", width: "auto" },
+            buttonSelected: { color: "#ffffff", background: "#1d8cf8", width: "auto" },
             buttonNormal: { color: "#ffffff", background: "#262a3c", width: "auto" },
 
             sourceInfo: { color: "#ffffff" },
