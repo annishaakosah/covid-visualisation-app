@@ -249,7 +249,7 @@ export class AppView extends React.Component<any, AppState> {
                               <span>Total Cases</span>
                             </div>
                           </div>
-                          <ChoroplethMap data={DataService.aggregateGeoCovidData(this.state.countriesStats)}></ChoroplethMap>
+                          <ChoroplethMap data={DataService.aggregateGeoCovidData(this.state.countriesStats)} state={this.state}/>
                         </div>
                     }
 

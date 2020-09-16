@@ -62,11 +62,8 @@ export class DataService {
         for (const country2 of allCountries) {
             for (const country1 of data.features) {
                 if (country1.properties.name === country2.country || country1.properties.sovereignt === country2.country || country1.properties.subunit === country2.country) {
-                    // country1.properties.push(country2.totalInfections);
                     country1.properties['totalInfections'] = country2.totalInfections;
-                    // console.log(country1.totalInfections)
-                    // console.log('Addddddddddddddddddddd')
-                    // console.log(country1)
+                    country1.properties['totalDeaths'] = country2.totalDeaths;
                 }
             }
         }

@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import './ChoroplethMap.css';
 import L from 'leaflet';
-import statesData from './../data/us-states';
-// import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import geonet from './../data/custom.geoM.json';
 
 function ChoroplethMap(props) {
     useEffect(() => {
@@ -17,12 +14,9 @@ function ChoroplethMap(props) {
         console.log(map.getBounds())
         map.on('zoom', () => {
             console.log(map.getZoom());
-        })
+        });
 
         L.tileLayer('https://api.mapbox.com/styles/v1/alice2u34982348/ckf1x8bjz608c19obvkq38t9l.html?fresh=true&title=view&access_token=pk.eyJ1IjoiYWxpY2UydTM0OTgyMzQ4IiwiYSI6ImNrZjF4N2E4bTBjdmQyeW1zajlzNW4yczYifQ.4-5ESTVA2rqA_XDTTzyI0A#3.02/41.31/-127.44', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox/dark-v9',
             tileSize: 512,
             zoomOffset: -1,
@@ -42,9 +36,10 @@ function ChoroplethMap(props) {
             return this._div;
         };
 
-        info.update = function (props) {
-            this._div.innerHTML = '<h3>Global COVID-19 Density</h3>' + (props ?
-                '<b><h4>' + props.name + '</b><br />' + props.totalInfections + ' cases</h4>'
+        info.update = function (country) {
+            this._div.innerHTML = '<h3>Global COVID-19 Density</h3>' + (country ? props.state.xAxisMemberPath === "totalInfections" ?
+              '<b><h4>' + country.name + '</b><br />' + country.totalInfections.toLocaleString() + ' cases</h4>'
+              : '<b><h4>' + country.name + '</b><br />' + country.totalDeaths.toLocaleString()  + ' deaths</h4>'
                 : '<b><b>Hover over a country</b></h4>');
         };
 
@@ -53,22 +48,29 @@ function ChoroplethMap(props) {
 
         // get color depending on population density value
         const getColor = (d) => {
-        return d > 300000 ? '#074F9D' :
-                    d > 50000 ? '#0863C4' :
-                      d > 10000 ? '#0A77EB' :
-                        d > 100 ? '#9DCAFB' :
-                          '#C4E0FD';
+          if (props.state.xAxisMemberPath === "totalInfections") {
+            return d > 300000 ? '#074F9D' :
+              d > 50000 ? '#0863C4' :
+                d > 10000 ? '#0A77EB' :
+                  d > 100 ? '#9DCAFB' :
+                    '#C4E0FD';
+          } else {
+            return d > 300000 ? '#B80022' :
+              d > 50000 ? '#F5002D' :
+                d > 10000 ? '#FF3358' :
+                  d > 100 ? '#FF859B' :
+                    '#FFC2CD';
+          }
         };
 
         function style(feature) {
-            console.log(feature.properties);
             return {
                 weight: 1,
                 opacity: 0.7,
                 color: 'white',
                 fillOpacity: 1,
                 // EDIT
-                fillColor: getColor(feature.properties.totalInfections)
+                fillColor: getColor(props.state.xAxisMemberPath === "totalInfections" ? feature.properties.totalInfections : feature.properties.totalDeaths)
             };
         }
 
@@ -111,12 +113,6 @@ function ChoroplethMap(props) {
             style: style,
             onEachFeature: onEachFeature
         }).addTo(map);
-        // geojson = L.geoJson(statesData, {
-        //     style: style,
-        //     onEachFeature: onEachFeature
-        // }).addTo(map);
-
-        map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
 
         var legend = L.control({ position: 'bottomright' });
 
