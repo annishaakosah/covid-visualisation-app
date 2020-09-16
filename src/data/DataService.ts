@@ -38,18 +38,27 @@ export class DataService {
     public static aggregateGeoCovidData(allCountries: OutbreakLocation[]){
         // console.log(allCountries);
         // console.log(geoData.features[0].properties.name);
-        for (const country of geoData.features){
-            console.log(country.properties.name);
-        }
-        for (const country of allCountries){
-            console.log(country.country);
+        console.log(geoData.features.length, allCountries.length);
+        for (const country2 of allCountries){
+            let notFound = true;
+            for (const country1 of geoData.features){
+                if (country1.properties.name === "Macedonia") {
+                    console.log(country1.properties);
+                }
+                if (country1.properties.name === country2.country || country1.properties.sovereignt === country2.country || country1.properties.subunit === country2.country) {
+                    notFound = false;
+                }
+            }
+            if (notFound) {
+                console.log(country2.country);
+            }
         }
         return 'Is this working';
     }
 
     // public static aggregateContinents(allCountries: OutbreakLocation[]) {
-        
-        
+
+
     // }
 
     public static GetDisplayName(dataColumn: string, usePropStats: boolean): string {
@@ -711,7 +720,7 @@ export class OutbreakLocation extends OutbreakStats {
         // this.children.push(location);
     }
 
-   
+
 
 }
 
