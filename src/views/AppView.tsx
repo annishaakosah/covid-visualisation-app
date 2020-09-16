@@ -246,7 +246,7 @@ export class AppView extends React.Component<any, AppState> {
                         <div className="app-content">
                             <div className="app-center" style={cardStyle}>
                                 // Add your data visualisation here
-                                <StackedChart></StackedChart>
+                                <StackedChart data={DataService.aggregateContinents(this.state.countriesStats)}></StackedChart>
                                
                             </div>
                         </div>

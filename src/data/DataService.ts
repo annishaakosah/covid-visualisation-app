@@ -34,6 +34,11 @@ export class DataService {
         weeklyRecoveries:   "Weekly Recoveries",
     }
 
+    public static aggregateContinents(allCountries: OutbreakLocation[]) {
+        
+        
+    }
+
     public static GetDisplayName(dataColumn: string, usePropStats: boolean): string {
         let name: string = this.dataColumns[dataColumn] || "";
         if (usePropStats) {
@@ -692,6 +697,8 @@ export class OutbreakLocation extends OutbreakStats {
     public push(location: OutbreakLocation) {
         // this.children.push(location);
     }
+
+   
 
 }
 

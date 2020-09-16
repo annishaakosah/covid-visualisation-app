@@ -491,5 +491,6 @@ export class ChartView extends React.Component<any, AppState> {
             }
         }
     }
+    
 
 }

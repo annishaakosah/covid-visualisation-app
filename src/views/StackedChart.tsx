@@ -10,10 +10,12 @@ import {
   TickFormatterFunction
 } from "recharts";
 import moment from 'moment';
-
+import * as React from "react";
+import { useEffect } from "react";
+import { DataService, OutbreakLocation } from "../data/DataService";
 
 const data = [
-  { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
+  { name: "Page A", asia: 4000, africa: 2400, europe: 2400 },
   { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
   { name: "Page C", uv: 2000, pv: 9800, amt: 2290 },
   { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
@@ -22,18 +24,21 @@ const data = [
   { name: "Page G", uv: 3490, pv: 4300, amt: 2100 },
 ];
 
-import * as React from "react";
-
-import { DataService, OutbreakLocation } from "../data/DataService";
 
 export class StackedChart extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
   }
 
+  
+  
+    
+
+
   public continentColours: string[] = ["#eb4d4b", "#f9ca24", "#6ab04c", "#8e44ad", "#3498db", "#F97F51"];
 
   public render() {
+    console.log(this.props.data)
     return (
       <ResponsiveContainer height={"100%"} maxHeight={"80vh"}>
          {/* <BarChart
@@ -59,16 +64,15 @@ export class StackedChart extends React.Component<any, any> {
           />
           <Legend />
 
+          
+          
           {/* {whoDataStore?.possibleRegions?.map((region, i) => {
               console.log(region);
               return <Bar dataKey={region} stackId={'a'} fill={this.continentColours[i]} key={i} />;
             })}  */}
 
-
-
-
-          <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-          <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+          <Bar dataKey="asia" stackId="a" fill="#8884d8" />
+          <Bar dataKey="africa" stackId="a" fill="#82ca9d" />
         </BarChart>
       </ResponsiveContainer>
     );
