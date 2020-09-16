@@ -24,8 +24,7 @@ function ChoroplethMap() {
             console.log(map.getZoom());
         })
 
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-
+        L.tileLayer('https://api.mapbox.com/styles/v1/alice2u34982348/ckf1x8bjz608c19obvkq38t9l.html?fresh=true&title=view&access_token=pk.eyJ1IjoiYWxpY2UydTM0OTgyMzQ4IiwiYSI6ImNrZjF4N2E4bTBjdmQyeW1zajlzNW4yczYifQ.4-5ESTVA2rqA_XDTTzyI0A#3.02/41.31/-127.44', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -49,9 +48,9 @@ function ChoroplethMap() {
         };
 
         info.update = function (props) {
-            this._div.innerHTML = '<h4>Global COVID-19 Density</h4>' + (props ?
-                '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-                : 'Hover over a country');
+            this._div.innerHTML = '<h3>Global COVID-19 Density</h3>' + (props ?
+                '<b><h4>' + props.name + '</b><br />' + props.density + ' cases</h4>'
+                : '<b><b>Hover over a country</b></h4>');
         };
 
         info.addTo(map);
@@ -59,26 +58,21 @@ function ChoroplethMap() {
 
         // get color depending on population density value
         const getColor = (d) => {
-            return d > 1000 ? '#800026' :
-                d > 500 ? '#BD0026' :
-                    d > 200 ? '#E31A1C' :
-                        d > 100 ? '#FC4E2A' :
-                            d > 50 ? '#FD8D3C' :
-                                d > 20 ? '#FEB24C' :
-                                    d > 10 ? '#FED976' :
-                                        '#FFEDA0';
-        }
+            return d > 300000 ? '#074F9D' :
+                    d > 50000 ? '#0863C4' :
+                      d > 10000 ? '#0A77EB' :
+                        d > 100 ? '#9DCAFB' :
+                          '#C4E0FD';
+        };
 
         function style(feature) {
             return {
                 weight: 1,
                 opacity: 1,
                 color: 'white',
-                dashArray: '3',
-                fillOpacity: 0.7,
+                fillOpacity: 1,
                 // EDIT
-                // fillColor: getColor(feature.properties.density)
-                fillColor: 'blue'
+                fillColor: getColor(feature.properties.density)
             };
         }
 
@@ -86,10 +80,9 @@ function ChoroplethMap() {
             var layer = e.target;
 
             layer.setStyle({
-                weight: 5,
-                color: '#666',
-                dashArray: '',
-                fillOpacity: 0.7
+                weight: 3,
+                color: 'rgba(39,103,182, 0.5)',
+                fillOpacity: 1
             });
 
             if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -130,7 +123,7 @@ function ChoroplethMap() {
         legend.onAdd = function (map) {
 
             var div = L.DomUtil.create('div', 'info legend'),
-                grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+                grades = [0, 100, 10000, 50000, 300000],
                 labels = [],
                 from, to;
 
