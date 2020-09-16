@@ -37,12 +37,12 @@ export class DataService {
 
     public static aggregateGeoCovidData(allCountries: OutbreakLocation[]) {
         // console.log(allCountries);
-        console.log('GeoData==============================');
-        console.log(geoData.features[0]);
-        console.log('GeoData==============================');
-        console.log('Country==============================');
-        console.log(allCountries[0]);
-        console.log('Country==============================');
+        // console.log('GeoData==============================');
+        // console.log(geoData.features[0]);
+        // console.log('GeoData==============================');
+        // console.log('Country==============================');
+        // console.log(allCountries[0]);
+        // console.log('Country==============================');
 
         // for (const country of geoData.features){
         //     console.log(country.properties.name);
@@ -56,7 +56,24 @@ export class DataService {
         // }
 
 
-        return 'Is this working';
+        // console.log(geoData.features[0].properties.name);
+        let data = JSON.parse(JSON.stringify(geoData));
+        console.log(geoData.features.length, allCountries.length);
+        for (const country2 of allCountries) {
+            for (const country1 of data.features) {
+                if (country1.properties.name === country2.country || country1.properties.sovereignt === country2.country || country1.properties.subunit === country2.country) {
+                    // country1.properties.push(country2.totalInfections);
+                    country1.properties['totalInfections'] = country2.totalInfections;
+                    // console.log(country1.totalInfections)
+                    // console.log('Addddddddddddddddddddd')
+                    // console.log(country1)
+                }
+            }
+        }
+        console.log('-------------------------------------------------------')
+        console.log(data)
+        console.log('-------------------------------------------------------')
+        return data;
     }
 
     // public static aggregateContinents(allCountries: OutbreakLocation[]) {
