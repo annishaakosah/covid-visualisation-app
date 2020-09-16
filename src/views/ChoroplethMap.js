@@ -5,14 +5,9 @@ import statesData from './../data/us-states';
 // import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import geonet from './../data/custom.geoM.json';
 
-function ChoroplethMap() {
+function ChoroplethMap(props) {
     useEffect(() => {
-        // var container = L.DomUtil.get('map');
-        // if (container != null) {
-        //     container.off();
-        //     // container._leaflet_id = null;
-        // }
-        // document.getElementById('container').innerHTML = "<div id='map' style='width: 100%; height: 100%;'></div>";
+        console.log(props.data);
         var map = L.map('map', {
             center: [51.505, -0.09],
             minZoom: 2,

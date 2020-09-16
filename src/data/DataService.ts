@@ -1,6 +1,7 @@
 import { TimeUtils } from './TimeUtils';
 import { Point } from 'igniteui-react-core';
 import { IgrShapefileRecord } from 'igniteui-react-core';
+import geoData from './../data/custom.geoM.json';
 
 export enum DataType {
     Infections = 'confirmed_global',
@@ -34,10 +35,22 @@ export class DataService {
         weeklyRecoveries:   "Weekly Recoveries",
     }
 
-    public static aggregateContinents(allCountries: OutbreakLocation[]) {
-        
-        
+    public static aggregateGeoCovidData(allCountries: OutbreakLocation[]){
+        // console.log(allCountries);
+        // console.log(geoData.features[0].properties.name);
+        for (const country of geoData.features){
+            console.log(country.properties.name);
+        }
+        for (const country of allCountries){
+            console.log(country.country);
+        }
+        return 'Is this working';
     }
+
+    // public static aggregateContinents(allCountries: OutbreakLocation[]) {
+        
+        
+    // }
 
     public static GetDisplayName(dataColumn: string, usePropStats: boolean): string {
         let name: string = this.dataColumns[dataColumn] || "";

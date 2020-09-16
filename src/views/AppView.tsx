@@ -235,9 +235,10 @@ export class AppView extends React.Component<any, AppState> {
                         </div>
                     }
 
+                    {/* James */}
                     {this.state.visualisation === 2 &&
                         <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
-                            <ChoroplethMap></ChoroplethMap>
+                            <ChoroplethMap data={DataService.aggregateGeoCovidData(this.state.countriesStats)}></ChoroplethMap>
                         </div>
                     }
 
@@ -246,7 +247,7 @@ export class AppView extends React.Component<any, AppState> {
                         <div className="app-content">
                             <div className="app-center" style={cardStyle}>
                                 // Add your data visualisation here
-                                <StackedChart data={DataService.aggregateContinents(this.state.countriesStats)}></StackedChart>
+                                {/* <StackedChart data={DataService.aggregateContinents(this.state.countriesStats)}></StackedChart> */}
                                
                             </div>
                         </div>
