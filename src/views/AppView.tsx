@@ -11,6 +11,7 @@ import { Locations } from "../data/Locations";
 import { AppState } from "./AppState"
 import { ChartView } from "./ChartView";
 import { ChartAxisRange } from "./ChartAxisRange";
+import { StackedChart } from "./StackedChart";
 import { ListView } from "./ListView";
 import { DataService, OutbreakStats } from "../data/DataService";
 import { Slider } from "../components/Slider";
@@ -240,11 +241,13 @@ export class AppView extends React.Component<any, AppState> {
                         </div>
                     }
 
+                     {/* annisha */}
                     {this.state.visualisation === 3 &&
                         <div className="app-content">
                             <div className="app-center" style={cardStyle}>
                                 // Add your data visualisation here
-                                <h1 style={{color: "pink"}}>Annisha, do me a favor pls, gerrarhere! </h1>
+                                <StackedChart></StackedChart>
+                               
                             </div>
                         </div>
                     }

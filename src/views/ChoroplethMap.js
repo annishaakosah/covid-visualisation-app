@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import './ChoroplethMap.css';
 import L from 'leaflet';
-// import statesData from './us-states'
+import statesData from './../data/us-states';
 // import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import geonet from './../data/custom.geoM';
+import geonet from './../data/custom.geoM.json';
 
 function ChoroplethMap() {
     useEffect(() => {
@@ -115,6 +115,10 @@ function ChoroplethMap() {
             style: style,
             onEachFeature: onEachFeature
         }).addTo(map);
+        // geojson = L.geoJson(statesData, {
+        //     style: style,
+        //     onEachFeature: onEachFeature
+        // }).addTo(map);
 
         map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
 
