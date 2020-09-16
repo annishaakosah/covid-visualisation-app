@@ -237,18 +237,37 @@ export class AppView extends React.Component<any, AppState> {
 
                     {/* James */}
                     {this.state.visualisation === 2 &&
-                        <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
-                            <ChoroplethMap data={DataService.aggregateGeoCovidData(this.state.countriesStats)}></ChoroplethMap>
+                        <div className="app-stack" style={{color: theme.card.color, background: theme.card.background, padding: "1.2rem"}}>
+                          <div className="app-button-row" style={tabStyle}>
+                            <div className="app-button-tab" style={tdButtonStyle}
+                                 onClick={() => this.onClickPlotDeaths()}>
+                              <span>Total Deaths</span>
+                            </div>
+                            <div className="app-button-tab" style={tiButtonStyle}
+                                 onClick={() => this.onClickPlotInfections()}>
+                                {/* {DataService.GetDisplayName("totalInfections", this.state.usePropStats)} */}
+                              <span>Total Cases</span>
+                            </div>
+                          </div>
+                          <ChoroplethMap data={DataService.aggregateGeoCovidData(this.state.countriesStats)}></ChoroplethMap>
                         </div>
                     }
 
-                     {/* annisha */}
                     {this.state.visualisation === 3 &&
                         <div className="app-content">
                             <div className="app-center" style={cardStyle}>
-                                // Add your data visualisation here
-                                {/* <StackedChart data={DataService.aggregateContinents(this.state.countriesStats)}></StackedChart> */}
-                               
+                              <div className="app-button-row" style={tabStyle}>
+                                <div className="app-button-tab" style={tdButtonStyle}
+                                     onClick={() => this.onClickPlotDeaths()}>
+                                  <span>Total Deaths</span>
+                                </div>
+                                <div className="app-button-tab" style={tiButtonStyle}
+                                     onClick={() => this.onClickPlotInfections()}>
+                                    {/* {DataService.GetDisplayName("totalInfections", this.state.usePropStats)} */}
+                                  <span>Total Cases</span>
+                                </div>
+                              </div>
+                              {/* <StackedChart data={DataService.aggregateContinents(this.state.countriesStats)}></StackedChart> */}
                             </div>
                         </div>
                     }
