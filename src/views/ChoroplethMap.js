@@ -53,17 +53,17 @@ function ChoroplethMap(props) {
 
         // get color depending on population density value
         const getColor = (d) => {
-            return d > 300000 ? '#074F9D' :
-                    d > 50000 ? '#0863C4' :
-                      d > 10000 ? '#0A77EB' :
-                        d > 100 ? '#9DCAFB' :
-                          '#C4E0FD';
+            return d > 300000 ? '#053161' :
+                    d > 50000 ? '#084F9B' :
+                      d > 10000 ? '#0B6DD5' :
+                        d > 100 ? '#2A8BF4' :
+                          '#64ABF7';
         };
 
         function style(feature) {
             return {
                 weight: 1,
-                opacity: 1,
+                opacity: 0.7,
                 color: 'white',
                 fillOpacity: 1,
                 // EDIT

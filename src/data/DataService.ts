@@ -364,6 +364,7 @@ export class DataService {
 
         const dataCache = `data-totals-${this.FILE_BASE}${dataSet}`;
         const dataURL = `${this.COVID_URL}/${this.TIME_SERIES}/${this.FILE_BASE}${dataSet}.csv`;
+        console.log(dataURL);
         let dataCSV = '';
         if (loadFromCache) {
             dataCSV = window.localStorage.getItem(dataCache);
