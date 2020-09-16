@@ -41,12 +41,9 @@ export interface AppState
     xAxisMaximumValue?: number,
     yAxisMinimumValue?: number,
     yAxisMaximumValue?: number,
-
-    // shapeCountries?: OutbreakLocation[],
     countriesStats?: OutbreakLocation[],
     countriesSelected?: string[],
     highlighted?: string[],
-    // James
     visualisation?: number
 };
 

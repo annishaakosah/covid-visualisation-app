@@ -137,8 +137,6 @@ export class AppView extends React.Component<any, AppState> {
 
         return (
             <div className="app-root" >
-                {/* <div className="app-sidebar-menu">menu</div> */}
-
                 <div className="app-main" style={contentStyle}>
                     <div className="app-toolbar" style={toolbarStyle}>
                         <div className="app-toolbar-title">COVID Dashboard</div>
@@ -208,7 +206,6 @@ export class AppView extends React.Component<any, AppState> {
                                     </div>
                                     <div className="app-button-tab" style={tiButtonStyle}
                                         onClick={() => this.onClickPlotInfections()}>
-                                        {/* {DataService.GetDisplayName("totalInfections", this.state.usePropStats)} */}
                                         <span>Total Cases</span>
                                     </div>
                                 </div>
@@ -235,7 +232,6 @@ export class AppView extends React.Component<any, AppState> {
                         </div>
                     }
 
-                    {/* James */}
                     {this.state.visualisation === 2 &&
                         <div className="app-stack" style={{color: theme.card.color, background: theme.card.background, padding: "1.2rem"}}>
                           <div className="app-button-row" style={tabStyle}>
@@ -245,7 +241,6 @@ export class AppView extends React.Component<any, AppState> {
                             </div>
                             <div className="app-button-tab" style={tiButtonStyle}
                                  onClick={() => this.onClickPlotInfections()}>
-                                {/* {DataService.GetDisplayName("totalInfections", this.state.usePropStats)} */}
                               <span>Total Cases</span>
                             </div>
                           </div>
@@ -263,11 +258,10 @@ export class AppView extends React.Component<any, AppState> {
                                 </div>
                                 <div className="app-button-tab" style={tiButtonStyle}
                                      onClick={() => this.onClickPlotInfections()}>
-                                    {/* {DataService.GetDisplayName("totalInfections", this.state.usePropStats)} */}
                                   <span>Total Cases</span>
                                 </div>
                               </div>
-                              {/* <StackedChart data={DataService.aggregateContinents(this.state.countriesStats)}></StackedChart> */}
+                               <StackedChart data={DataService.aggregateContinents(this.state.countriesStats)} state={this.state}/>
                             </div>
                         </div>
                     }

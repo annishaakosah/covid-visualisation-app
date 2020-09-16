@@ -2,6 +2,7 @@ import { TimeUtils } from './TimeUtils';
 import { Point } from 'igniteui-react-core';
 import { IgrShapefileRecord } from 'igniteui-react-core';
 import geoData from './../data/custom.geoM.json';
+import continentMap from './../data/continentsArray.json'
 
 export enum DataType {
     Infections = 'confirmed_global',
@@ -36,29 +37,7 @@ export class DataService {
     }
 
     public static aggregateGeoCovidData(allCountries: OutbreakLocation[]) {
-        // console.log(allCountries);
-        // console.log('GeoData==============================');
-        // console.log(geoData.features[0]);
-        // console.log('GeoData==============================');
-        // console.log('Country==============================');
-        // console.log(allCountries[0]);
-        // console.log('Country==============================');
-
-        // for (const country of geoData.features){
-        //     console.log(country.properties.name);
-        // }
-        // for (const country of allCountries){
-        //     console.log(country.country);
-        // }
-
-        // for (const country of geoData.features) {
-        //     console.log(country.properties.name);
-        // }
-
-
-        // console.log(geoData.features[0].properties.name);
         let data = JSON.parse(JSON.stringify(geoData));
-        console.log(geoData.features.length, allCountries.length);
         for (const country2 of allCountries) {
             for (const country1 of data.features) {
                 if (country1.properties.name === country2.country || country1.properties.sovereignt === country2.country || country1.properties.subunit === country2.country) {
@@ -67,16 +46,38 @@ export class DataService {
                 }
             }
         }
-        console.log('-------------------------------------------------------')
-        console.log(data)
-        console.log('-------------------------------------------------------')
         return data;
     }
 
-    // public static aggregateContinents(allCountries: OutbreakLocation[]) {
-
-
-    // }
+    public static aggregateContinents(allCountries: OutbreakLocation[]) {
+        let stackedBarData = [];
+        let continentToCountryMap = JSON.parse(JSON.stringify(continentMap));
+        for (const item1 of allCountries) {
+            for (const item2 of continentToCountryMap) {
+                if (item1.country === item2.country) {
+                    item1['continent'] = item2.continent;
+                }
+            }
+        }
+        // let continentStats = {
+        //     "North America": {},
+        //     "South America": {},
+        //     "Asia": {},
+        //     "Africa": {},
+        //     "Europe": {},
+        //     "Oceania": {},
+        //     "Antarctica": {}
+        // };
+        // for (const item1 of allCountries) {
+        //     for (const history of item1.history) {
+        //         continentStats[item1['continent']]['date'] = history.date;
+        //         continentStats[item1['continent']]['totalInfections'] = history.totalInfections;
+        //         continentStats[item1['continent']]['totalDeaths'] = history.totalDeaths;
+        //     }
+        // }
+        // console.log(continentStats)
+        return allCountries;
+    }
 
     public static GetDisplayName(dataColumn: string, usePropStats: boolean): string {
         let name: string = this.dataColumns[dataColumn] || "";
