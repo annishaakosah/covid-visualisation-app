@@ -19,6 +19,7 @@ export class DataService {
     public static XPLAT_URL = 'https://static.infragistics.com/xplatform/';
     public static FLAGS_URL = DataService.XPLAT_URL + 'images/flags/';
     public static SHAPE_URL = DataService.XPLAT_URL + 'shapes/';
+    public static dataCSV = '';
 
     public static dataSets = [DataType.Infections, DataType.Recoveries, DataType.Deaths];
 
@@ -386,16 +387,15 @@ export class DataService {
         const dataCache = `data-totals-${this.FILE_BASE}${dataSet}`;
         const dataURL = `${this.COVID_URL}/${this.TIME_SERIES}/${this.FILE_BASE}${dataSet}.csv`;
         console.log(dataURL);
-        let dataCSV = '';
         if (loadFromCache) {
-            dataCSV = window.localStorage.getItem(dataCache);
+            this.dataCSV = window.localStorage.getItem(dataCache);
             console.log('CDS cache ' + dataSet);
         } else {
             console.log('CDS fetch ' + dataSet);
             try {
                 const response = await fetch(dataURL);
                 // console.log('fetch response status ' + response.status);
-                dataCSV = await response.text();  // may error if there is no body
+                this.dataCSV = await response.text();  // may error if there is no body
                 // console.log('fetch response text');
             } catch (ex) {
                 console.log('CDS fetch error \n' + ex);
@@ -405,17 +405,17 @@ export class DataService {
             // const currentTime = new Date().getTime();
 
             // window.localStorage.setItem(`dataLastUpdate`,  currentTime as any);
-            window.localStorage.setItem(dataCache, dataCSV);
+            window.localStorage.setItem(dataCache, this.dataCSV);
         }
 
         const locations: OutbreakLocation[] = [];
-        if (dataCSV === null || dataCSV === undefined || dataCSV === '') {
+        if (this.dataCSV === null || this.dataCSV === undefined || this.dataCSV === '') {
             return new Promise<OutbreakLocation[]>((resolve, reject) => { resolve(locations); });
         }
 
-        dataCSV = dataCSV.replace(/, /g, ' - ');
-        dataCSV = dataCSV.replace(/'/g, '');
-        const csvLines = dataCSV.split('\n');
+        this.dataCSV = this.dataCSV.replace(/, /g, ' - ');
+        this.dataCSV = this.dataCSV.replace(/'/g, '');
+        const csvLines = this.dataCSV.split('\n');
         const headers = csvLines[0].split(',');
 
         for (let i = 1; i < csvLines.length; i++) {
@@ -508,32 +508,31 @@ export class DataService {
         const fileDate = this.toDateFile(outbreakDate);
         const dataCache = `data-daily-${fileDate}`;
         const dataURL = `${this.COVID_URL}/${this.DAILY_SERIES}/${fileDate}.csv`;
-        let dataCSV = '';
 
         loadFromCache = false;
         if (loadFromCache) {
-            dataCSV = window.localStorage.getItem(dataCache);
+            this.dataCSV = window.localStorage.getItem(dataCache);
             console.log('fetch storage ' + dataCache);
         } else {
             // console.log('fetch url ' + dataURL);
             try {
                 const response = await fetch(dataURL);
                 // console.log('fetch response status ' + response.status);
-                dataCSV = await response.text();  // may error if there is no body
+                this.dataCSV = await response.text();  // may error if there is no body
             } catch (ex) {
                 console.log('fetch url ex ' + ex);
                 // this.loadOfflineData(index, observer);
             }
-            // window.localStorage.setItem(dataCache, dataCSV);
+            // window.localStorage.setItem(dataCache, this.dataCSV);
         }
 
-        if (dataCSV === null || dataCSV === undefined || dataCSV === '') {
+        if (this.dataCSV === null || this.dataCSV === undefined || this.dataCSV === '') {
             return new Promise<OutbreakDailyReport>((resolve, reject) => { resolve(report); });
         }
 
-        dataCSV = dataCSV.replace(/, /g, ' - ');
-        dataCSV = dataCSV.replace(/'/g, '');
-        const csvLines = dataCSV.split('\n');
+        this.dataCSV = this.dataCSV.replace(/, /g, ' - ');
+        this.dataCSV = this.dataCSV.replace(/'/g, '');
+        const csvLines = this.dataCSV.split('\n');
         const headers = csvLines[0].split(',');
 
         const locations: OutbreakLocation[] = [];

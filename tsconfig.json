@@ -22,7 +22,8 @@
     "importHelpers": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
   },
   "exclude": [
     "node_modules",
