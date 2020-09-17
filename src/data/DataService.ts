@@ -41,6 +41,7 @@ export class DataService {
         for (const country2 of allCountries) {
             for (const country1 of data.features) {
                 if (country1.properties.name === country2.country || country1.properties.sovereignt === country2.country || country1.properties.subunit === country2.country) {
+                    country2.continent = country1.properties.continent;
                     country1.properties['totalInfections'] = country2.totalInfections;
                     country1.properties['totalDeaths'] = country2.totalDeaths;
                 }
@@ -708,6 +709,7 @@ export class OutbreakLocation extends OutbreakStats {
     public longitude: number;
     public province: string;
     public country: string;
+    public continent: string;
     public place: string;
     public id: string;
 
@@ -730,6 +732,7 @@ export class OutbreakLocation extends OutbreakStats {
 
         this.province = '';
         this.country = '';
+        this.continent = '';
         this.place = '';
         this.history = [];
         this.progress = [];
