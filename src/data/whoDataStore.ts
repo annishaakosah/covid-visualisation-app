@@ -12,7 +12,7 @@ import continentArray from './continentsArray.json';
 import { namesMap, swapName } from './utils';
 
 const USE_LOCAL_DATA = true;
-const confirmedGlobalCsvUrl = DataService.dataCSV;
+let confirmedGlobalCsvUrl = '';
 export type DataType = 'dead' | 'confirmed';
 
 
@@ -22,7 +22,10 @@ function isNumber(n: any) {
 
 function groupByContinent(arr: any[]) {
   let reducer = (grouped: any, item: any) => {
-    let country = item[COUNTRY_KEY];
+    confirmedGlobalCsvUrl = DataService.dataCSV;
+    console.log("grouped", grouped)
+    console.log("item", item)
+    let country = item['Country/Region'];
     if (Object.keys(namesMap).includes(country)) {
       country = swapName(country.replace('*', ''));
     }
@@ -68,6 +71,7 @@ export class WhoDataStore {
 
   constructor() {
     if (USE_LOCAL_DATA) {
+        console.log(confirmedGlobalCsvUrl);
       csv(confirmedGlobalCsvUrl, (err, data: any) => {
         if (data) {
           this.whoCasesData = groupByContinent(data);

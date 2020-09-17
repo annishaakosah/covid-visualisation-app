@@ -13,6 +13,7 @@ import moment from 'moment';
 import * as React from "react";
 import { useEffect } from "react";
 import { DataService, OutbreakLocation } from "../data/DataService";
+import useWhoDataStore  from "../data/whoDataStore";
 
 const data = [
   { name: "Page A", asia: 4000, africa: 2400, europe: 2400 },
@@ -38,7 +39,9 @@ export class StackedChart extends React.Component<any, any> {
   public continentColours: string[] = ["#eb4d4b", "#f9ca24", "#6ab04c", "#8e44ad", "#3498db", "#F97F51"];
 
   public render() {
-    console.log(this.props.data)
+    // const whoDataStore = useWhoDataStore();
+    // console.log(whoDataStore?.getDataArrayWithTime('confirmed', undefined));
+
     return (
       <ResponsiveContainer height={"100%"} maxHeight={"80vh"}>
          {/* <BarChart
