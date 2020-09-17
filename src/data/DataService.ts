@@ -234,76 +234,10 @@ export class DataService {
         }
 
         let locations: OutbreakLocation[] = [];
-        let test1 = true, test2 = true;
         for (const location of mapLocations.values()) {
-            // if (test1) {
-            //     console.log('########################################')
-            // console.log(location.continent)
-            //     console.log('########################################')
-            //     test1 = false;
-            // }
-
             let origin = 0;
             const last = location.history.length;
             for (let i = 1; i < last; i++) {
-                // if (test2) {
-                //     console.log('=====================================================')
-                //     console.log(location.history[100].date)
-                //     // console.log(reportSummary.stackedChartData.find(elem => { return elem.date === location.history[i].date }))
-                //     test2 = false;
-                //     console.log('=====================================================')
-                // }
-
-                // if (reportSummary.stackedChartData.find(elem => { return elem.date === location.history[i].date }) && location.continent.length > 1) {
-                //     let historyItem = reportSummary.stackedChartData.find(elem => { return elem.date === location.history[i].date })
-                //     console.log('########################################')
-                //     console.log(reportSummary.stackedChartData.find(elem => { return elem.date === location.history[i].date }))
-                //     console.log('########################################')
-                //     switch (location.continent) {
-                //         case 'North America':
-                //             historyItem.northAmerica += historyItem.northAmerica;
-                //             break;
-                //         case 'South America':
-                //             historyItem.southAmerica += historyItem.southAmerica;
-                //             break;
-                //         case 'Asia':
-                //             historyItem.asia += historyItem.asia;
-                //             break;
-                //         case 'Europe':
-                //             historyItem.asia += historyItem.asia;
-                //             break;
-                //         case 'Oceania':
-                //             historyItem.oceania += historyItem.oceania;
-                //             break;
-                //         case 'Africa':
-                //             historyItem.africa += historyItem.africa;
-                //     }
-
-                //     // historyItem[location.continent] += historyItem[location.continent] + location.history[i].deat
-                // } 
-                // else if (location.continent.length > 1) {
-                //     let newItem: StackedChartData = {date: location.history[i].date, northAmerica: 0, southAmerica: 0, asia: 0, europe: 0, oceania: 0, africa: 0}
-                //     switch (location.continent) {
-                //         case 'North America':
-                //             newItem.northAmerica += newItem.northAmerica;
-                //             break;
-                //         case 'South America':
-                //             newItem.southAmerica += newItem.southAmerica;
-                //             break;
-                //         case 'Asia':
-                //             newItem.asia += newItem.asia;
-                //             break;
-                //         case 'Europe':
-                //             newItem.europe += newItem.europe;
-                //             break;
-                //         case 'Oceania':
-                //             newItem.oceania += newItem.oceania;
-                //             break;
-                //         case 'Africa':
-                //             newItem.africa += newItem.africa;
-                //     }
-                //     reportSummary.stackedChartData.push(newItem)
-                // }
                 // calculating daily stats by checking changes from previous day in the history
                 let previous = location.history[i - 1];
                 location.history[i].dailyDeaths = location.history[i].totalDeaths - previous.totalDeaths;
@@ -387,15 +321,8 @@ export class DataService {
                 location.history = location.history.splice(8);
                 locations.push(location);
 
-                // if (location.country === 'Germany') {
-                //     canLocations2.push(location);
-                // }
-                // console.log('skip ' + location.id + ' ' + stats.totalDeaths  + ' ' + stats.totalInfections);
             }
         }
-        // console.log('################################################')
-        // console.log(reportSummary.stackedChartData)
-        // console.log('################################################')
         return locations;
     }
 

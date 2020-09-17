@@ -261,7 +261,7 @@ export class AppView extends React.Component<any, AppState> {
                                   <span>Total Cases</span>
                                 </div>
                               </div>
-                               <StackedChart data={DataService.aggregateContinents(this.state.countriesStats)} state={this.state}/>
+                               <StackedChart data={this.state.stackedChartData} state={this.state}/>
                             </div>
                         </div>
                     }
@@ -357,6 +357,7 @@ export class AppView extends React.Component<any, AppState> {
             let last = outbreak.countries[0].history.length - 1;
             this.setState({
                 countriesStats: outbreak.countries,
+                stackedChartData: outbreak.stackedChartData,
                 dataIndexMin: 0,
                 dataIndexMax: last,
                 currentIndex: last,
