@@ -51,7 +51,7 @@ export class StackedChart extends React.Component<any, any> {
         {/* </BarChart> */}
 
         <BarChart
-          data={data} // replace with WHO data
+          data={data} // replace with parsed data
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="0 0" stroke="rgba(29,140,248,0.25)" strokeWidth="0.5"/>

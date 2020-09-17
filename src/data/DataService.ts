@@ -59,6 +59,8 @@ export class DataService {
                 }
             }
         }
+
+        console.log(continentToCountryMap);
         // let continentStats = {
         //     "North America": {},
         //     "South America": {},
