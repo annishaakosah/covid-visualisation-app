@@ -1,7 +1,7 @@
 import { TimeUtils } from './TimeUtils';
 import { Point } from 'igniteui-react-core';
 import { IgrShapefileRecord } from 'igniteui-react-core';
-import geoData from './../data/custom.geoM.json';
+import customGeoM from './../data/custom.geoM.json';
 
 export enum DataType {
     Infections = 'confirmed_global',
@@ -35,51 +35,69 @@ export class DataService {
         weeklyRecoveries: "Weekly Recoveries",
     }
 
-    public static aggregateGeoCovidData(allCountries: OutbreakLocation[]) {
-        // console.log(allCountries);
-        // console.log('GeoData==============================');
-        // console.log(geoData.features[0]);
-        // console.log('GeoData==============================');
-        // console.log('Country==============================');
-        // console.log(allCountries[0]);
-        // console.log('Country==============================');
-
-        // for (const country of geoData.features){
-        //     console.log(country.properties.name);
-        // }
-        // for (const country of allCountries){
-        //     console.log(country.country);
-        // }
-
-        // for (const country of geoData.features) {
-        //     console.log(country.properties.name);
-        // }
-
-
-        // console.log(geoData.features[0].properties.name);
-        let data = JSON.parse(JSON.stringify(geoData));
-        console.log(geoData.features.length, allCountries.length);
-        for (const country2 of allCountries) {
-            for (const country1 of data.features) {
-                if (country1.properties.name === country2.country || country1.properties.sovereignt === country2.country || country1.properties.subunit === country2.country) {
-                    // country1.properties.push(country2.totalInfections);
-                    country1.properties['totalInfections'] = country2.totalInfections;
-                    // console.log(country1.totalInfections)
-                    // console.log('Addddddddddddddddddddd')
-                    // console.log(country1)
+    public static aggregateGeoCovidData(covidData: OutbreakLocation[]) {
+        let geoData = JSON.parse(JSON.stringify(customGeoM));
+        // let geoData = customGeoM;
+        for (const covidCountry of covidData) {
+            for (const geoCountry of geoData.features) {
+                if (geoCountry.properties.name === covidCountry.country || geoCountry.properties.sovereignt === covidCountry.country || geoCountry.properties.subunit === covidCountry.country) {
+                    geoCountry.properties['history'] = covidCountry.history;
+                    geoCountry.properties['totalInfections'] = covidCountry.totalInfections;
+                    geoCountry.properties['totalDeaths'] = covidCountry.totalDeaths;
                 }
             }
         }
-        console.log('-------------------------------------------------------')
-        console.log(data)
-        console.log('-------------------------------------------------------')
-        return data;
+        return geoData;
     }
 
-    // public static aggregateContinents(allCountries: OutbreakLocation[]) {
+    public static aggregateContinents(covidData: OutbreakLocation[]) {
+        // { name: "Page A", asia: 4000, africa: 2400, europe: 2400 },
+        // 0: "North America"
+        // 1: "South America"
+        // 2: "Asia"
+        // 3: "Africa"
+        // 4: "Europe"
+        // 5: "Oceania"
+        let geoData = this.aggregateGeoCovidData(covidData);
+        let continents: string[] = [];
+        type HistoryItem = {
+            name: string,
+            northAmerica: number,
+            southAmerica: number,
+            asia: number,
+            africa: number,
+            europe: number,
+            oceania: number
+        }
 
-
-    // }
+        let data: HistoryItem[] = [];
+        // console.log(geoData.features[0].)
+        for (const country of geoData.features) {
+            for (const his of country.properties.history) {
+                // if (data.find((elem: HistoryItem) => { return elem.name !== undefined; }) !== undefined) {
+                //     let newElem: HistoryItem = {
+                //         name: his.date,
+                //         northAmerica: 0,
+                //         southAmerica: 0,
+                //         asia: 0,
+                //         africa: 0,
+                //         europe: 0,
+                //         oceania: 0
+                //     }
+                //     // data.push
+                // }
+                console.log(his.date)
+            }
+            // if (country.properties.totalDeaths !== undefined) {
+            //     if (!continents.contains(country.properties.continent)) {
+            //         continents.push(country.properties.continent);
+            //     }
+            // }
+        }
+        console.log('HELLO====================================================');
+        console.log(geoData.features[0].properties.history)
+        console.log('HELLO====================================================');
+    }
 
     public static GetDisplayName(dataColumn: string, usePropStats: boolean): string {
         let name: string = this.dataColumns[dataColumn] || "";

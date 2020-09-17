@@ -108,3 +108,5 @@ export class Tooltip extends React.Component<any, any> {
 
 
 }
+
+export default Tooltip;

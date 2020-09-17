@@ -3,6 +3,7 @@ import './ChoroplethMap.css';
 import L from 'leaflet';
 import statesData from './../data/us-states';
 // import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import Tooltip from './../components/Tooltip';
 import geonet from './../data/custom.geoM.json';
 
 function ChoroplethMap(props) {
@@ -43,9 +44,10 @@ function ChoroplethMap(props) {
         };
 
         info.update = function (props) {
-            this._div.innerHTML = '<h3>Global COVID-19 Density</h3>' + (props ?
-                '<b><h4>' + props.name + '</b><br />' + props.totalInfections + ' cases</h4>'
-                : '<b><b>Hover over a country</b></h4>');
+            // this._div.innerHTML = '<h3>Global COVID-19 Density</h3>' + (props ?
+            //     '<b><h4>' + props.name + '</b><br />' + props.totalInfections + ' cases</h4>'
+            //     : '<b><b>Hover over a country</b></h4>');
+            this._div.innerHTML = <Tooltip>Hello</Tooltip>
         };
 
         info.addTo(map);
