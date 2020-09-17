@@ -347,11 +347,12 @@ export class AppView extends React.Component<any, AppState> {
         console.log('App shapes ' + shapes.length);
 
         DataService.getOutbreakReport(shapes).then(outbreak => {
-
+            // Add pre processing here
             // console.log("App locations: " + outbreak.locations.length);
             console.log("App countries: " + outbreak.countries.length);
             console.log("App history: " + outbreak.countries[0].history.length);
-            console.log(outbreak.countries[0]);
+            console.log(outbreak);
+
 
             let last = outbreak.countries[0].history.length - 1;
             this.setState({
@@ -761,6 +762,7 @@ export class AppView extends React.Component<any, AppState> {
 
             frameInfo: "",
             countriesStats: [],
+            stackedChartData: [],
             countriesSelected: selection,
             highlighted: [],
             usePropStats: usePropStats,

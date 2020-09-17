@@ -1,5 +1,5 @@
 
-import { OutbreakLocation } from "../data/DataService";
+import { OutbreakLocation, StackedChartData } from "../data/DataService";
 import { FlexDirectionProperty } from "csstype";
 
 // tslint:disable-next-line:interface-name
@@ -42,6 +42,7 @@ export interface AppState
     yAxisMinimumValue?: number,
     yAxisMaximumValue?: number,
     countriesStats?: OutbreakLocation[],
+    stackedChartData?: StackedChartData[],
     countriesSelected?: string[],
     highlighted?: string[],
     visualisation?: number
