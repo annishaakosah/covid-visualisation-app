@@ -13,6 +13,7 @@
     display: flex;
     flex-direction: row;
     overflow-y: hidden;
+    outline: none !important;
 }
 
 .app-main {
@@ -102,7 +103,8 @@
     /* overflow-y: hidden; */
     /* overflow-x: hidden; */
     /* background: rgb(241, 160, 160); */
-    height: 100%;
+    /* to offset overflow in tutorial */
+    height: 80%; 
     /* height: calc(100% - 1.5rem); */
     /* width: calc(100% - 0.75rem); */
     padding: 1.2rem;

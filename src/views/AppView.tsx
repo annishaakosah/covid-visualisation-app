@@ -4,6 +4,7 @@ import * as IconPlay from "@material-ui/icons/PlayArrow";
 import * as IconPause from "@material-ui/icons/Pause";
 import * as IconPalette from "@material-ui/icons/Palette";
 import IconButton from '@material-ui/core/IconButton';
+import Tour from 'reactour'
 
 import "../data/Extensions";
 import { Locations } from "../data/Locations";
@@ -21,7 +22,26 @@ import { IgrShapeDataSource, parseBool } from 'igniteui-react-core';
 import ChoroplethMap from './ChoroplethMap';
 import {color} from "@material-ui/system";
 
+const steps = [
+    {
+      selector: '#first-step',
+      content: () => (<div>Welcome to our COVID-19 Dashboard! <br/><br/> To toggle between visualisations, click these icons</div>),
+      style: {
+       outline: 0,
+      },
+    },
+    {
+      selector: '#second-step',
+      content: 'Use these tabs to toggle between different stats. You can look at the total number of cases or the total number of deaths.',
+    },
+    {
+      selector: '#third-step',
+      content: () => (<div>Want to see how COVID data changes over time?<br/><br/>Use this player to see how the stats changes by the day.</div>),
+    },
+  ]
+
 export class AppView extends React.Component<any, AppState> {
+    
 
     public themes: any = {
         dark: {
@@ -140,25 +160,26 @@ export class AppView extends React.Component<any, AppState> {
                 <div className="app-main" style={contentStyle}>
                     <div className="app-toolbar" style={toolbarStyle}>
                         <div className="app-toolbar-title">COVID Dashboard</div>
-
-                        <Tooltip background={tipBackground} color={tipForeground}
-                            message="Index Chart" >
-                            <IconButton onClick={() => this.setVisualisation(1)} style={toggleThemeStyle} edge="start" >
-                                <i className="tim-icons icon-sound-wave" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip background={tipBackground} color={tipForeground}
-                            message="Geo Graph" >
-                            <IconButton onClick={() => this.setVisualisation(2)} style={toggleThemeStyle} edge="start" >
-                                <i className="tim-icons icon-world" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip background={tipBackground} color={tipForeground}
-                            message="Stacked Bar Graph" >
-                            <IconButton onClick={() => this.setVisualisation(3)} style={toggleThemeStyle} edge="start" >
-                                <i className="tim-icons icon-chart-bar-32" />
-                            </IconButton>
-                        </Tooltip>
+                      
+                            <Tooltip background={tipBackground} color={tipForeground}
+                                message="Index Chart" >
+                                <IconButton id="first-step" onClick={() => this.setVisualisation(1)} style={toggleThemeStyle} edge="start" >
+                                    <i className="tim-icons icon-sound-wave" />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip background={tipBackground} color={tipForeground}
+                                message="Geo Graph" >
+                                <IconButton onClick={() => this.setVisualisation(2)} style={toggleThemeStyle} edge="start" >
+                                    <i className="tim-icons icon-world" />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip background={tipBackground} color={tipForeground}
+                                message="Stacked Bar Graph" >
+                                <IconButton onClick={() => this.setVisualisation(3)} style={toggleThemeStyle} edge="start" >
+                                    <i className="tim-icons icon-chart-bar-32" />
+                                </IconButton>
+                            </Tooltip>
+                       
                     </div>
 
                     {this.state.visualisation === 1 &&
@@ -199,7 +220,7 @@ export class AppView extends React.Component<any, AppState> {
 
                             <div className="app-center" style={cardStyle}>
 
-                                <div className="app-button-row" style={tabStyle}>
+                                <div id="second-step" className="app-button-row" style={tabStyle}>
                                     <div className="app-button-tab" style={tdButtonStyle}
                                         onClick={() => this.onClickPlotDeaths()}>
                                         <span>Total Deaths</span>
@@ -266,7 +287,7 @@ export class AppView extends React.Component<any, AppState> {
                         </div>
                     }
 
-                    <div className="app-actionbar" style={footerStyle}>
+                    <div id="third-step" className="app-actionbar" style={footerStyle}>
                         <IconButton onClick={this.onClickStart} style={playStyle} edge="start" >
                             {this.state.updateActive ? <IconPause.default /> : <IconPlay.default />}
                         </IconButton>
@@ -284,6 +305,13 @@ export class AppView extends React.Component<any, AppState> {
                 </div>
                 {/* isLoading={this.state.isLoading} */}
                 <SplashScreen ref={this.onCreatedSplash} />
+                <Tour
+                    steps={steps}
+                    rounded={10}
+                    accentColor={"#1d8cf8"}
+                    isOpen={this.state.isTourOpen}
+                    onRequestClose={() => this.setState({ isTourOpen: false })}
+        />
             </div>
         );
     }
@@ -332,6 +360,7 @@ export class AppView extends React.Component<any, AppState> {
     }
 
     public componentDidMount() {
+        
         window.addEventListener("resize", this.onResize);
 
         const sds = new IgrShapeDataSource();
@@ -361,6 +390,7 @@ export class AppView extends React.Component<any, AppState> {
                 currentIndex: last,
                 updateDate: outbreak.date,
                 isLoading: false,
+                isTourOpen: true,
             }, () => {
                 this.updateRanges(this.state.countriesSelected);
                 this.updateData(last);
@@ -758,6 +788,7 @@ export class AppView extends React.Component<any, AppState> {
             currentIndex: 0,
             currentDate: "",
             isLoading: true,
+            isTourOpen: false,
 
             frameInfo: "",
             countriesStats: [],

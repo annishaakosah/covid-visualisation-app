@@ -26,6 +26,8 @@ export interface AppState
     showIndex?: boolean,
     width?: number,
     isLoading?: boolean,
+    isTourOpen?: boolean,
+
 
     frameInfo?: string,
 
