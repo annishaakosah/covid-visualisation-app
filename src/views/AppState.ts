@@ -19,6 +19,8 @@ export interface AppState
     showLists?: boolean,
     showTotalDeathList?: boolean,
     showTotalInfectionList?: boolean,
+    showDailyDeaths?: boolean,
+    showDailyInfections?: boolean,
     showChart?: boolean,
     showBarGraph?: boolean,
     showMap?: boolean,
@@ -45,6 +47,7 @@ export interface AppState
     yAxisMaximumValue?: number,
     countriesStats?: OutbreakLocation[],
     stackedChartData?: StackedChartData[],
+    stackedDeathChartData?: StackedChartData[],
     countriesSelected?: string[],
     highlighted?: string[],
     visualisation?: number

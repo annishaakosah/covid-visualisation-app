@@ -50,37 +50,6 @@ export class DataService {
         return data;
     }
 
-    public static aggregateContinents(allCountries: OutbreakLocation[]) {
-        let stackedBarData = [];
-        let continentToCountryMap = JSON.parse(JSON.stringify(continentMap));
-        for (const item1 of allCountries) {
-            for (const item2 of continentToCountryMap) {
-                if (item1.country === item2.country) {
-                    item1['continent'] = item2.continent;
-                }
-            }
-        }
-
-        // let continentStats = {
-        //     "North America": {},
-        //     "South America": {},
-        //     "Asia": {},
-        //     "Africa": {},
-        //     "Europe": {},
-        //     "Oceania": {},
-        //     "Antarctica": {}
-        // };
-        // for (const item1 of allCountries) {
-        //     for (const history of item1.history) {
-        //         continentStats[item1['continent']]['date'] = history.date;
-        //         continentStats[item1['continent']]['totalInfections'] = history.totalInfections;
-        //         continentStats[item1['continent']]['totalDeaths'] = history.totalDeaths;
-        //     }
-        // }
-        // console.log(continentStats)
-        return allCountries;
-    }
-
     public static GetDisplayName(dataColumn: string, usePropStats: boolean): string {
         let name: string = this.dataColumns[dataColumn] || "";
         if (usePropStats) {
@@ -261,38 +230,53 @@ export class DataService {
                     origin = i;
                 }
 
-                let isWithinStackedChartData = reportSummary.stackedChartData.find(elem => { return elem.date === location.history[i].date })
+                let isWithinStackedChartData = reportSummary.stackedChartData.find(elem => { return elem.date === location.history[i].date });
                 if (!isWithinStackedChartData && location.continent.length > 1) {
                     let newItem: StackedChartData = { date: location.history[i].date, northAmerica: 0, southAmerica: 0, asia: 0, europe: 0, oceania: 0, africa: 0 };
+                    let newDeathItem: StackedChartData = { date: location.history[i].date, northAmerica: 0, southAmerica: 0, asia: 0, europe: 0, oceania: 0, africa: 0 };
                     if (location.continent.contains('North America')) {
                         newItem.northAmerica += location.history[i].totalInfections;
+                        newDeathItem.northAmerica += location.history[i].totalDeaths;
                     } else if (location.continent.contains('South America')) {
                         newItem.southAmerica += location.history[i].totalInfections;
+                        newDeathItem.southAmerica += location.history[i].totalDeaths;
                     } else if (location.continent.contains('Asia')) {
                         newItem.asia += location.history[i].totalInfections;
+                        newDeathItem.asia += location.history[i].totalDeaths;
                     } else if (location.continent.contains('Europe')) {
                         newItem.europe += location.history[i].totalInfections;
+                        newDeathItem.europe += location.history[i].totalDeaths;
                     } else if (location.continent.contains('Oceania')) {
                         newItem.oceania += location.history[i].totalInfections;
+                        newDeathItem.oceania += location.history[i].totalDeaths;
                     } else if (location.continent.contains('Africa')) {
                         newItem.africa += location.history[i].totalInfections;
+                        newDeathItem.africa += location.history[i].totalDeaths;
                     }
-                    reportSummary.stackedChartData.push(newItem)
+                    reportSummary.stackedChartData.push(newItem);
+                    reportSummary.stackedDeathChartData.push(newDeathItem);
                 } else {
                     // let historyItem: StackedChartData = reportSummary.stackedChartData.find(elem => { if(elem.date === location.history[i].date){return elem;}return undefined });
                     let historyItem: StackedChartData = reportSummary.stackedChartData.find(elem => { if (elem.date === location.history[i].date) { return elem; } return undefined });
+                    let historyDeathItem: StackedChartData = reportSummary.stackedDeathChartData.find(elem => { if (elem.date === location.history[i].date) { return elem; } return undefined });
                     if (location.continent.contains('North America')) {
                         historyItem.northAmerica += location.history[i].totalInfections;
+                        historyDeathItem.northAmerica += location.history[i].totalDeaths;
                     } else if (location.continent.contains('South America')) {
                         historyItem.southAmerica += location.history[i].totalInfections;
+                        historyDeathItem.southAmerica += location.history[i].totalDeaths;
                     } else if (location.continent.contains('Asia')) {
                         historyItem.asia += location.history[i].totalInfections;
+                        historyDeathItem.asia += location.history[i].totalDeaths;
                     } else if (location.continent.contains('Europe')) {
                         historyItem.europe += location.history[i].totalInfections;
+                        historyDeathItem.europe += location.history[i].totalDeaths;
                     } else if (location.continent.contains('Oceania')) {
                         historyItem.oceania += location.history[i].totalInfections;
+                        historyDeathItem.oceania += location.history[i].totalDeaths;
                     } else if (location.continent.contains('Africa')) {
                         historyItem.africa += location.history[i].totalInfections;
+                        historyDeathItem.africa += location.history[i].totalDeaths;
                     }
                 }
             }
@@ -818,6 +802,7 @@ export class OutbreakReport {
     public regions: OutbreakLocation[];
     public countries: OutbreakLocation[];
     public stackedChartData: StackedChartData[];
+    public stackedDeathChartData: StackedChartData[];
     public locations: OutbreakLocation[];
     public date: string;
 
@@ -827,6 +812,7 @@ export class OutbreakReport {
         this.regions = [];
         this.date = '';
         this.stackedChartData = [];
+        this.stackedDeathChartData = [];
     }
 }
 

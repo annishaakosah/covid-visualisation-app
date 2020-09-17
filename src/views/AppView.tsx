@@ -2,7 +2,6 @@ import * as React from "react";
 
 import * as IconPlay from "@material-ui/icons/PlayArrow";
 import * as IconPause from "@material-ui/icons/Pause";
-import * as IconPalette from "@material-ui/icons/Palette";
 import IconButton from '@material-ui/core/IconButton';
 import Tour from 'reactour'
 
@@ -20,7 +19,6 @@ import { Tooltip } from "../components/Tooltip";
 import { SplashScreen } from "../components/SplashScreen"
 import { IgrShapeDataSource, parseBool } from 'igniteui-react-core';
 import ChoroplethMap from './ChoroplethMap';
-import {color} from "@material-ui/system";
 
 const steps = [
     {
@@ -41,7 +39,7 @@ const steps = [
   ]
 
 export class AppView extends React.Component<any, AppState> {
-    
+
 
     public themes: any = {
         dark: {
@@ -148,19 +146,19 @@ export class AppView extends React.Component<any, AppState> {
 
         let tdButtonStyle = this.state.xAxisMemberPath === "totalDeaths" ? theme.buttonSelected : theme.buttonNormal;
         let tiButtonStyle = this.state.xAxisMemberPath === "totalInfections" ? theme.buttonSelected : theme.buttonNormal;
+        let ddButtonStyle = this.state.showDailyDeaths ? theme.buttonSelected : theme.buttonNormal;
+        let diButtonStyle = this.state.showDailyInfections ? theme.buttonSelected : theme.buttonNormal;
 
         let tabStyle = {} as React.CSSProperties;
         tabStyle.display = (this.state.showChart || this.state.showMap) ? "flex" : "none";
 
         let tipBackground = theme.tooltip.background;
         let tipForeground = theme.tooltip.color;
-
         return (
             <div className="app-root" >
                 <div className="app-main" style={contentStyle}>
                     <div className="app-toolbar" style={toolbarStyle}>
                         <div className="app-toolbar-title">COVID Dashboard</div>
-                      
                             <Tooltip background={tipBackground} color={tipForeground}
                                 message="Index Chart" >
                                 <IconButton id="first-step" onClick={() => this.setVisualisation(1)} style={toggleThemeStyle} edge="start" >
@@ -179,7 +177,6 @@ export class AppView extends React.Component<any, AppState> {
                                     <i className="tim-icons icon-chart-bar-32" />
                                 </IconButton>
                             </Tooltip>
-                       
                     </div>
 
                     {this.state.visualisation === 1 &&
@@ -232,7 +229,6 @@ export class AppView extends React.Component<any, AppState> {
                                 </div>
 
                                 <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
-                                    {/* {this.state.showChart && */}
                                     <ChartView ref={this.onCreatedChart}
                                         isVisible={this.state.showChart}
                                         style={theme.list}
@@ -247,7 +243,6 @@ export class AppView extends React.Component<any, AppState> {
                                         yAxisMinimumValue={this.state.yAxisMinimumValue}
                                         yAxisMaximumValue={this.state.yAxisMaximumValue}
                                         updateInterval={this.state.updateInterval} />
-                                    {/* } */}
                                 </div>
                             </div>
                         </div>
@@ -281,8 +276,16 @@ export class AppView extends React.Component<any, AppState> {
                                      onClick={() => this.onClickPlotInfections()}>
                                   <span>Total Cases</span>
                                 </div>
+                                {/*<div className="app-button-tab" style={ddButtonStyle}*/}
+                                {/*     onClick={() => this.onClickPlotDailyDeaths()}>*/}
+                                {/*  <span>Daily Deaths</span>*/}
+                                {/*</div>*/}
+                                {/*<div className="app-button-tab" style={diButtonStyle}*/}
+                                {/*     onClick={() => this.onClickPlotDailyInfections()}>*/}
+                                {/*  <span>Daily Cases</span>*/}
+                                {/*</div>*/}
                               </div>
-                               <StackedChart data={this.state.stackedChartData} state={this.state}/>
+                               <StackedChart data={this.state.xAxisMemberPath === "totalInfections" ? this.state.stackedChartData : this.state.stackedDeathChartData} state={this.state}/>
                             </div>
                         </div>
                     }
@@ -360,7 +363,7 @@ export class AppView extends React.Component<any, AppState> {
     }
 
     public componentDidMount() {
-        
+
         window.addEventListener("resize", this.onResize);
 
         const sds = new IgrShapeDataSource();
@@ -387,6 +390,7 @@ export class AppView extends React.Component<any, AppState> {
             this.setState({
                 countriesStats: outbreak.countries,
                 stackedChartData: outbreak.stackedChartData,
+                stackedDeathChartData: outbreak.stackedDeathChartData,
                 dataIndexMin: 0,
                 dataIndexMax: last,
                 currentIndex: last,
@@ -444,7 +448,9 @@ export class AppView extends React.Component<any, AppState> {
             xAxisMemberPath: "totalDeaths",
             bubbleMemberPath: "totalDeaths",
             showTotalInfectionList: false,
-            showTotalDeathList: true
+            showTotalDeathList: true,
+            showDailyDeaths: false,
+            showDailyInfections: false
         },
             this.updateColumns);
     }
@@ -454,9 +460,29 @@ export class AppView extends React.Component<any, AppState> {
             xAxisMemberPath: "totalInfections",
             bubbleMemberPath: "totalInfections",
             showTotalDeathList: false,
-            showTotalInfectionList: true
+            showTotalInfectionList: true,
+            showDailyDeaths: false,
+            showDailyInfections: false
         },
             this.updateColumns);
+    }
+
+    public onClickPlotDailyDeaths() {
+        this.setState({
+            showTotalDeathList: false,
+            showTotalInfectionList: false,
+            showDailyDeaths: true,
+            showDailyInfections: false
+        }, this.updateColumns);
+    }
+
+    public onClickPlotDailyInfections() {
+        this.setState({
+            showTotalDeathList: false,
+            showTotalInfectionList: false,
+            showDailyDeaths: false,
+            showDailyInfections: true
+        }, this.updateColumns);
     }
 
     public onClickPlotXAxis(memberPath: string) {
