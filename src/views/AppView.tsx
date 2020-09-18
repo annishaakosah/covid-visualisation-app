@@ -427,6 +427,8 @@ export class AppView extends React.Component<any, AppState> {
                 countriesStats: outbreak.countries,
                 stackedChartData: outbreak.stackedChartData,
                 stackedDeathChartData: outbreak.stackedDeathChartData,
+                stackedDailyChartData: outbreak.stackedDailyChartData,
+                stackedDailyDeathChartData: outbreak.stackedDailyDeathChartData,
                 dataIndexMin: 0,
                 dataIndexMax: last,
                 currentIndex: last,

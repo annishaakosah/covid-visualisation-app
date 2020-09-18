@@ -49,6 +49,8 @@ export interface AppState
     countriesStats?: OutbreakLocation[],
     stackedChartData?: StackedChartData[],
     stackedDeathChartData?: StackedChartData[],
+    stackedDailyChartData?: StackedChartData[],
+    stackedDailyDeathChartData?: StackedChartData[],
     countriesSelected?: string[],
     highlighted?: string[],
     visualisation?: number
