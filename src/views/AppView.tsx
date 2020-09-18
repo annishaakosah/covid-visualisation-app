@@ -70,6 +70,7 @@ export class AppView extends React.Component<any, AppState> {
     public lists: ListView[] = [];
     public listInfections: ListView;
     public listDeaths: ListView;
+    public listRecoveries: ListView;
     public listsUpdating = false;
     public splashScreen: SplashScreen;
 
@@ -86,6 +87,7 @@ export class AppView extends React.Component<any, AppState> {
         this.onCreatedListView = this.onCreatedListView.bind(this);
         this.onCreatedListViewInfections = this.onCreatedListViewInfections.bind(this);
         this.onCreatedListViewDeaths = this.onCreatedListViewDeaths.bind(this);
+        this.onCreatedListViewRecoveries = this.onCreatedListViewRecoveries.bind(this);
         this.onCreatedSplash = this.onCreatedSplash.bind(this);
 
         this.onResize = this.onResize.bind(this);
@@ -94,6 +96,7 @@ export class AppView extends React.Component<any, AppState> {
         this.onCountrySelected = this.onCountrySelected.bind(this);
         this.onSelectedListInfections = this.onSelectedListInfections.bind(this);
         this.onSelectedListDeaths = this.onSelectedListDeaths.bind(this);
+        this.onSelectedListRecoveries = this.onSelectedListRecoveries.bind(this);
 
         this.onClickTogglePropStats = this.onClickTogglePropStats.bind(this);
 
@@ -102,6 +105,7 @@ export class AppView extends React.Component<any, AppState> {
 
         this.onClickPlotInfections = this.onClickPlotInfections.bind(this);
         this.onClickPlotDeaths = this.onClickPlotDeaths.bind(this);
+        this.onClickPlotRecoveries = this.onClickPlotRecoveries.bind(this);
 
         this.updateQuery = this.updateQuery.bind(this);
 
@@ -144,8 +148,9 @@ export class AppView extends React.Component<any, AppState> {
         let cardStyle = { color: theme.card.color, background: theme.card.background } as React.CSSProperties;
         let footerStyle = { color: theme.primary.color, background: "transparent" } as React.CSSProperties;
 
-        let tdButtonStyle = this.state.xAxisMemberPath === "totalDeaths" ? theme.buttonSelected : theme.buttonNormal;
-        let tiButtonStyle = this.state.xAxisMemberPath === "totalInfections" ? theme.buttonSelected : theme.buttonNormal;
+        let tdButtonStyle = this.state.showTotalDeathList ? theme.buttonSelected : theme.buttonNormal;
+        let tiButtonStyle = this.state.showTotalInfectionList ? theme.buttonSelected : theme.buttonNormal;
+        let trButtonStyle = this.state.showTotalRecoveries ? theme.buttonSelected : theme.buttonNormal;
         let ddButtonStyle = this.state.showDailyDeaths ? theme.buttonSelected : theme.buttonNormal;
         let diButtonStyle = this.state.showDailyInfections ? theme.buttonSelected : theme.buttonNormal;
 
@@ -215,6 +220,23 @@ export class AppView extends React.Component<any, AppState> {
                                     style={theme.list} />
                             }
 
+                            {this.state.showLists && this.state.showTotalRecoveries &&
+                            <ListView
+                              valuePropertyPath="totalRecoveries"
+                              indexPropertyPath="indexRecoveries"
+                              imagePropertyPath="flag"
+                              codePropertyPath="iso"
+                              namePropertyPath="country"
+                              showCodes={this.state.showCodes}
+                              showIndex={this.state.showIndex}
+                              usePropStats={this.state.usePropStats}
+                              selectedItemKeys={this.state.countriesSelected}
+                              ref={this.onCreatedListViewRecoveries}
+                              onSelected={this.onSelectedListRecoveries}
+                              theme={theme}
+                              style={theme.list} />
+                            }
+
                             <div className="app-center" style={cardStyle}>
 
                                 <div id="second-step" className="app-button-row" style={tabStyle}>
@@ -226,6 +248,10 @@ export class AppView extends React.Component<any, AppState> {
                                         onClick={() => this.onClickPlotInfections()}>
                                         <span>Total Cases</span>
                                     </div>
+                                  <div className="app-button-tab" style={trButtonStyle}
+                                       onClick={() => this.onClickPlotRecoveries()}>
+                                    <span>Total Recoveries</span>
+                                  </div>
                                 </div>
 
                                 <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
@@ -290,21 +316,23 @@ export class AppView extends React.Component<any, AppState> {
                         </div>
                     }
 
-                    <div id="third-step" className="app-actionbar" style={footerStyle}>
-                        <IconButton onClick={this.onClickStart} style={playStyle} edge="start" >
-                            {this.state.updateActive ? <IconPause.default /> : <IconPlay.default />}
-                        </IconButton>
+                    {(this.state.visualisation === 1 || this.state.visualisation === 2) &&
+                        <div id="third-step" className="app-actionbar" style={footerStyle}>
+                          <IconButton onClick={this.onClickStart} style={playStyle} edge="start">
+                              {this.state.updateActive ? <IconPause.default/> : <IconPlay.default/>}
+                          </IconButton>
 
-                        <Slider
+                          <Slider
                             min={this.state.dataIndexMin}
                             max={this.state.dataIndexMax}
                             value={this.state.currentIndex}
                             width="100%" theme={this.state.theme}
-                            onChange={this.onSliderChangeIndex} />
+                            onChange={this.onSliderChangeIndex}/>
 
-                        <div className="app-actionbar-date" style={theme.sourceInfo}>{this.state.currentDate}</div>
+                          <div className="app-actionbar-date" style={theme.sourceInfo}>{this.state.currentDate}</div>
 
-                    </div>
+                        </div>
+                    }
                 </div>
                 {/* isLoading={this.state.isLoading} */}
                 <SplashScreen ref={this.onCreatedSplash} />
@@ -334,6 +362,10 @@ export class AppView extends React.Component<any, AppState> {
     public onCreatedListViewDeaths(listView: ListView) {
         // this.lists.push(listView);
         this.listDeaths = listView;
+    }
+    public onCreatedListViewRecoveries(listView: ListView) {
+        // this.lists.push(listView);
+        this.listRecoveries = listView;
     }
 
     public onCreatedListView(listView: ListView) {
@@ -449,6 +481,7 @@ export class AppView extends React.Component<any, AppState> {
             bubbleMemberPath: "totalDeaths",
             showTotalInfectionList: false,
             showTotalDeathList: true,
+            showTotalRecoveries: false,
             showDailyDeaths: false,
             showDailyInfections: false
         },
@@ -461,16 +494,31 @@ export class AppView extends React.Component<any, AppState> {
             bubbleMemberPath: "totalInfections",
             showTotalDeathList: false,
             showTotalInfectionList: true,
+            showTotalRecoveries: false,
             showDailyDeaths: false,
             showDailyInfections: false
         },
             this.updateColumns);
     }
 
+    public onClickPlotRecoveries() {
+        this.setState({
+            yAxisMemberPath: "weeklyRecoveries",
+            xAxisMemberPath: "totalRecoveries",
+            bubbleMemberPath: "totalRecoveries",
+            showTotalDeathList: false,
+            showTotalInfectionList: false,
+            showTotalRecoveries: true,
+            showDailyDeaths: false,
+            showDailyInfections: false
+        }, this.updateColumns);
+    }
+
     public onClickPlotDailyDeaths() {
         this.setState({
             showTotalDeathList: false,
             showTotalInfectionList: false,
+            showTotalRecoveries: false,
             showDailyDeaths: true,
             showDailyInfections: false
         }, this.updateColumns);
@@ -480,6 +528,7 @@ export class AppView extends React.Component<any, AppState> {
         this.setState({
             showTotalDeathList: false,
             showTotalInfectionList: false,
+            showTotalRecoveries: false,
             showDailyDeaths: false,
             showDailyInfections: true
         }, this.updateColumns);
@@ -537,6 +586,7 @@ export class AppView extends React.Component<any, AppState> {
             () => {
                 this.listInfections.selectData(newSelection);
                 this.listDeaths.selectData(newSelection);
+                this.listRecoveries.selectData(newSelection);
                 // this.refreshLists(newSelection)
                 this.updateData();
             });
@@ -570,6 +620,20 @@ export class AppView extends React.Component<any, AppState> {
             });
     }
 
+    public onSelectedListRecoveries(s: ListView, items: string[]) {
+        if (this.state.updateActive) { return; }
+        if (this.listsUpdating) { return; }
+
+        this.listsUpdating = true;
+        console.log("App SelectedList " + items.join(' '));
+        this.setState({ countriesSelected: items, },
+            () => {
+                this.listRecoveries.selectData(items);
+                this.updateRanges(items);
+                this.updateData();
+            });
+    }
+
     public updateRanges(selectedCountries: string[], usePropStats?: boolean) {
 
         if (usePropStats === undefined || usePropStats === null) {
@@ -582,11 +646,15 @@ export class AppView extends React.Component<any, AppState> {
         let maxTotalInfections = Number.MIN_VALUE;
         let minTotalDeaths = Number.MAX_VALUE;
         let maxTotalDeaths = Number.MIN_VALUE;
+        let minTotalRecoveries = Number.MAX_VALUE;
+        let maxTotalRecoveries = Number.MIN_VALUE;
 
         let minWeekInfections = Number.MAX_VALUE;
         let maxWeekInfections = Number.MIN_VALUE;
         let minWeekDeaths = Number.MAX_VALUE;
         let maxWeekDeaths = Number.MIN_VALUE;
+        let minWeekRecoveries = Number.MAX_VALUE;
+        let maxWeekRecoveries = Number.MIN_VALUE;
 
         for (let outbreak of this.state.countriesStats) {
 
@@ -603,11 +671,15 @@ export class AppView extends React.Component<any, AppState> {
                     maxWeekInfections = Math.max(maxWeekInfections, outbreak.history[i].weeklyInfections / scale);
                     minWeekDeaths = Math.min(minWeekDeaths, outbreak.history[i].weeklyDeaths / scale);
                     maxWeekDeaths = Math.max(maxWeekDeaths, outbreak.history[i].weeklyDeaths / scale);
+                    minWeekRecoveries = Math.min(minWeekRecoveries, outbreak.history[i].weeklyRecoveries / scale);
+                    maxWeekRecoveries = Math.max(maxWeekRecoveries, outbreak.history[i].weeklyRecoveries / scale);
 
                     minTotalInfections = Math.min(minTotalInfections, outbreak.history[i].totalInfections / scale);
                     maxTotalInfections = Math.max(maxTotalInfections, outbreak.history[i].totalInfections / scale);
                     minTotalDeaths = Math.min(minTotalDeaths, outbreak.history[i].totalDeaths / scale);
                     maxTotalDeaths = Math.max(maxTotalDeaths, outbreak.history[i].totalDeaths / scale);
+                    minTotalRecoveries = Math.min(minTotalRecoveries, outbreak.history[i].totalRecoveries / scale);
+                    maxTotalRecoveries = Math.max(maxTotalRecoveries, outbreak.history[i].totalRecoveries / scale);
                 }
             }
         }
@@ -618,6 +690,9 @@ export class AppView extends React.Component<any, AppState> {
         if (this.state.xAxisMemberPath === "totalInfections") {
             xAxisRange = ChartAxisRange.calculate(minTotalInfections, maxTotalInfections, false);
             yAxisRange = ChartAxisRange.calculate(minWeekInfections, maxWeekInfections, false);
+        } else if (this.state.xAxisMemberPath === "totalRecoveries") {
+            xAxisRange = ChartAxisRange.calculate(minTotalRecoveries, maxTotalRecoveries, false);
+            yAxisRange = ChartAxisRange.calculate(minWeekRecoveries, maxWeekRecoveries, false);
         } else {
             xAxisRange = ChartAxisRange.calculate(minTotalDeaths, maxTotalDeaths, false);
             yAxisRange = ChartAxisRange.calculate(minWeekDeaths, maxWeekDeaths, false);
@@ -649,6 +724,9 @@ export class AppView extends React.Component<any, AppState> {
         if (this.state.xAxisMemberPath === "totalInfections") {
             thresholdProp = "totalInfections";
             thresholdValue = usePropStats ? 1 : 1;
+        } else if (this.state.xAxisMemberPath === "totalRecoveries") {
+            thresholdProp = "totalRecoveries";
+            thresholdValue = usePropStats ? 1 : 1;
         } else {
             thresholdProp = "totalDeaths";
             thresholdValue = usePropStats ? 1 : 1;
@@ -679,9 +757,11 @@ export class AppView extends React.Component<any, AppState> {
                 if (usePropStats) {
                     outbreak.weeklyDeaths = Math.max(0.11, outbreak.weeklyDeaths);
                     outbreak.weeklyInfections = Math.max(0.11, outbreak.weeklyInfections);
+                    outbreak.weeklyRecoveries = Math.max(0.11, outbreak.weeklyRecoveries);
                 } else {
                     outbreak.weeklyDeaths = Math.max(1, outbreak.weeklyDeaths);
                     outbreak.weeklyInfections = Math.max(1, outbreak.weeklyInfections);
+                    outbreak.weeklyRecoveries = Math.max(1, outbreak.weeklyRecoveries);
                 }
 
                 outbreak.date = outbreak.history[index].date;
@@ -714,9 +794,11 @@ export class AppView extends React.Component<any, AppState> {
                         if (usePropStats) {
                             stats.weeklyDeaths = Math.max(0.11, stats.weeklyDeaths);
                             stats.weeklyInfections = Math.max(0.11, stats.weeklyInfections);
+                            stats.weeklyRecoveries = Math.max(0.11, stats.weeklyRecoveries);
                         } else {
                             stats.weeklyDeaths = Math.max(1, stats.weeklyDeaths);
                             stats.weeklyInfections = Math.max(1, stats.weeklyInfections);
+                            stats.weeklyRecoveries = Math.max(1, stats.weeklyRecoveries);
                         }
                         outbreak.progress.push(stats);
                     }
@@ -753,6 +835,9 @@ export class AppView extends React.Component<any, AppState> {
         if (this.listInfections) {
             this.listInfections.selectData(newItems);
         }
+        if (this.listRecoveries) {
+            this.listRecoveries.selectData(newItems);
+        }
     }
 
     public refreshAll() {
@@ -766,7 +851,9 @@ export class AppView extends React.Component<any, AppState> {
         if (this.listInfections) {
             this.listInfections.updateData(this.state.countriesStats, this.state.countriesSelected);
         }
-
+        if (this.listRecoveries) {
+            this.listRecoveries.updateData(this.state.countriesStats, this.state.countriesSelected);
+        }
         this.listsUpdating = false;
 
         if (!this.state.updateActive) {
@@ -796,9 +883,7 @@ export class AppView extends React.Component<any, AppState> {
         let yAxisMemberPath = xAxisMemberPath === "totalDeaths" ? "weeklyDeaths" : "weeklyInfections";
         let showTotalInfectionList = xAxisMemberPath === "totalInfections";
         let showTotalDeathList = xAxisMemberPath !== "totalInfections";
-        console.log("xAxisMemberPath: " + xAxisMemberPath);
-        console.log("showTotalInfectionList: " + showTotalInfectionList);
-        console.log("showTotalDeathList: " + showTotalDeathList);
+        let showTotalRecoveryList = false;
 
         let selection = ["USA", "RUS", "GBR", "ITA", "KOR", "CHN"];
         if (parameters.items !== undefined) {
@@ -830,6 +915,7 @@ export class AppView extends React.Component<any, AppState> {
             showLists: showLists,
             showTotalInfectionList: showTotalInfectionList,
             showTotalDeathList: showTotalDeathList,
+            showTotalRecoveries: showTotalRecoveryList,
             showCodes: true,
             showIndex: false,
             width: 0,

@@ -42,6 +42,7 @@ export class ChartView extends React.Component<any, AppState> {
 
             infections: { color: "#1d8cf8", fill: "#262a3c" },
             deaths:     { color: "#FF3D60", fill: "#262a3c" },
+            recoveries: { color: "#4CAF50", fill: "#262a3c" },
 
             // primary:    { color: "white", background: "#131416" },
             // infections: { color: "#8B80FF", background: "#222327", borderBottom: "1px solid #222327" },
@@ -262,6 +263,9 @@ export class ChartView extends React.Component<any, AppState> {
         if (xAxisMemberPath === "totalInfections") {
             this.markerSeries.markerTemplate = this.getMarker(theme.infections, false);
             this.highlightSeries.brush = theme.infections.color;
+        } else if (xAxisMemberPath === "totalRecoveries") {
+            this.markerSeries.markerTemplate = this.getMarker(theme.recoveries, false);
+            this.highlightSeries.brush = theme.recoveries.color;
         } else {
             this.markerSeries.markerTemplate = this.getMarker(theme.deaths, false);
             this.highlightSeries.brush = theme.deaths.color;
@@ -491,6 +495,6 @@ export class ChartView extends React.Component<any, AppState> {
             }
         }
     }
-    
+
 
 }

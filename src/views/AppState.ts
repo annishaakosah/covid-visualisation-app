@@ -19,6 +19,7 @@ export interface AppState
     showLists?: boolean,
     showTotalDeathList?: boolean,
     showTotalInfectionList?: boolean,
+    showTotalRecoveries?: boolean,
     showDailyDeaths?: boolean,
     showDailyInfections?: boolean,
     showChart?: boolean,
