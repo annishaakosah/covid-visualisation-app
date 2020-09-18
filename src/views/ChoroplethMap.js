@@ -54,12 +54,18 @@ function ChoroplethMap(props) {
                 d > 10000 ? '#0A77EB' :
                   d > 100 ? '#9DCAFB' :
                     '#C4E0FD';
-          } else {
+          } else if (props.state.xAxisMemberPath === "totalDeaths") {
             return d > 300000 ? '#B80022' :
               d > 50000 ? '#F5002D' :
                 d > 10000 ? '#FF3358' :
                   d > 100 ? '#FF859B' :
                     '#FFC2CD';
+          } else {
+            return d > 300000 ? '#2C632E' :
+              d > 50000 ? '#3E8E42' :
+                d > 10000 ? '#55B45A' :
+                  d > 100 ? '#7FC783' :
+                    '#AADAAC';
           }
         };
 
