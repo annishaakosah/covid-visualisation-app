@@ -803,6 +803,8 @@ export class OutbreakReport {
     public countries: OutbreakLocation[];
     public stackedChartData: StackedChartData[];
     public stackedDeathChartData: StackedChartData[];
+    public stackedDailyChartData: StackedChartData[];
+    public stackedDailyDeathChartData: StackedChartData[];
     public locations: OutbreakLocation[];
     public date: string;
 
