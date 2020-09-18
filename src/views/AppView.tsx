@@ -248,10 +248,10 @@ export class AppView extends React.Component<any, AppState> {
                                         onClick={() => this.onClickPlotInfections()}>
                                         <span>Total Cases</span>
                                     </div>
-                                  <div className="app-button-tab" style={trButtonStyle}
-                                       onClick={() => this.onClickPlotRecoveries()}>
-                                    <span>Total Recoveries</span>
-                                  </div>
+                                    <div className="app-button-tab" style={trButtonStyle}
+                                         onClick={() => this.onClickPlotRecoveries()}>
+                                         <span>Total Recoveries</span>
+                                    </div>
                                 </div>
 
                                 <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
@@ -285,6 +285,10 @@ export class AppView extends React.Component<any, AppState> {
                                  onClick={() => this.onClickPlotInfections()}>
                               <span>Total Cases</span>
                             </div>
+                            <div className="app-button-tab" style={trButtonStyle}
+                                 onClick={() => this.onClickPlotRecoveries()}>
+                                 <span>Total Recoveries</span>
+                            </div>
                           </div>
                           <ChoroplethMap data={DataService.aggregateGeoCovidData(this.state.countriesStats)} state={this.state}/>
                         </div>
@@ -302,14 +306,14 @@ export class AppView extends React.Component<any, AppState> {
                                      onClick={() => this.onClickPlotInfections()}>
                                   <span>Total Cases</span>
                                 </div>
-                                {/*<div className="app-button-tab" style={ddButtonStyle}*/}
-                                {/*     onClick={() => this.onClickPlotDailyDeaths()}>*/}
-                                {/*  <span>Daily Deaths</span>*/}
-                                {/*</div>*/}
-                                {/*<div className="app-button-tab" style={diButtonStyle}*/}
-                                {/*     onClick={() => this.onClickPlotDailyInfections()}>*/}
-                                {/*  <span>Daily Cases</span>*/}
-                                {/*</div>*/}
+                                <div className="app-button-tab" style={ddButtonStyle}
+                                     onClick={() => this.onClickPlotDailyDeaths()}>
+                                  <span>Daily Deaths</span>
+                                </div>
+                                <div className="app-button-tab" style={diButtonStyle}
+                                     onClick={() => this.onClickPlotDailyInfections()}>
+                                  <span>Daily Cases</span>
+                                </div>
                               </div>
                                <StackedChart data={this.state.xAxisMemberPath === "totalInfections" ? this.state.stackedChartData : this.state.stackedDeathChartData} state={this.state}/>
                             </div>
@@ -458,6 +462,10 @@ export class AppView extends React.Component<any, AppState> {
                     this.updateQuery();
                     this.refreshAll();
                 });
+        }
+        // StackedBar does not have total recovery data. So show total deaths stats instead on load.
+        else if (v === 3 && this.state.showTotalRecoveries) {
+            this.onClickPlotDeaths();
         }
         this.setState({ visualisation: v }, () => {
             console.log(this.state.visualisation)
