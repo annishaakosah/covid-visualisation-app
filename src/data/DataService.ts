@@ -234,49 +234,79 @@ export class DataService {
                 if (!isWithinStackedChartData && location.continent.length > 1) {
                     let newItem: StackedChartData = { date: location.history[i].date, northAmerica: 0, southAmerica: 0, asia: 0, europe: 0, oceania: 0, africa: 0 };
                     let newDeathItem: StackedChartData = { date: location.history[i].date, northAmerica: 0, southAmerica: 0, asia: 0, europe: 0, oceania: 0, africa: 0 };
+                    let newDailyItem: StackedChartData = { date: location.history[i].date, northAmerica: 0, southAmerica: 0, asia: 0, europe: 0, oceania: 0, africa: 0 };
+                    let newDailyDeathItem: StackedChartData = { date: location.history[i].date, northAmerica: 0, southAmerica: 0, asia: 0, europe: 0, oceania: 0, africa: 0 };
                     if (location.continent.contains('North America')) {
                         newItem.northAmerica += location.history[i].totalInfections;
                         newDeathItem.northAmerica += location.history[i].totalDeaths;
+                        newDailyItem.northAmerica += location.history[i].dailyInfections;
+                        newDailyDeathItem.northAmerica += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('South America')) {
                         newItem.southAmerica += location.history[i].totalInfections;
                         newDeathItem.southAmerica += location.history[i].totalDeaths;
+                        newDailyItem.northAmerica += location.history[i].dailyInfections;
+                        newDailyDeathItem.southAmerica += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('Asia')) {
                         newItem.asia += location.history[i].totalInfections;
                         newDeathItem.asia += location.history[i].totalDeaths;
+                        newDailyItem.asia += location.history[i].dailyInfections;
+                        newDailyDeathItem.asia += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('Europe')) {
                         newItem.europe += location.history[i].totalInfections;
                         newDeathItem.europe += location.history[i].totalDeaths;
+                        newDailyItem.europe += location.history[i].dailyInfections;
+                        newDailyDeathItem.europe += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('Oceania')) {
                         newItem.oceania += location.history[i].totalInfections;
                         newDeathItem.oceania += location.history[i].totalDeaths;
+                        newDailyItem.oceania += location.history[i].dailyInfections;
+                        newDailyDeathItem.oceania += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('Africa')) {
                         newItem.africa += location.history[i].totalInfections;
                         newDeathItem.africa += location.history[i].totalDeaths;
+                        newDailyItem.africa += location.history[i].dailyInfections;
+                        newDailyDeathItem.africa += location.history[i].dailyDeaths;
                     }
                     reportSummary.stackedChartData.push(newItem);
                     reportSummary.stackedDeathChartData.push(newDeathItem);
+                    reportSummary.stackedDailyChartData.push(newDailyItem);
+                    reportSummary.stackedDailyDeathChartData.push(newDailyDeathItem);
                 } else {
                     // let historyItem: StackedChartData = reportSummary.stackedChartData.find(elem => { if(elem.date === location.history[i].date){return elem;}return undefined });
                     let historyItem: StackedChartData = reportSummary.stackedChartData.find(elem => { if (elem.date === location.history[i].date) { return elem; } return undefined });
                     let historyDeathItem: StackedChartData = reportSummary.stackedDeathChartData.find(elem => { if (elem.date === location.history[i].date) { return elem; } return undefined });
+                    let historyDailyItem: StackedChartData = reportSummary.stackedDailyChartData.find(elem => { if (elem.date === location.history[i].date) { return elem; } return undefined });
+                    let historyDailyDeathItem: StackedChartData = reportSummary.stackedDailyDeathChartData.find(elem => { if (elem.date === location.history[i].date) { return elem; } return undefined });
                     if (location.continent.contains('North America')) {
                         historyItem.northAmerica += location.history[i].totalInfections;
                         historyDeathItem.northAmerica += location.history[i].totalDeaths;
+                        historyDailyItem.northAmerica += location.history[i].dailyInfections;
+                        historyDailyDeathItem.northAmerica += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('South America')) {
                         historyItem.southAmerica += location.history[i].totalInfections;
                         historyDeathItem.southAmerica += location.history[i].totalDeaths;
+                        historyDailyItem.southAmerica += location.history[i].dailyInfections;
+                        historyDailyDeathItem.southAmerica += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('Asia')) {
                         historyItem.asia += location.history[i].totalInfections;
                         historyDeathItem.asia += location.history[i].totalDeaths;
+                        historyDailyItem.asia += location.history[i].dailyInfections;
+                        historyDailyDeathItem.asia += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('Europe')) {
                         historyItem.europe += location.history[i].totalInfections;
                         historyDeathItem.europe += location.history[i].totalDeaths;
+                        historyDailyItem.europe += location.history[i].dailyInfections;
+                        historyDailyDeathItem.europe += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('Oceania')) {
                         historyItem.oceania += location.history[i].totalInfections;
                         historyDeathItem.oceania += location.history[i].totalDeaths;
+                        historyDailyItem.oceania += location.history[i].dailyInfections;
+                        historyDailyDeathItem.oceania += location.history[i].dailyDeaths;
                     } else if (location.continent.contains('Africa')) {
                         historyItem.africa += location.history[i].totalInfections;
                         historyDeathItem.africa += location.history[i].totalDeaths;
+                        historyDailyItem.africa += location.history[i].dailyInfections;
+                        historyDailyDeathItem.africa += location.history[i].dailyDeaths;
                     }
                 }
             }
@@ -815,6 +845,8 @@ export class OutbreakReport {
         this.date = '';
         this.stackedChartData = [];
         this.stackedDeathChartData = [];
+        this.stackedDailyChartData = [];
+        this.stackedDailyDeathChartData = [];
     }
 }
 
