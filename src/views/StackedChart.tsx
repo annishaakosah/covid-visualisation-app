@@ -18,8 +18,6 @@ export class StackedChart extends React.Component<any, any> {
     }
 
     public render() {
-
-        console.log(this.props.data)
         return (
             <ResponsiveContainer height={"100%"} maxHeight={"80vh"}>
                 <BarChart
@@ -56,4 +54,4 @@ export class StackedChart extends React.Component<any, any> {
 
 const TIME_FORMAT = 'MMM Do';
 const formatXAxis: TickFormatterFunction = (tickItem: string) =>
-    tickItem.slice(0,-6)
+    tickItem.slice(0, -6)

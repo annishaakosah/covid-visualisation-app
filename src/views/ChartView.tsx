@@ -2,11 +2,6 @@ import * as React from "react";
 
 import {DataService, OutbreakLocation} from "../data/DataService";
 import {AppState} from "./AppState"
-// types of axis:
-// types of scatter series:
-// modules of data chart:
-// additional modules
-// series highlighting/events
 import {
     IgrChartMouseEventArgs,
     IgrDataChart,
@@ -273,15 +268,11 @@ export class ChartView extends React.Component<any, AppState> {
     }
 
     public updateColumns() {
-        // if (this.selectedCountries === undefined ||
-        //     this.selectedCountries.length === 0) { return; }
-
         let xAxisMemberPath = this.props.xAxisMemberPath || "totalInfections";
         let yAxisMemberPath = this.props.yAxisMemberPath || "weeklyInfections";
 
         this.updateMarkers();
 
-        // console.log("Chart updateColumns x=" + xAxisMemberPath + " y=" + yAxisMemberPath);
         this.markerSeries.xMemberPath = xAxisMemberPath;
         this.markerSeries.yMemberPath = yAxisMemberPath;
 
@@ -295,9 +286,6 @@ export class ChartView extends React.Component<any, AppState> {
     }
 
     public updateData(allCountries: OutbreakLocation[], selectedNames: string[], date: string) {
-        // const countries = this.props.countries === undefined ? [] : this.props.countries;
-        // const history = countries === undefined || countries.length === 0 ? [] : countries[0].history;
-
         if (this.chart === undefined) { return; }
 
         if (selectedNames.length > this.historySeriesCount) {
@@ -330,8 +318,6 @@ export class ChartView extends React.Component<any, AppState> {
                 this.historySeries[i].dataSource = [];
             }
         }
-
-        // this.chart.notifyClearItems(history);
     }
 
     public getTooltip(context: any) {
@@ -341,13 +327,7 @@ export class ChartView extends React.Component<any, AppState> {
         const dataItem = dataContext.item as OutbreakLocation;
         if (!dataItem) return null;
 
-        // let seriesBrush = dataContext.series.actualBrush;
-
-        // console.log("getTooltip " + dataItem.country);
-
         let theme = this.themes[this.props.theme || "dark"];
-        // let recoveries = { color: theme.recoveries.color } as React.CSSProperties;
-        // let title = { color: seriesBrush } as React.CSSProperties;
 
         let xDataMember = this.props.xAxisMemberPath || "totalInfections";
         let yDataMember = this.props.yAxisMemberPath || "weeklyInfections";
@@ -382,11 +362,8 @@ export class ChartView extends React.Component<any, AppState> {
         </div>
     }
 
-    public getMarker(style: any, useFlags: boolean): any
-    {
+    public getMarker(style: any, useFlags: boolean): any {
         if (style === undefined) style = { color: "#7D73E6", fill: "white", text: "black" };
-
-        // console.log("Chart getMarker " + style.color + ", useFlags " + useFlags);
 
         const size = 12;
         const radius = size / 2;
@@ -453,45 +430,6 @@ export class ChartView extends React.Component<any, AppState> {
                 ctx.textBaseline = "top";
                 ctx.fillStyle = style.fill;
                 ctx.fillText(name, x + 2, y + 1);
-
-
-                    // if (useFlags) {
-                    //     const image = new Image();
-                    //     image.src = location.flag;
-                    //     // image.onload = () => { };
-                    //     ctx.drawImage(image, x + 10, y, imageW, imageH);
-                    //     // flag border
-                    //     ctx.beginPath();
-                    //     ctx.rect(x + 10, y, imageW, imageH);
-                    //     ctx.lineWidth = 1;
-                    //     ctx.strokeStyle = "#575757";
-                    //     ctx.stroke();
-                    //     ctx.closePath();
-                    //     // leader line
-                    //     ctx.beginPath();
-                    //     ctx.moveTo(x, y);
-                    //     ctx.lineTo(x + 10, y);
-                    //     ctx.lineWidth = 2;
-                    //     ctx.strokeStyle = style.color;
-                    //     ctx.stroke();
-                    //     ctx.closePath();
-                    // } else {
-                    //     ctx.font = '8pt Verdana';
-                    //     ctx.textBaseline = "middle";
-                    //     ctx.fillStyle = style.color;
-                    //     ctx.fillText(name, x + 10, y);
-                    // }
-
-                    // ctx.beginPath();
-                    // ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
-                    // ctx.fillStyle = style.fill;
-                    // ctx.fill();
-                    // ctx.lineWidth = 2;
-                    // ctx.strokeStyle = style.color;
-                    // ctx.stroke();
-                    // ctx.closePath();
-
-                // }
             }
         }
     }
