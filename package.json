@@ -26,6 +26,7 @@
     "@types/react-loadable": "^5.4.2",
     "@types/react-router-dom": "^4.3.1",
     "@types/react-transition-group": "^2.9.2",
+    "@types/reactour": "^1.17.1",
     "@types/recharts": "^1.8.15",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.3",
@@ -46,7 +47,9 @@
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "^4.0.8",
     "react-transition-group": "^4.1.1",
-    "recharts": "^1.8.5"
+    "reactour": "^1.18.0",
+    "recharts": "^1.8.5",
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@types/jest": "^24.0.11",

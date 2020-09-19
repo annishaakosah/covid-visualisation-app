@@ -22,8 +22,6 @@ export class SplashScreen extends React.Component<any, any> {
     public fadeOut() {
         if (this.state.isComplete) { return; }
 
-        console.log('Splash fadeOut');
-
         const splashFade = this.splashFadeRef.current;
         splashFade.classList.toggle('app-splash-fadeOut');
 
@@ -34,11 +32,9 @@ export class SplashScreen extends React.Component<any, any> {
     }
 
     public onFadingStart = () => {
-        console.log('Splash onFadingStart');
     };
 
     public onFadingEnd = () => {
-        console.log('Splash onFadingEnd');
         this.setState({
           isComplete: true,
           displayMode: "none",
@@ -46,10 +42,8 @@ export class SplashScreen extends React.Component<any, any> {
       };
 
     public onProgressStart = () => {
-        console.log('Splash onProgressStart');
     };
     public onProgressEnd = () => {
-        console.log('Splash onProgressEnd');
         this.fadeOut();
     };
 

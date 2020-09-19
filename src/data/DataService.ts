@@ -1,7 +1,8 @@
-import { TimeUtils } from './TimeUtils';
-import { Point } from 'igniteui-react-core';
-import { IgrShapefileRecord } from 'igniteui-react-core';
-import customGeoM from './../data/custom.geoM.json';
+import {TimeUtils} from './TimeUtils';
+import {Point} from 'igniteui-react-core';
+import {IgrShapefileRecord} from 'igniteui-react-core';
+import geoData from './../data/custom.geoM.json';
+import continentMap from './../data/continentsArray.json'
 
 export enum DataType {
     Infections = 'confirmed_global',
@@ -35,68 +36,18 @@ export class DataService {
         weeklyRecoveries: "Weekly Recoveries",
     }
 
-    public static aggregateGeoCovidData(covidData: OutbreakLocation[]) {
-        let geoData = JSON.parse(JSON.stringify(customGeoM));
-        // let geoData = customGeoM;
-        for (const covidCountry of covidData) {
-            for (const geoCountry of geoData.features) {
-                if (geoCountry.properties.name === covidCountry.country || geoCountry.properties.sovereignt === covidCountry.country || geoCountry.properties.subunit === covidCountry.country) {
-                    geoCountry.properties['history'] = covidCountry.history;
-                    geoCountry.properties['totalInfections'] = covidCountry.totalInfections;
-                    geoCountry.properties['totalDeaths'] = covidCountry.totalDeaths;
+    public static aggregateGeoCovidData(allCountries: OutbreakLocation[]) {
+        let data = JSON.parse(JSON.stringify(geoData));
+        for (const country2 of allCountries) {
+            for (const country1 of data.features) {
+                if (country1.properties.name === country2.country || country1.properties.sovereignt === country2.country || country1.properties.subunit === country2.country) {
+                    country2.continent = country1.properties.continent;
+                    country1.properties['totalInfections'] = country2.totalInfections;
+                    country1.properties['totalDeaths'] = country2.totalDeaths;
                 }
             }
         }
-        return geoData;
-    }
-
-    public static aggregateContinents(covidData: OutbreakLocation[]) {
-        // { name: "Page A", asia: 4000, africa: 2400, europe: 2400 },
-        // 0: "North America"
-        // 1: "South America"
-        // 2: "Asia"
-        // 3: "Africa"
-        // 4: "Europe"
-        // 5: "Oceania"
-        let geoData = this.aggregateGeoCovidData(covidData);
-        let continents: string[] = [];
-        type HistoryItem = {
-            name: string,
-            northAmerica: number,
-            southAmerica: number,
-            asia: number,
-            africa: number,
-            europe: number,
-            oceania: number
-        }
-
-        let data: HistoryItem[] = [];
-        // console.log(geoData.features[0].)
-        for (const country of geoData.features) {
-            for (const his of country.properties.history) {
-                // if (data.find((elem: HistoryItem) => { return elem.name !== undefined; }) !== undefined) {
-                //     let newElem: HistoryItem = {
-                //         name: his.date,
-                //         northAmerica: 0,
-                //         southAmerica: 0,
-                //         asia: 0,
-                //         africa: 0,
-                //         europe: 0,
-                //         oceania: 0
-                //     }
-                //     // data.push
-                // }
-                console.log(his.date)
-            }
-            // if (country.properties.totalDeaths !== undefined) {
-            //     if (!continents.contains(country.properties.continent)) {
-            //         continents.push(country.properties.continent);
-            //     }
-            // }
-        }
-        console.log('HELLO====================================================');
-        console.log(geoData.features[0].properties.history)
-        console.log('HELLO====================================================');
+        return data;
     }
 
     public static GetDisplayName(dataColumn: string, usePropStats: boolean): string {
@@ -108,23 +59,22 @@ export class DataService {
     }
 
     public static async getOutbreakReport(shapes: IgrShapefileRecord[]): Promise<OutbreakReport> {
-
+        let reportSummary = new OutbreakReport();
         let locationsWithDeaths: OutbreakLocation[] = [];
         let locationsWithRecoveries: OutbreakLocation[] = [];
         let locationsWithInfections: OutbreakLocation[] = [];
 
         let lastCommit: number;
-        await this.getLatestCommits().then(data => { lastCommit = data; });
-        console.log('CDS lastCommit:  ' + lastCommit);
+        await this.getLatestCommits().then(data => {
+            lastCommit = data;
+        });
 
         // check if we need to fetch or load from storage 3 data sets (deaths, recoveries, infections)
         let loadFromCache = false;
         let lastStorage = parseInt(window.localStorage.getItem('lastStorage'), 10);
-        console.log('CDS lastStorage: ' + lastStorage);
         if (lastStorage && lastCommit && lastStorage >= lastCommit) {
             loadFromCache = true;
         }
-        console.log('CDS loadFromCache: ' + loadFromCache);
 
         // fetching or loading from storage 3 data sets (deaths, recoveries, infections)
         await this.getTimeSeries(DataType.Deaths, loadFromCache).then(data => {
@@ -133,44 +83,27 @@ export class DataService {
         });
         await this.getTimeSeries(DataType.Infections, loadFromCache).then(data => {
             locationsWithInfections = data;
-            console.log('CDS locationsWithInfections: ' + data.length + ' history: ' + data[0].history.length);
         });
         await this.getTimeSeries(DataType.Recoveries, loadFromCache).then(data => {
             locationsWithRecoveries = data;
-            console.log('CDS locationsWithRecoveries: ' + data.length + ' history: ' + data[0].history.length);
         });
 
         if (locationsWithDeaths[0].history.length !== locationsWithInfections[0].history.length ||
             locationsWithDeaths[0].history.length !== locationsWithRecoveries[0].history.length) {
             loadFromCache = false;
-            console.log('CDS re-fetching due to corrupted cache...');
 
             await this.getTimeSeries(DataType.Deaths, loadFromCache).then(data => {
                 locationsWithDeaths = data;
-                console.log('CDS locationsWithDeaths: ' + data.length + ' history: ' + data[0].history.length);
             });
             await this.getTimeSeries(DataType.Infections, loadFromCache).then(data => {
                 locationsWithInfections = data;
-                console.log('CDS locationsWithInfections: ' + data.length + ' history: ' + data[0].history.length);
             });
             await this.getTimeSeries(DataType.Recoveries, loadFromCache).then(data => {
                 locationsWithRecoveries = data;
-                console.log('CDS locationsWithRecoveries: ' + data.length + ' history: ' + data[0].history.length);
             });
         }
 
-        // let datesDeaths = [];
-        // for (const stat of locationsWithDeaths[0].history) {
-        //     datesDeaths.push(stat.date);
-        // }
-        // let datesInfections = [];
-        // for (const stat of locationsWithInfections[0].history) {
-        //     datesInfections.push(stat.date);
-        // }
-        // console.log('CDS : \n' + datesDeaths.join(' '));
-        // console.log('CDS : \n' + datesInfections.join(' '));
-
-        let locations = this.getOutbreakLocations(locationsWithDeaths, locationsWithRecoveries, locationsWithInfections);
+        let locations = this.getOutbreakLocations(locationsWithDeaths, locationsWithRecoveries, locationsWithInfections, reportSummary);
 
         // some countries have several outbreak locations so
         // we are combining multiple locations for most best comparison of countries
@@ -184,22 +117,19 @@ export class DataService {
         lastStorage = new Date().getTime();
         window.localStorage.setItem(`lastStorage`, lastStorage as any);
 
-        let report = new OutbreakReport();
-        report.locations = locations;
-        report.countries = countries;
-        report.date = TimeUtils.getString(new Date(lastCommit), 'MM dd, yyyy');
+        reportSummary.locations = locations;
+        reportSummary.countries = countries;
+        reportSummary.date = TimeUtils.getString(new Date(lastCommit), 'MM dd, yyyy');
         return new Promise<OutbreakReport>((resolve, reject) => {
-            resolve(report);
+            resolve(reportSummary);
         });
     }
 
     public static getOutbreakLocations(
         locationsWithDeaths: OutbreakLocation[],
         locationsWithRecoveries: OutbreakLocation[],
-        locationsWithInfections: OutbreakLocation[]): OutbreakLocation[] {
-
-        console.log('CDS combining stats of locations');
-
+        locationsWithInfections: OutbreakLocation[],
+        reportSummary: OutbreakReport): OutbreakLocation[] {
         const mapLocations: Map<string, OutbreakLocation> = new Map();
         // combining outbreak locations with reported infections
         for (const location of locationsWithInfections) {
@@ -213,7 +143,7 @@ export class DataService {
                     mapLocations.get(location.id).history[ii].totalInfections = location.history[ii].cases;
                 }
             } else {
-                console.log('ERR mismatch Infections ' + location.history.length);
+                // console.log('ERR smismatch Infections ' + location.history.length);
             }
         }
 
@@ -229,7 +159,7 @@ export class DataService {
                     mapLocations.get(location.id).history[ii].totalDeaths = location.history[ii].cases;
                 }
             } else {
-                console.log('ERR mismatch Deaths  ' + last);
+                // console.log('ERR mismatch Deaths  ' + last);
             }
         }
         // combining outbreak locations with reported recoveries
@@ -250,7 +180,6 @@ export class DataService {
 
         let locations: OutbreakLocation[] = [];
         for (const location of mapLocations.values()) {
-
             let origin = 0;
             const last = location.history.length;
             for (let i = 1; i < last; i++) {
@@ -276,7 +205,142 @@ export class DataService {
                     origin === 0) {
                     origin = i;
                 }
+
+                let isWithinStackedChartData = reportSummary.stackedChartData.find(elem => {
+                    return elem.date === location.history[i].date
+                });
+                if (!isWithinStackedChartData && location.continent.length > 1) {
+                    let newItem: StackedChartData = {
+                        date: location.history[i].date,
+                        northAmerica: 0,
+                        southAmerica: 0,
+                        asia: 0,
+                        europe: 0,
+                        oceania: 0,
+                        africa: 0
+                    };
+                    let newDeathItem: StackedChartData = {
+                        date: location.history[i].date,
+                        northAmerica: 0,
+                        southAmerica: 0,
+                        asia: 0,
+                        europe: 0,
+                        oceania: 0,
+                        africa: 0
+                    };
+                    let newDailyItem: StackedChartData = {
+                        date: location.history[i].date,
+                        northAmerica: 0,
+                        southAmerica: 0,
+                        asia: 0,
+                        europe: 0,
+                        oceania: 0,
+                        africa: 0
+                    };
+                    let newDailyDeathItem: StackedChartData = {
+                        date: location.history[i].date,
+                        northAmerica: 0,
+                        southAmerica: 0,
+                        asia: 0,
+                        europe: 0,
+                        oceania: 0,
+                        africa: 0
+                    };
+                    if (location.continent.contains('North America')) {
+                        newItem.northAmerica += location.history[i].totalInfections;
+                        newDeathItem.northAmerica += location.history[i].totalDeaths;
+                        newDailyItem.northAmerica += location.history[i].dailyInfections;
+                        newDailyDeathItem.northAmerica += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('South America')) {
+                        newItem.southAmerica += location.history[i].totalInfections;
+                        newDeathItem.southAmerica += location.history[i].totalDeaths;
+                        newDailyItem.northAmerica += location.history[i].dailyInfections;
+                        newDailyDeathItem.southAmerica += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('Asia')) {
+                        newItem.asia += location.history[i].totalInfections;
+                        newDeathItem.asia += location.history[i].totalDeaths;
+                        newDailyItem.asia += location.history[i].dailyInfections;
+                        newDailyDeathItem.asia += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('Europe')) {
+                        newItem.europe += location.history[i].totalInfections;
+                        newDeathItem.europe += location.history[i].totalDeaths;
+                        newDailyItem.europe += location.history[i].dailyInfections;
+                        newDailyDeathItem.europe += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('Oceania')) {
+                        newItem.oceania += location.history[i].totalInfections;
+                        newDeathItem.oceania += location.history[i].totalDeaths;
+                        newDailyItem.oceania += location.history[i].dailyInfections;
+                        newDailyDeathItem.oceania += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('Africa')) {
+                        newItem.africa += location.history[i].totalInfections;
+                        newDeathItem.africa += location.history[i].totalDeaths;
+                        newDailyItem.africa += location.history[i].dailyInfections;
+                        newDailyDeathItem.africa += location.history[i].dailyDeaths;
+                    }
+                    reportSummary.stackedChartData.push(newItem);
+                    reportSummary.stackedDeathChartData.push(newDeathItem);
+                    reportSummary.stackedDailyChartData.push(newDailyItem);
+                    reportSummary.stackedDailyDeathChartData.push(newDailyDeathItem);
+                } else {
+                    // let historyItem: StackedChartData = reportSummary.stackedChartData.find(elem => { if(elem.date === location.history[i].date){return elem;}return undefined });
+                    let historyItem: StackedChartData = reportSummary.stackedChartData.find(elem => {
+                        if (elem.date === location.history[i].date) {
+                            return elem;
+                        }
+                        return undefined
+                    });
+                    let historyDeathItem: StackedChartData = reportSummary.stackedDeathChartData.find(elem => {
+                        if (elem.date === location.history[i].date) {
+                            return elem;
+                        }
+                        return undefined
+                    });
+                    let historyDailyItem: StackedChartData = reportSummary.stackedDailyChartData.find(elem => {
+                        if (elem.date === location.history[i].date) {
+                            return elem;
+                        }
+                        return undefined
+                    });
+                    let historyDailyDeathItem: StackedChartData = reportSummary.stackedDailyDeathChartData.find(elem => {
+                        if (elem.date === location.history[i].date) {
+                            return elem;
+                        }
+                        return undefined
+                    });
+                    if (location.continent.contains('North America')) {
+                        historyItem.northAmerica += location.history[i].totalInfections;
+                        historyDeathItem.northAmerica += location.history[i].totalDeaths;
+                        historyDailyItem.northAmerica += location.history[i].dailyInfections;
+                        historyDailyDeathItem.northAmerica += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('South America')) {
+                        historyItem.southAmerica += location.history[i].totalInfections;
+                        historyDeathItem.southAmerica += location.history[i].totalDeaths;
+                        historyDailyItem.southAmerica += location.history[i].dailyInfections;
+                        historyDailyDeathItem.southAmerica += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('Asia')) {
+                        historyItem.asia += location.history[i].totalInfections;
+                        historyDeathItem.asia += location.history[i].totalDeaths;
+                        historyDailyItem.asia += location.history[i].dailyInfections;
+                        historyDailyDeathItem.asia += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('Europe')) {
+                        historyItem.europe += location.history[i].totalInfections;
+                        historyDeathItem.europe += location.history[i].totalDeaths;
+                        historyDailyItem.europe += location.history[i].dailyInfections;
+                        historyDailyDeathItem.europe += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('Oceania')) {
+                        historyItem.oceania += location.history[i].totalInfections;
+                        historyDeathItem.oceania += location.history[i].totalDeaths;
+                        historyDailyItem.oceania += location.history[i].dailyInfections;
+                        historyDailyDeathItem.oceania += location.history[i].dailyDeaths;
+                    } else if (location.continent.contains('Africa')) {
+                        historyItem.africa += location.history[i].totalInfections;
+                        historyDeathItem.africa += location.history[i].totalDeaths;
+                        historyDailyItem.africa += location.history[i].dailyInfections;
+                        historyDailyDeathItem.africa += location.history[i].dailyDeaths;
+                    }
+                }
             }
+
 
             for (let i = origin; i >= 0; i--) {
                 location.history[i].weeklyInfections = location.history[i].totalInfections;
@@ -284,7 +348,7 @@ export class DataService {
 
             const stats = location.history[last - 1];
             if (stats === undefined) {
-                console.log('stats undefined');
+                // console.log('stats undefined');
             } else {
                 // } else if (stats.totalInfections > 0) {
 
@@ -301,10 +365,6 @@ export class DataService {
                 location.history = location.history.splice(8);
                 locations.push(location);
 
-                // if (location.country === 'Germany') {
-                //     canLocations2.push(location);
-                // }
-                // console.log('skip ' + location.id + ' ' + stats.totalDeaths  + ' ' + stats.totalInfections);
             }
         }
         return locations;
@@ -314,7 +374,7 @@ export class DataService {
         locations: OutbreakLocation[],
         shapes: IgrShapefileRecord[]): OutbreakLocation[] {
 
-        console.log('CDS combining ' + locations.length + ' locations to ' + shapes.length + ' countries ');
+        // console.log('CDS combining ' + locations.length + ' locations to ' + shapes.length + ' countries ');
 
         // some countries have several outbreak locations so
         // we are combining multiple locations for most best comparison of countries
@@ -402,13 +462,13 @@ export class DataService {
 
         const dataCache = `data-totals-${this.FILE_BASE}${dataSet}`;
         const dataURL = `${this.COVID_URL}/${this.TIME_SERIES}/${this.FILE_BASE}${dataSet}.csv`;
-        console.log(dataURL);
+        // console.log(dataURL);
         let dataCSV = '';
         if (loadFromCache) {
             dataCSV = window.localStorage.getItem(dataCache);
-            console.log('CDS cache ' + dataSet);
+            // console.log('CDS cache ' + dataSet);
         } else {
-            console.log('CDS fetch ' + dataSet);
+            // console.log('CDS fetch ' + dataSet);
             try {
                 const response = await fetch(dataURL);
                 // console.log('fetch response status ' + response.status);
@@ -427,7 +487,9 @@ export class DataService {
 
         const locations: OutbreakLocation[] = [];
         if (dataCSV === null || dataCSV === undefined || dataCSV === '') {
-            return new Promise<OutbreakLocation[]>((resolve, reject) => { resolve(locations); });
+            return new Promise<OutbreakLocation[]>((resolve, reject) => {
+                resolve(locations);
+            });
         }
 
         dataCSV = dataCSV.replace(/, /g, ' - ');
@@ -476,6 +538,12 @@ export class DataService {
             location.latitude = parseInt(columns[2], 10);
             location.longitude = parseInt(columns[3], 10);
             location.id = location.country + '-' + location.province;
+            // country1.properties.n ame === country2.country || country1.properties.sovereignt === country2.country || country1.properties.subunit === country2.country
+            const cntnnt = continentMap.find(item => item.country === location.country);
+            if (cntnnt !== undefined) {
+                location.continent = cntnnt.continent;
+            }
+
 
             // if (this.countries.indexOf(location.country) === -1) {
             //     console.log('skip ' + location.country);
@@ -511,8 +579,12 @@ export class DataService {
 
         }
 
+
         // console.log('CDS total ' + dataSet.replace('_global', '') + ' ' + total);
-        return new Promise<OutbreakLocation[]>((resolve, reject) => { resolve(locations); });
+
+        return new Promise<OutbreakLocation[]>((resolve, reject) => {
+            resolve(locations);
+        });
     }
 
     // NOTE this function provides more detailed stats but is not used at this moment
@@ -525,12 +597,13 @@ export class DataService {
         const fileDate = this.toDateFile(outbreakDate);
         const dataCache = `data-daily-${fileDate}`;
         const dataURL = `${this.COVID_URL}/${this.DAILY_SERIES}/${fileDate}.csv`;
+
         let dataCSV = '';
 
         loadFromCache = false;
         if (loadFromCache) {
             dataCSV = window.localStorage.getItem(dataCache);
-            console.log('fetch storage ' + dataCache);
+            // console.log('fetch storage ' + dataCache);
         } else {
             // console.log('fetch url ' + dataURL);
             try {
@@ -538,14 +611,16 @@ export class DataService {
                 // console.log('fetch response status ' + response.status);
                 dataCSV = await response.text();  // may error if there is no body
             } catch (ex) {
-                console.log('fetch url ex ' + ex);
+                // console.log('fetch url ex ' + ex);
                 // this.loadOfflineData(index, observer);
             }
             // window.localStorage.setItem(dataCache, dataCSV);
         }
 
         if (dataCSV === null || dataCSV === undefined || dataCSV === '') {
-            return new Promise<OutbreakDailyReport>((resolve, reject) => { resolve(report); });
+            return new Promise<OutbreakDailyReport>((resolve, reject) => {
+                resolve(report);
+            });
         }
 
         dataCSV = dataCSV.replace(/, /g, ' - ');
@@ -606,7 +681,9 @@ export class DataService {
 
 
         // console.log('fetch Promise');
-        return new Promise<OutbreakDailyReport>((resolve, reject) => { resolve(report); });
+        return new Promise<OutbreakDailyReport>((resolve, reject) => {
+            resolve(report);
+        });
     }
 
     /**  Retrieves the date when the data source files were last updated. */
@@ -618,27 +695,42 @@ export class DataService {
             // console.log('fetch response status ' + response.status);
             const json = await response.json();  // may error if there is no body
             const date = new Date(json[0].commit.author.date);
-            console.log('CDS fetch LastCommit: \n' + date);
+            // console.log('CDS fetch LastCommit: \n' + date);
             dataLastCommit = date.getTime();
         } catch (ex) {
-            console.log('CDS fetch LastCommit error \n' + ex);
+            // console.log('CDS fetch LastCommit error \n' + ex);
             // this.loadOfflineData(index, observer);
         }
-        return new Promise<number>((resolve, reject) => { resolve(dataLastCommit); });
+        return new Promise<number>((resolve, reject) => {
+            resolve(dataLastCommit);
+        });
     }
 
     public static toDateString(str: string): string {
         const parts = str.split('/');
-        if (parts[0].length === 1) { parts[0] = '0' + parts[0]; }
-        if (parts[1].length === 1) { parts[1] = '0' + parts[1]; }
-        if (parts[2].length === 2) { parts[2] = '20' + parts[2]; }
+        if (parts[0].length === 1) {
+            parts[0] = '0' + parts[0];
+        }
+        if (parts[1].length === 1) {
+            parts[1] = '0' + parts[1];
+        }
+        if (parts[2].length === 2) {
+            parts[2] = '20' + parts[2];
+        }
         return parts.join('/');
     }
+
     public static toDateFile(str: string): string {
         const parts = str.split('/');
-        if (parts[0].length === 1) { parts[0] = '0' + parts[0]; }
-        if (parts[1].length === 1) { parts[1] = '0' + parts[1]; }
-        if (parts[2].length === 2) { parts[2] = '20' + parts[2]; }
+        if (parts[0].length === 1) {
+            parts[0] = '0' + parts[0];
+        }
+        if (parts[1].length === 1) {
+            parts[1] = '0' + parts[1];
+        }
+        if (parts[2].length === 2) {
+            parts[2] = '20' + parts[2];
+        }
         return parts.join('-');
     }
 
@@ -656,6 +748,7 @@ export class DataService {
         // return largeValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         // return largeValue.toLocaleString() + '';
     }
+
     public static abbreviate(largeValue: number, precision?: number): string {
         let roundValue: number;
 
@@ -702,6 +795,7 @@ export class OutbreakStats {
     public weeklyRecoveries: number;
     public weeklyDeaths: number;
     public date: string;
+
     // public country: string;
 
     constructor() {
@@ -720,12 +814,23 @@ export class OutbreakStats {
     }
 }
 
+export class StackedChartData {
+    public date: string;
+    public northAmerica: number;
+    public southAmerica: number;
+    public asia: number;
+    public europe: number;
+    public oceania: number;
+    public africa: number;
+}
+
 export class OutbreakLocation extends OutbreakStats {
     // props populated by covid_19_time_series .csv
     public latitude: number;
     public longitude: number;
     public province: string;
     public country: string;
+    public continent: string;
     public place: string;
     public id: string;
 
@@ -748,6 +853,7 @@ export class OutbreakLocation extends OutbreakStats {
 
         this.province = '';
         this.country = '';
+        this.continent = '';
         this.place = '';
         this.history = [];
         this.progress = [];
@@ -760,7 +866,6 @@ export class OutbreakLocation extends OutbreakStats {
     }
 
 
-
 }
 
 
@@ -768,6 +873,7 @@ export class OutbreakDailyReport {
     public locations: OutbreakLocation[];
     public date: string;
     public index: number;
+
     constructor() {
         this.index = 0;
         this.date = '';
@@ -779,6 +885,10 @@ export class OutbreakReport {
 
     public regions: OutbreakLocation[];
     public countries: OutbreakLocation[];
+    public stackedChartData: StackedChartData[];
+    public stackedDeathChartData: StackedChartData[];
+    public stackedDailyChartData: StackedChartData[];
+    public stackedDailyDeathChartData: StackedChartData[];
     public locations: OutbreakLocation[];
     public date: string;
 
@@ -787,6 +897,10 @@ export class OutbreakReport {
         this.locations = [];
         this.regions = [];
         this.date = '';
+        this.stackedChartData = [];
+        this.stackedDeathChartData = [];
+        this.stackedDailyChartData = [];
+        this.stackedDailyDeathChartData = [];
     }
 }
 

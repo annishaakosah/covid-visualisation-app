@@ -53,3 +53,13 @@
     margin-right: 8px;
     opacity: 0.7;
 }
+
+.recharts-legend-item-text {
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+}
+
+tspan {
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+}

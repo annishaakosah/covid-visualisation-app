@@ -9,7 +9,6 @@ import { IgrGridSelectedKeysChangedEventArgs } from 'igniteui-react-grids';
 
 import { IgrTemplateColumn, IIgrCellTemplateProps } from 'igniteui-react-grids';
 import { IgrTemplateCellUpdatingEventArgs } from 'igniteui-react-grids';
-import { IgrTemplateCellInfo } from 'igniteui-react-grids';
 
 import { DataService, OutbreakLocation } from "../data/DataService";
 
@@ -72,8 +71,6 @@ export class ListView extends React.Component<any, any> {
         } else {
             listStyle.maxWidth = "20rem";
         }
-
-        // listStyle.maxWidth = this.props.showCodes ? "20rem" : "12rem";
 
         let dataStyle: any;
         if (valuePropertyPath === "totalInfections" || valuePropertyPath === "weeklyInfections" || valuePropertyPath === "dailyInfections") {
@@ -207,7 +204,6 @@ export class ListView extends React.Component<any, any> {
         this.gridSelecting = true;
 
         let valuePropertyPath = this.props.valuePropertyPath || "totalInfections";
-        // console.log("selectLists  " + selectedItemKeys.join(" ") + " " + valuePropertyPath);
 
         this.grid.selectedKeys.clear();
 

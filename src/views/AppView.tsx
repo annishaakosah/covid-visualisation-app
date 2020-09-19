@@ -2,8 +2,8 @@ import * as React from "react";
 
 import * as IconPlay from "@material-ui/icons/PlayArrow";
 import * as IconPause from "@material-ui/icons/Pause";
-import * as IconPalette from "@material-ui/icons/Palette";
 import IconButton from '@material-ui/core/IconButton';
+import Tour from 'reactour'
 
 import "../data/Extensions";
 import { Locations } from "../data/Locations";
@@ -19,9 +19,27 @@ import { Tooltip } from "../components/Tooltip";
 import { SplashScreen } from "../components/SplashScreen"
 import { IgrShapeDataSource, parseBool } from 'igniteui-react-core';
 import ChoroplethMap from './ChoroplethMap';
-import {color} from "@material-ui/system";
+
+const steps = [
+    {
+      selector: '#first-step',
+      content: () => (<div>Welcome to our COVID-19 Dashboard! <br/><br/> To toggle between visualisations, click these icons</div>),
+      style: {
+       outline: 0,
+      },
+    },
+    {
+      selector: '#second-step',
+      content: 'Use these tabs to toggle between different stats. You can look at the total number of cases or the total number of deaths.',
+    },
+    {
+      selector: '#third-step',
+      content: () => (<div>Want to see how COVID data changes over time?<br/><br/>Use this player to see how the stats changes by the day.</div>),
+    },
+  ]
 
 export class AppView extends React.Component<any, AppState> {
+
 
     public themes: any = {
         dark: {
@@ -52,6 +70,7 @@ export class AppView extends React.Component<any, AppState> {
     public lists: ListView[] = [];
     public listInfections: ListView;
     public listDeaths: ListView;
+    public listRecoveries: ListView;
     public listsUpdating = false;
     public splashScreen: SplashScreen;
 
@@ -68,6 +87,7 @@ export class AppView extends React.Component<any, AppState> {
         this.onCreatedListView = this.onCreatedListView.bind(this);
         this.onCreatedListViewInfections = this.onCreatedListViewInfections.bind(this);
         this.onCreatedListViewDeaths = this.onCreatedListViewDeaths.bind(this);
+        this.onCreatedListViewRecoveries = this.onCreatedListViewRecoveries.bind(this);
         this.onCreatedSplash = this.onCreatedSplash.bind(this);
 
         this.onResize = this.onResize.bind(this);
@@ -76,6 +96,7 @@ export class AppView extends React.Component<any, AppState> {
         this.onCountrySelected = this.onCountrySelected.bind(this);
         this.onSelectedListInfections = this.onSelectedListInfections.bind(this);
         this.onSelectedListDeaths = this.onSelectedListDeaths.bind(this);
+        this.onSelectedListRecoveries = this.onSelectedListRecoveries.bind(this);
 
         this.onClickTogglePropStats = this.onClickTogglePropStats.bind(this);
 
@@ -84,6 +105,7 @@ export class AppView extends React.Component<any, AppState> {
 
         this.onClickPlotInfections = this.onClickPlotInfections.bind(this);
         this.onClickPlotDeaths = this.onClickPlotDeaths.bind(this);
+        this.onClickPlotRecoveries = this.onClickPlotRecoveries.bind(this);
 
         this.updateQuery = this.updateQuery.bind(this);
 
@@ -126,41 +148,40 @@ export class AppView extends React.Component<any, AppState> {
         let cardStyle = { color: theme.card.color, background: theme.card.background } as React.CSSProperties;
         let footerStyle = { color: theme.primary.color, background: "transparent" } as React.CSSProperties;
 
-        let tdButtonStyle = this.state.xAxisMemberPath === "totalDeaths" ? theme.buttonSelected : theme.buttonNormal;
-        let tiButtonStyle = this.state.xAxisMemberPath === "totalInfections" ? theme.buttonSelected : theme.buttonNormal;
+        let tdButtonStyle = this.state.showTotalDeathList ? theme.buttonSelected : theme.buttonNormal;
+        let tiButtonStyle = this.state.showTotalInfectionList ? theme.buttonSelected : theme.buttonNormal;
+        let trButtonStyle = this.state.showTotalRecoveries ? theme.buttonSelected : theme.buttonNormal;
+        let ddButtonStyle = this.state.showDailyDeaths ? theme.buttonSelected : theme.buttonNormal;
+        let diButtonStyle = this.state.showDailyInfections ? theme.buttonSelected : theme.buttonNormal;
 
         let tabStyle = {} as React.CSSProperties;
         tabStyle.display = (this.state.showChart || this.state.showMap) ? "flex" : "none";
 
         let tipBackground = theme.tooltip.background;
         let tipForeground = theme.tooltip.color;
-
         return (
             <div className="app-root" >
-                {/* <div className="app-sidebar-menu">menu</div> */}
-
                 <div className="app-main" style={contentStyle}>
                     <div className="app-toolbar" style={toolbarStyle}>
                         <div className="app-toolbar-title">COVID Dashboard</div>
-
-                        <Tooltip background={tipBackground} color={tipForeground}
-                            message="Index Chart" >
-                            <IconButton onClick={() => this.setVisualisation(1)} style={toggleThemeStyle} edge="start" >
-                                <i className="tim-icons icon-sound-wave" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip background={tipBackground} color={tipForeground}
-                            message="Geo Graph" >
-                            <IconButton onClick={() => this.setVisualisation(2)} style={toggleThemeStyle} edge="start" >
-                                <i className="tim-icons icon-world" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip background={tipBackground} color={tipForeground}
-                            message="Stacked Bar Graph" >
-                            <IconButton onClick={() => this.setVisualisation(3)} style={toggleThemeStyle} edge="start" >
-                                <i className="tim-icons icon-chart-bar-32" />
-                            </IconButton>
-                        </Tooltip>
+                            <Tooltip background={tipBackground} color={tipForeground}
+                                message="Index Chart" >
+                                <IconButton id="first-step" onClick={() => this.setVisualisation(1)} style={toggleThemeStyle} edge="start" >
+                                    <i className="tim-icons icon-sound-wave" />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip background={tipBackground} color={tipForeground}
+                                message="Geo Graph" >
+                                <IconButton onClick={() => this.setVisualisation(2)} style={toggleThemeStyle} edge="start" >
+                                    <i className="tim-icons icon-world" />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip background={tipBackground} color={tipForeground}
+                                message="Stacked Bar Graph" >
+                                <IconButton onClick={() => this.setVisualisation(3)} style={toggleThemeStyle} edge="start" >
+                                    <i className="tim-icons icon-chart-bar-32" />
+                                </IconButton>
+                            </Tooltip>
                     </div>
 
                     {this.state.visualisation === 1 &&
@@ -199,22 +220,41 @@ export class AppView extends React.Component<any, AppState> {
                                     style={theme.list} />
                             }
 
+                            {this.state.showLists && this.state.showTotalRecoveries &&
+                            <ListView
+                              valuePropertyPath="totalRecoveries"
+                              indexPropertyPath="indexRecoveries"
+                              imagePropertyPath="flag"
+                              codePropertyPath="iso"
+                              namePropertyPath="country"
+                              showCodes={this.state.showCodes}
+                              showIndex={this.state.showIndex}
+                              usePropStats={this.state.usePropStats}
+                              selectedItemKeys={this.state.countriesSelected}
+                              ref={this.onCreatedListViewRecoveries}
+                              onSelected={this.onSelectedListRecoveries}
+                              theme={theme}
+                              style={theme.list} />
+                            }
+
                             <div className="app-center" style={cardStyle}>
 
-                                <div className="app-button-row" style={tabStyle}>
+                                <div id="second-step" className="app-button-row" style={tabStyle}>
                                     <div className="app-button-tab" style={tdButtonStyle}
                                         onClick={() => this.onClickPlotDeaths()}>
                                         <span>Total Deaths</span>
                                     </div>
                                     <div className="app-button-tab" style={tiButtonStyle}
                                         onClick={() => this.onClickPlotInfections()}>
-                                        {/* {DataService.GetDisplayName("totalInfections", this.state.usePropStats)} */}
                                         <span>Total Cases</span>
+                                    </div>
+                                    <div className="app-button-tab" style={trButtonStyle}
+                                         onClick={() => this.onClickPlotRecoveries()}>
+                                         <span>Total Recoveries</span>
                                     </div>
                                 </div>
 
                                 <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
-                                    {/* {this.state.showChart && */}
                                     <ChartView ref={this.onCreatedChart}
                                         isVisible={this.state.showChart}
                                         style={theme.list}
@@ -229,48 +269,84 @@ export class AppView extends React.Component<any, AppState> {
                                         yAxisMinimumValue={this.state.yAxisMinimumValue}
                                         yAxisMaximumValue={this.state.yAxisMaximumValue}
                                         updateInterval={this.state.updateInterval} />
-                                    {/* } */}
                                 </div>
                             </div>
                         </div>
                     }
 
-                    {/* James */}
                     {this.state.visualisation === 2 &&
-                        <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
-                            <ChoroplethMap data={DataService.aggregateGeoCovidData(this.state.countriesStats)}></ChoroplethMap>
+                        <div className="app-stack" style={{color: theme.card.color, background: theme.card.background, padding: "1.2rem"}}>
+                          <div className="app-button-row" style={tabStyle}>
+                            <div className="app-button-tab" style={tdButtonStyle}
+                                 onClick={() => this.onClickPlotDeaths()}>
+                              <span>Total Deaths</span>
+                            </div>
+                            <div className="app-button-tab" style={tiButtonStyle}
+                                 onClick={() => this.onClickPlotInfections()}>
+                              <span>Total Cases</span>
+                            </div>
+                            <div className="app-button-tab" style={trButtonStyle}
+                                 onClick={() => this.onClickPlotRecoveries()}>
+                                 <span>Total Recoveries</span>
+                            </div>
+                          </div>
+                          <ChoroplethMap data={DataService.aggregateGeoCovidData(this.state.countriesStats)} state={this.state}/>
                         </div>
                     }
 
-                     {/* annisha */}
                     {this.state.visualisation === 3 &&
                         <div className="app-content">
                             <div className="app-center" style={cardStyle}>
-                                // Add your data visualisation here
-                                <StackedChart data={DataService.aggregateContinents(this.state.countriesStats)}></StackedChart>
-                               
+                              <div className="app-button-row" style={tabStyle}>
+                                <div className="app-button-tab" style={tdButtonStyle}
+                                     onClick={() => this.onClickPlotDeaths()}>
+                                  <span>Total Deaths</span>
+                                </div>
+                                <div className="app-button-tab" style={tiButtonStyle}
+                                     onClick={() => this.onClickPlotInfections()}>
+                                  <span>Total Cases</span>
+                                </div>
+                                <div className="app-button-tab" style={ddButtonStyle}
+                                     onClick={() => this.onClickPlotDailyDeaths()}>
+                                  <span>Daily Deaths</span>
+                                </div>
+                                <div className="app-button-tab" style={diButtonStyle}
+                                     onClick={() => this.onClickPlotDailyInfections()}>
+                                  <span>Daily Cases</span>
+                                </div>
+                              </div>
+                               <StackedChart data={this.state.xAxisMemberPath === "totalInfections" ? this.state.stackedChartData : this.state.stackedDeathChartData} state={this.state}/>
                             </div>
                         </div>
                     }
 
-                    <div className="app-actionbar" style={footerStyle}>
-                        <IconButton onClick={this.onClickStart} style={playStyle} edge="start" >
-                            {this.state.updateActive ? <IconPause.default /> : <IconPlay.default />}
-                        </IconButton>
+                    {(this.state.visualisation === 1 || this.state.visualisation === 2) &&
+                        <div id="third-step" className="app-actionbar" style={footerStyle}>
+                          <IconButton onClick={this.onClickStart} style={playStyle} edge="start">
+                              {this.state.updateActive ? <IconPause.default/> : <IconPlay.default/>}
+                          </IconButton>
 
-                        <Slider
+                          <Slider
                             min={this.state.dataIndexMin}
                             max={this.state.dataIndexMax}
                             value={this.state.currentIndex}
                             width="100%" theme={this.state.theme}
-                            onChange={this.onSliderChangeIndex} />
+                            onChange={this.onSliderChangeIndex}/>
 
-                        <div className="app-actionbar-date" style={theme.sourceInfo}>{this.state.currentDate}</div>
+                          <div className="app-actionbar-date" style={theme.sourceInfo}>{this.state.currentDate}</div>
 
-                    </div>
+                        </div>
+                    }
                 </div>
                 {/* isLoading={this.state.isLoading} */}
                 <SplashScreen ref={this.onCreatedSplash} />
+                <Tour
+                    steps={steps}
+                    rounded={10}
+                    accentColor={"#1d8cf8"}
+                    isOpen={this.state.isTourOpen}
+                    onRequestClose={() => this.setState({ isTourOpen: false })}
+        />
             </div>
         );
     }
@@ -290,6 +366,10 @@ export class AppView extends React.Component<any, AppState> {
     public onCreatedListViewDeaths(listView: ListView) {
         // this.lists.push(listView);
         this.listDeaths = listView;
+    }
+    public onCreatedListViewRecoveries(listView: ListView) {
+        // this.lists.push(listView);
+        this.listRecoveries = listView;
     }
 
     public onCreatedListView(listView: ListView) {
@@ -319,6 +399,7 @@ export class AppView extends React.Component<any, AppState> {
     }
 
     public componentDidMount() {
+
         window.addEventListener("resize", this.onResize);
 
         const sds = new IgrShapeDataSource();
@@ -334,20 +415,26 @@ export class AppView extends React.Component<any, AppState> {
         console.log('App shapes ' + shapes.length);
 
         DataService.getOutbreakReport(shapes).then(outbreak => {
-
+            // Add pre processing here
             // console.log("App locations: " + outbreak.locations.length);
             console.log("App countries: " + outbreak.countries.length);
             console.log("App history: " + outbreak.countries[0].history.length);
-            console.log(outbreak.countries[0]);
+            console.log(outbreak);
+
 
             let last = outbreak.countries[0].history.length - 1;
             this.setState({
                 countriesStats: outbreak.countries,
+                stackedChartData: outbreak.stackedChartData,
+                stackedDeathChartData: outbreak.stackedDeathChartData,
+                stackedDailyChartData: outbreak.stackedDailyChartData,
+                stackedDailyDeathChartData: outbreak.stackedDailyDeathChartData,
                 dataIndexMin: 0,
                 dataIndexMax: last,
                 currentIndex: last,
                 updateDate: outbreak.date,
                 isLoading: false,
+                isTourOpen: true,
             }, () => {
                 this.updateRanges(this.state.countriesSelected);
                 this.updateData(last);
@@ -378,6 +465,10 @@ export class AppView extends React.Component<any, AppState> {
                     this.refreshAll();
                 });
         }
+        // StackedBar does not have total recovery data. So show total deaths stats instead on load.
+        else if (v === 3 && this.state.showTotalRecoveries) {
+            this.onClickPlotDeaths();
+        }
         this.setState({ visualisation: v }, () => {
             console.log(this.state.visualisation)
         });
@@ -399,7 +490,10 @@ export class AppView extends React.Component<any, AppState> {
             xAxisMemberPath: "totalDeaths",
             bubbleMemberPath: "totalDeaths",
             showTotalInfectionList: false,
-            showTotalDeathList: true
+            showTotalDeathList: true,
+            showTotalRecoveries: false,
+            showDailyDeaths: false,
+            showDailyInfections: false
         },
             this.updateColumns);
     }
@@ -409,9 +503,45 @@ export class AppView extends React.Component<any, AppState> {
             xAxisMemberPath: "totalInfections",
             bubbleMemberPath: "totalInfections",
             showTotalDeathList: false,
-            showTotalInfectionList: true
+            showTotalInfectionList: true,
+            showTotalRecoveries: false,
+            showDailyDeaths: false,
+            showDailyInfections: false
         },
             this.updateColumns);
+    }
+
+    public onClickPlotRecoveries() {
+        this.setState({
+            yAxisMemberPath: "weeklyRecoveries",
+            xAxisMemberPath: "totalRecoveries",
+            bubbleMemberPath: "totalRecoveries",
+            showTotalDeathList: false,
+            showTotalInfectionList: false,
+            showTotalRecoveries: true,
+            showDailyDeaths: false,
+            showDailyInfections: false
+        }, this.updateColumns);
+    }
+
+    public onClickPlotDailyDeaths() {
+        this.setState({
+            showTotalDeathList: false,
+            showTotalInfectionList: false,
+            showTotalRecoveries: false,
+            showDailyDeaths: true,
+            showDailyInfections: false
+        }, this.updateColumns);
+    }
+
+    public onClickPlotDailyInfections() {
+        this.setState({
+            showTotalDeathList: false,
+            showTotalInfectionList: false,
+            showTotalRecoveries: false,
+            showDailyDeaths: false,
+            showDailyInfections: true
+        }, this.updateColumns);
     }
 
     public onClickPlotXAxis(memberPath: string) {
@@ -466,6 +596,7 @@ export class AppView extends React.Component<any, AppState> {
             () => {
                 this.listInfections.selectData(newSelection);
                 this.listDeaths.selectData(newSelection);
+                this.listRecoveries.selectData(newSelection);
                 // this.refreshLists(newSelection)
                 this.updateData();
             });
@@ -499,6 +630,20 @@ export class AppView extends React.Component<any, AppState> {
             });
     }
 
+    public onSelectedListRecoveries(s: ListView, items: string[]) {
+        if (this.state.updateActive) { return; }
+        if (this.listsUpdating) { return; }
+
+        this.listsUpdating = true;
+        console.log("App SelectedList " + items.join(' '));
+        this.setState({ countriesSelected: items, },
+            () => {
+                this.listRecoveries.selectData(items);
+                this.updateRanges(items);
+                this.updateData();
+            });
+    }
+
     public updateRanges(selectedCountries: string[], usePropStats?: boolean) {
 
         if (usePropStats === undefined || usePropStats === null) {
@@ -511,11 +656,15 @@ export class AppView extends React.Component<any, AppState> {
         let maxTotalInfections = Number.MIN_VALUE;
         let minTotalDeaths = Number.MAX_VALUE;
         let maxTotalDeaths = Number.MIN_VALUE;
+        let minTotalRecoveries = Number.MAX_VALUE;
+        let maxTotalRecoveries = Number.MIN_VALUE;
 
         let minWeekInfections = Number.MAX_VALUE;
         let maxWeekInfections = Number.MIN_VALUE;
         let minWeekDeaths = Number.MAX_VALUE;
         let maxWeekDeaths = Number.MIN_VALUE;
+        let minWeekRecoveries = Number.MAX_VALUE;
+        let maxWeekRecoveries = Number.MIN_VALUE;
 
         for (let outbreak of this.state.countriesStats) {
 
@@ -532,11 +681,15 @@ export class AppView extends React.Component<any, AppState> {
                     maxWeekInfections = Math.max(maxWeekInfections, outbreak.history[i].weeklyInfections / scale);
                     minWeekDeaths = Math.min(minWeekDeaths, outbreak.history[i].weeklyDeaths / scale);
                     maxWeekDeaths = Math.max(maxWeekDeaths, outbreak.history[i].weeklyDeaths / scale);
+                    minWeekRecoveries = Math.min(minWeekRecoveries, outbreak.history[i].weeklyRecoveries / scale);
+                    maxWeekRecoveries = Math.max(maxWeekRecoveries, outbreak.history[i].weeklyRecoveries / scale);
 
                     minTotalInfections = Math.min(minTotalInfections, outbreak.history[i].totalInfections / scale);
                     maxTotalInfections = Math.max(maxTotalInfections, outbreak.history[i].totalInfections / scale);
                     minTotalDeaths = Math.min(minTotalDeaths, outbreak.history[i].totalDeaths / scale);
                     maxTotalDeaths = Math.max(maxTotalDeaths, outbreak.history[i].totalDeaths / scale);
+                    minTotalRecoveries = Math.min(minTotalRecoveries, outbreak.history[i].totalRecoveries / scale);
+                    maxTotalRecoveries = Math.max(maxTotalRecoveries, outbreak.history[i].totalRecoveries / scale);
                 }
             }
         }
@@ -547,6 +700,9 @@ export class AppView extends React.Component<any, AppState> {
         if (this.state.xAxisMemberPath === "totalInfections") {
             xAxisRange = ChartAxisRange.calculate(minTotalInfections, maxTotalInfections, false);
             yAxisRange = ChartAxisRange.calculate(minWeekInfections, maxWeekInfections, false);
+        } else if (this.state.xAxisMemberPath === "totalRecoveries") {
+            xAxisRange = ChartAxisRange.calculate(minTotalRecoveries, maxTotalRecoveries, false);
+            yAxisRange = ChartAxisRange.calculate(minWeekRecoveries, maxWeekRecoveries, false);
         } else {
             xAxisRange = ChartAxisRange.calculate(minTotalDeaths, maxTotalDeaths, false);
             yAxisRange = ChartAxisRange.calculate(minWeekDeaths, maxWeekDeaths, false);
@@ -578,6 +734,9 @@ export class AppView extends React.Component<any, AppState> {
         if (this.state.xAxisMemberPath === "totalInfections") {
             thresholdProp = "totalInfections";
             thresholdValue = usePropStats ? 1 : 1;
+        } else if (this.state.xAxisMemberPath === "totalRecoveries") {
+            thresholdProp = "totalRecoveries";
+            thresholdValue = usePropStats ? 1 : 1;
         } else {
             thresholdProp = "totalDeaths";
             thresholdValue = usePropStats ? 1 : 1;
@@ -608,9 +767,11 @@ export class AppView extends React.Component<any, AppState> {
                 if (usePropStats) {
                     outbreak.weeklyDeaths = Math.max(0.11, outbreak.weeklyDeaths);
                     outbreak.weeklyInfections = Math.max(0.11, outbreak.weeklyInfections);
+                    outbreak.weeklyRecoveries = Math.max(0.11, outbreak.weeklyRecoveries);
                 } else {
                     outbreak.weeklyDeaths = Math.max(1, outbreak.weeklyDeaths);
                     outbreak.weeklyInfections = Math.max(1, outbreak.weeklyInfections);
+                    outbreak.weeklyRecoveries = Math.max(1, outbreak.weeklyRecoveries);
                 }
 
                 outbreak.date = outbreak.history[index].date;
@@ -643,9 +804,11 @@ export class AppView extends React.Component<any, AppState> {
                         if (usePropStats) {
                             stats.weeklyDeaths = Math.max(0.11, stats.weeklyDeaths);
                             stats.weeklyInfections = Math.max(0.11, stats.weeklyInfections);
+                            stats.weeklyRecoveries = Math.max(0.11, stats.weeklyRecoveries);
                         } else {
                             stats.weeklyDeaths = Math.max(1, stats.weeklyDeaths);
                             stats.weeklyInfections = Math.max(1, stats.weeklyInfections);
+                            stats.weeklyRecoveries = Math.max(1, stats.weeklyRecoveries);
                         }
                         outbreak.progress.push(stats);
                     }
@@ -682,6 +845,9 @@ export class AppView extends React.Component<any, AppState> {
         if (this.listInfections) {
             this.listInfections.selectData(newItems);
         }
+        if (this.listRecoveries) {
+            this.listRecoveries.selectData(newItems);
+        }
     }
 
     public refreshAll() {
@@ -695,7 +861,9 @@ export class AppView extends React.Component<any, AppState> {
         if (this.listInfections) {
             this.listInfections.updateData(this.state.countriesStats, this.state.countriesSelected);
         }
-
+        if (this.listRecoveries) {
+            this.listRecoveries.updateData(this.state.countriesStats, this.state.countriesSelected);
+        }
         this.listsUpdating = false;
 
         if (!this.state.updateActive) {
@@ -725,9 +893,7 @@ export class AppView extends React.Component<any, AppState> {
         let yAxisMemberPath = xAxisMemberPath === "totalDeaths" ? "weeklyDeaths" : "weeklyInfections";
         let showTotalInfectionList = xAxisMemberPath === "totalInfections";
         let showTotalDeathList = xAxisMemberPath !== "totalInfections";
-        console.log("xAxisMemberPath: " + xAxisMemberPath);
-        console.log("showTotalInfectionList: " + showTotalInfectionList);
-        console.log("showTotalDeathList: " + showTotalDeathList);
+        let showTotalRecoveryList = false;
 
         let selection = ["USA", "RUS", "GBR", "ITA", "KOR", "CHN"];
         if (parameters.items !== undefined) {
@@ -745,9 +911,11 @@ export class AppView extends React.Component<any, AppState> {
             currentIndex: 0,
             currentDate: "",
             isLoading: true,
+            isTourOpen: false,
 
             frameInfo: "",
             countriesStats: [],
+            stackedChartData: [],
             countriesSelected: selection,
             highlighted: [],
             usePropStats: usePropStats,
@@ -757,6 +925,7 @@ export class AppView extends React.Component<any, AppState> {
             showLists: showLists,
             showTotalInfectionList: showTotalInfectionList,
             showTotalDeathList: showTotalDeathList,
+            showTotalRecoveries: showTotalRecoveryList,
             showCodes: true,
             showIndex: false,
             width: 0,

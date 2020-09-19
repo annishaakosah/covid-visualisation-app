@@ -1,5 +1,5 @@
 
-import { OutbreakLocation } from "../data/DataService";
+import { OutbreakLocation, StackedChartData } from "../data/DataService";
 import { FlexDirectionProperty } from "csstype";
 
 // tslint:disable-next-line:interface-name
@@ -19,6 +19,9 @@ export interface AppState
     showLists?: boolean,
     showTotalDeathList?: boolean,
     showTotalInfectionList?: boolean,
+    showTotalRecoveries?: boolean,
+    showDailyDeaths?: boolean,
+    showDailyInfections?: boolean,
     showChart?: boolean,
     showBarGraph?: boolean,
     showMap?: boolean,
@@ -26,6 +29,8 @@ export interface AppState
     showIndex?: boolean,
     width?: number,
     isLoading?: boolean,
+    isTourOpen?: boolean,
+
 
     frameInfo?: string,
 
@@ -41,12 +46,13 @@ export interface AppState
     xAxisMaximumValue?: number,
     yAxisMinimumValue?: number,
     yAxisMaximumValue?: number,
-
-    // shapeCountries?: OutbreakLocation[],
     countriesStats?: OutbreakLocation[],
+    stackedChartData?: StackedChartData[],
+    stackedDeathChartData?: StackedChartData[],
+    stackedDailyChartData?: StackedChartData[],
+    stackedDailyDeathChartData?: StackedChartData[],
     countriesSelected?: string[],
     highlighted?: string[],
-    // James
     visualisation?: number
 };
 
