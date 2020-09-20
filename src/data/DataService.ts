@@ -44,6 +44,7 @@ export class DataService {
                     country2.continent = country1.properties.continent;
                     country1.properties['totalInfections'] = country2.totalInfections;
                     country1.properties['totalDeaths'] = country2.totalDeaths;
+                    country1.properties['totalRecoveries'] = country2.totalRecoveries;
                 }
             }
         }
@@ -777,7 +778,6 @@ export class DataService {
 }
 
 export class OutbreakStats {
-
     public cases: number;
     public totalInfections: number;
     public totalRecoveries: number;
