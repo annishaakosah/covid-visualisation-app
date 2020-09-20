@@ -28,7 +28,6 @@ export class StackedChart extends React.Component<any, any> {
                     <XAxis dataKey='date' tickFormatter={formatXAxis} height={50}/>
                     <YAxis tickFormatter={this.numberWithCommas}/>
                     <Tooltip
-                        labelFormatter={(tickItem: number) => moment(tickItem * 1000).format('MMMM Do')}
                         formatter={this.numberWithCommas}
                     />
                     <Legend/>
@@ -52,6 +51,5 @@ export class StackedChart extends React.Component<any, any> {
     }
 }
 
-const TIME_FORMAT = 'MMM Do';
 const formatXAxis: TickFormatterFunction = (tickItem: string) =>
     tickItem.slice(0, -6)
