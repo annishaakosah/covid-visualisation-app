@@ -30,7 +30,7 @@ const steps = [
     },
     {
       selector: '#second-step',
-      content: 'Use these tabs to toggle between different stats. You can look at the total number of cases or the total number of deaths.',
+      content: 'Use these tabs to toggle between different stats. You can look at the total number of cases, deaths or recorveries.',
     },
     {
       selector: '#third-step',
@@ -964,8 +964,6 @@ export class AppView extends React.Component<any, AppState> {
         };
     }
 
-
-
     public updateQuery() {
 
         let parameters = [];
@@ -993,6 +991,5 @@ export class AppView extends React.Component<any, AppState> {
         }
 
     }
-
 }
 

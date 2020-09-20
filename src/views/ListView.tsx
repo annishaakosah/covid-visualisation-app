@@ -138,7 +138,7 @@ export class ListView extends React.Component<any, any> {
                 maxFractionDigits="0"
                 showGroupingSeparator="true"
                 textStyle="bold 1rem 'Poppins'"
-                width="85"/>
+                width="110"/>
 
 
             </IgrLiveGrid>
