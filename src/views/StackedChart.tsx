@@ -28,6 +28,7 @@ export class StackedChart extends React.Component<any, any> {
                     <YAxis tickFormatter={this.numberWithCommas}/>
                     <Tooltip
                         formatter={this.numberWithCommas}
+                        cursor={{ fill:'rgba(139,135,145,0.3)', strokeWidth: 2 }} 
                     />
                     <Legend/>
 
