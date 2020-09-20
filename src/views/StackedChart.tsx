@@ -8,8 +8,7 @@ import {
     XAxis,
     YAxis,
     TickFormatterFunction
-} from "recharts";
-import moment from 'moment';
+} from "recharts"; ""
 import * as React from "react";
 
 export class StackedChart extends React.Component<any, any> {

@@ -315,7 +315,7 @@ export class AppView extends React.Component<any, AppState> {
                                   <span>Daily Cases</span>
                                 </div>
                               </div>
-                               <StackedChart data={this.state.xAxisMemberPath === "totalInfections" ? this.state.stackedChartData : this.state.stackedDeathChartData} state={this.state}/>
+                               <StackedChart data={this.getStackedBarData()} state={this.state}/>
                             </div>
                         </div>
                     }
@@ -484,6 +484,21 @@ export class AppView extends React.Component<any, AppState> {
         });
     }
 
+    public getStackedBarData() {
+        if(this.state.yAxisMemberPath == 'weeklyInfections') {
+            return this.state.stackedChartData;
+        }
+        else if(this.state.yAxisMemberPath == 'weeklyDeaths') {
+            return this.state.stackedDeathChartData;
+        }
+        else if(this.state.yAxisMemberPath == 'dailyInfections') {
+            return this.state.stackedDailyChartData;
+        }
+        else {
+            return this.state.stackedDailyDeathChartData;
+        }
+    }
+
     public onClickPlotDeaths() {
         this.setState({
             yAxisMemberPath: "weeklyDeaths",
@@ -526,6 +541,8 @@ export class AppView extends React.Component<any, AppState> {
 
     public onClickPlotDailyDeaths() {
         this.setState({
+            yAxisMemberPath: "dailyDeaths",
+            xAxisMemberPath: "totalDeaths",
             showTotalDeathList: false,
             showTotalInfectionList: false,
             showTotalRecoveries: false,
@@ -536,6 +553,8 @@ export class AppView extends React.Component<any, AppState> {
 
     public onClickPlotDailyInfections() {
         this.setState({
+            yAxisMemberPath: "dailyInfections",
+            xAxisMemberPath: "totalInfections",
             showTotalDeathList: false,
             showTotalInfectionList: false,
             showTotalRecoveries: false,
