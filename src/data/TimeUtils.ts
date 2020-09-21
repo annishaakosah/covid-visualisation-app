@@ -5,7 +5,6 @@ export class TimeUtils {
         let hh = date.getHours();
         let mm = date.getMinutes();
         let ss = date.getSeconds();
-        console.log(hh + ':' +  mm + ':' + ss + ' ' +  msg);
     }
 
     public static addDays(date: Date, days: number): Date {

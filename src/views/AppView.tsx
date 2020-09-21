@@ -420,7 +420,6 @@ export class AppView extends React.Component<any, AppState> {
 
     public onShapesLoaded(sds: IgrShapeDataSource, e: any) {
         const shapes = sds.getPointData();
-        console.log('App shapes ' + shapes.length);
 
         DataService.getOutbreakReport(shapes).then(outbreak => {
             let last = outbreak.countries[0].history.length - 1;
@@ -900,9 +899,6 @@ export class AppView extends React.Component<any, AppState> {
 
         let query = this.props.location;
         let parameters = Locations.parse(query);
-
-        console.log("DV parse query.pathname '" + query.pathname + "'");
-        console.log("DV parse query.search '" + query.search + "'");
 
         let usePropStats = parameters["1m"] !== undefined ? parseBool(parameters["1m"]) : false;
         let logScale = false;

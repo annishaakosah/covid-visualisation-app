@@ -1,8 +1,6 @@
-
 import * as React from "react";
 import "./LinearSlider.css";
 
-import { IgrValueBrushScale } from 'igniteui-react-charts';
 import { IgrLinearGauge } from 'igniteui-react-gauges';
 import { IgrLinearGaugeModule } from 'igniteui-react-gauges';
 import { IgrLinearGraphRange } from 'igniteui-react-gauges';
@@ -11,15 +9,8 @@ import { IgrFormatLinearGraphLabelEventArgs } from 'igniteui-react-gauges';
 IgrLinearGaugeModule.register();
 
 export class LinearSlider extends React.Component<any, any> {
-
+    // Colour scheme and font styling of various components of the application.
     public themes: any = {
-        light: {
-            name: "light",
-            track:   { color: "#1d8cf8", background: "#6B64B2" },
-            thumb:   { color: "#1d8cf8", background: "#FFFFFF" },
-            label:   { color: "#41434d",   },
-            ticks:   { color: "#41434d",   },
-        },
         dark:  {
             name: "dark",
             track:   { color: "#1d8cf8", background: "#ffffff" },
@@ -30,7 +21,6 @@ export class LinearSlider extends React.Component<any, any> {
     }
 
     public onChange?: React.EventHandler<React.ChangeEvent<HTMLElement>>;
-    // public onClick?: React.EventHandler<React.MouseEvent<HTMLElement>>;
 
     formatLabel: (e: IgrFormatLinearGraphLabelEventArgs) => void;
 
@@ -43,12 +33,6 @@ export class LinearSlider extends React.Component<any, any> {
         const min = this.props.min === undefined ? 0 : this.props.min;
         const max = this.props.max === undefined ? 100 : this.props.max;
         const value = this.props.value === undefined ? 0 : this.props.value;
-
-        // const brushScale = new IgrValueBrushScale({});
-        // brushScale.brushes = ["#FFFFFF", "#b56ffc"];
-        // brushScale.minimumValue = 10;
-        // brushScale.maximumValue = 60;
-        // brushScale.getBrush(value_of_field_in_a_record);
 
         this.state = {
             theme: props.theme,
@@ -78,8 +62,6 @@ export class LinearSlider extends React.Component<any, any> {
     }
 
     render() {
-
-        // const units = this.props.units === undefined ? "" : this.props.units;
         const min = this.props.min === undefined ? 0 : this.props.min;
         const max = this.props.max === undefined ? 40 : this.props.max;
         const value = this.props.value === undefined ? 0 : this.props.value;
@@ -95,13 +77,6 @@ export class LinearSlider extends React.Component<any, any> {
 
         return (
             <div className="app-slider-container">
-                {/* <input type="range" style={sliderStyle}
-                    className={sliderClass} id="myRange"
-                    min={min}
-                    max={max}
-                    value={value}
-                    onChange={this.onValueChange}/>
-                <div className="app-slider-value">{value} {units}</div> */}
                 <div className="app-slider">
                     <IgrLinearGauge
                     height="100%"
@@ -272,7 +247,7 @@ export class LinearSlider extends React.Component<any, any> {
         console.log("\n" + str + "\n");
         str = str.replaceAll("={", ":").replaceAll("}", ",")
         console.log("\n" + str + "\n");
-    }
+    };
 
     public onUpdate(stateName: string, e: any) {
         this.setState( {[stateName]: e.target.value } );
@@ -281,12 +256,10 @@ export class LinearSlider extends React.Component<any, any> {
     public onValueChange = (e: any) => {
         let precision = this.props.precision === undefined ? 10 : this.props.precision;
         let value = e.target.value = parseInt(e.target.value, precision);
-        // console.log("Slider onValueChange " + e.target.value);
 
         this.setState( { value: value } );
 
         if (this.props.onChange !== undefined) {
-            // console.log("onSlider onChange" + crr);
             this.props.onChange(e);
         }
     }

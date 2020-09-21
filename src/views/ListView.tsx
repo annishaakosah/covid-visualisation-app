@@ -15,7 +15,6 @@ import { DataService, OutbreakLocation } from "../data/DataService";
 IgrLiveGridModule.register();
 
 export class ListView extends React.Component<any, any> {
-
     public grid: IgrLiveGrid ;
     public header: HTMLDivElement;
     public dataLocations: OutbreakLocation[] = [];
@@ -25,7 +24,6 @@ export class ListView extends React.Component<any, any> {
 
     constructor(props: any) {
       super(props);
-
         this.onHeaderRef = this.onHeaderRef.bind(this);
         this.onGridRef = this.onGridRef.bind(this);
         this.onGridRowSelected = this.onGridRowSelected.bind(this);
@@ -55,7 +53,6 @@ export class ListView extends React.Component<any, any> {
     }
 
     public render() {
-
         let valuePropertyPath = this.state.valuePropertyPath;
         let namesPropertyPath = this.props.showCodes ? this.props.codePropertyPath : this.props.namePropertyPath;
         let namesColumnWidth = this.props.showCodes ? "*>40" : "*>80";
@@ -200,7 +197,6 @@ export class ListView extends React.Component<any, any> {
     }
 
     public selectData(selectedItemKeys: string[]) {
-
         this.gridSelecting = true;
 
         let valuePropertyPath = this.props.valuePropertyPath || "totalInfections";
@@ -223,7 +219,6 @@ export class ListView extends React.Component<any, any> {
     }
 
     public updateData(outbreaks: OutbreakLocation[], selectedItemKeys: string[]) {
-
         let dataTotal = 0;
         let valuePropertyPath = this.props.valuePropertyPath || "totalInfections";
         let indexColumn = this.props.indexPropertyPath || "indexInfections";

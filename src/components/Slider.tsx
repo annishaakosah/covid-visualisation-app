@@ -1,11 +1,8 @@
-
 import * as React from "react";
 import "./Slider.css";
 
 export class Slider extends React.Component<any, any> {
-
     public onChange?: React.EventHandler<React.ChangeEvent<HTMLElement>>;
-    // public onClick?: React.EventHandler<React.MouseEvent<HTMLElement>>;
 
     constructor(props: any) {
         super(props);
@@ -42,7 +39,6 @@ export class Slider extends React.Component<any, any> {
                     max={max}
                     value={value}
                     onChange={this.onValueChange}/>
-                {/* <div className="app-slider-value">{value} {units}</div> */}
             </div>
         );
     }
@@ -50,12 +46,10 @@ export class Slider extends React.Component<any, any> {
     public onValueChange = (e: any) => {
         let precision = this.props.precision === undefined ? 10 : this.props.precision;
         let value = e.target.value = parseInt(e.target.value, precision);
-        // console.log("Slider onValueChange " + e.target.value);
 
         this.setState( { value: value } );
 
         if (this.props.onChange !== undefined) {
-            // console.log("onSlider onChange" + crr);
             this.props.onChange(e);
         }
     }
