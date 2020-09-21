@@ -458,8 +458,11 @@ export class AppView extends React.Component<any, AppState> {
 
     // James
     public setVisualisation(v: number) {
+        if (this.state.showDailyDeaths || this.state.showDailyInfections) {
+            this.onClickPlotDeaths()
+        }
         if (v === 1) {
-            this.setState({ showLists: true },
+            this.setState({showLists: true},
                 () => {
                     this.updateQuery();
                     this.refreshAll();
