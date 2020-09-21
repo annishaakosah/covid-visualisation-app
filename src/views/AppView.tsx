@@ -20,6 +20,9 @@ import { SplashScreen } from "../components/SplashScreen"
 import { IgrShapeDataSource, parseBool } from 'igniteui-react-core';
 import ChoroplethMap from './ChoroplethMap';
 
+/**
+ * Onboarding steps for new users.
+ */
 const steps = [
     {
       selector: '#first-step',
@@ -36,11 +39,10 @@ const steps = [
       selector: '#third-step',
       content: () => (<div>Want to see how COVID data changes over time?<br/><br/>Use this player to see how the stats changes by the day.</div>),
     },
-  ]
+  ];
 
 export class AppView extends React.Component<any, AppState> {
-
-
+    // Colour scheme and font styling of various components of the application.
     public themes: any = {
         dark: {
             name: "dark",
@@ -65,6 +67,7 @@ export class AppView extends React.Component<any, AppState> {
         },
     };
 
+    // Data structures used by the visualisations.
     public frameInterval: number = -1;
     public chart: ChartView;
     public lists: ListView[] = [];
@@ -82,37 +85,31 @@ export class AppView extends React.Component<any, AppState> {
 
         this.onClickStart = this.onClickStart.bind(this);
         this.onSliderChangeIndex = this.onSliderChangeIndex.bind(this);
-
         this.onCreatedChart = this.onCreatedChart.bind(this);
         this.onCreatedListView = this.onCreatedListView.bind(this);
         this.onCreatedListViewInfections = this.onCreatedListViewInfections.bind(this);
         this.onCreatedListViewDeaths = this.onCreatedListViewDeaths.bind(this);
         this.onCreatedListViewRecoveries = this.onCreatedListViewRecoveries.bind(this);
         this.onCreatedSplash = this.onCreatedSplash.bind(this);
-
         this.onResize = this.onResize.bind(this);
-
         this.onShapesLoaded = this.onShapesLoaded.bind(this);
         this.onCountrySelected = this.onCountrySelected.bind(this);
         this.onSelectedListInfections = this.onSelectedListInfections.bind(this);
         this.onSelectedListDeaths = this.onSelectedListDeaths.bind(this);
         this.onSelectedListRecoveries = this.onSelectedListRecoveries.bind(this);
-
         this.onClickTogglePropStats = this.onClickTogglePropStats.bind(this);
-
         this.onClickPlotYAxis = this.onClickPlotYAxis.bind(this);
         this.onClickPlotXAxis = this.onClickPlotXAxis.bind(this);
-
         this.onClickPlotInfections = this.onClickPlotInfections.bind(this);
         this.onClickPlotDeaths = this.onClickPlotDeaths.bind(this);
         this.onClickPlotRecoveries = this.onClickPlotRecoveries.bind(this);
-
         this.updateQuery = this.updateQuery.bind(this);
-
-        // James
         this.setVisualisation = this.setVisualisation.bind(this);
     }
 
+    /**
+     * Function to set button style based on application state
+     **/
     public getButtonStyle(color?: string, background?: string): React.CSSProperties {
         let style = {
             color: color === undefined ? "black" : color,
@@ -130,38 +127,42 @@ export class AppView extends React.Component<any, AppState> {
 
         let playStyle = this.getButtonStyle(theme.buttons.color, theme.buttons.background);
 
+        // toggle button styling
         let toggleBackground = "rgba(255, 255, 255, 0.2)";
         let toggleThemeStyle = this.getButtonStyle(theme.toolbar.color);
         toggleThemeStyle.background = this.state.theme === "light" ? toggleBackground : "transparent";
-
         let toggleHelpStyle = this.getButtonStyle(theme.buttons.color);
         toggleHelpStyle.background = "transparent";
         toggleHelpStyle.color = "white";
-
         let togglePropStyle = this.getButtonStyle(theme.buttons.color);
         togglePropStyle.background = this.state.usePropStats ? toggleBackground : "transparent";
         togglePropStyle.fontSize = "1rem";
         togglePropStyle.fontWeight = 700;
 
+        // header and footer styling
         let toolbarStyle = { color: theme.toolbar.color, background: theme.toolbar.background } as React.CSSProperties;
         let contentStyle = { color: theme.primary.color, background: theme.primary.background } as React.CSSProperties;
         let cardStyle = { color: theme.card.color, background: theme.card.background } as React.CSSProperties;
         let footerStyle = { color: theme.primary.color, background: "transparent" } as React.CSSProperties;
 
+        // data type button styling
         let tdButtonStyle = this.state.showTotalDeathList ? theme.buttonSelected : theme.buttonNormal;
         let tiButtonStyle = this.state.showTotalInfectionList ? theme.buttonSelected : theme.buttonNormal;
         let trButtonStyle = this.state.showTotalRecoveries ? theme.buttonSelected : theme.buttonNormal;
         let ddButtonStyle = this.state.showDailyDeaths ? theme.buttonSelected : theme.buttonNormal;
         let diButtonStyle = this.state.showDailyInfections ? theme.buttonSelected : theme.buttonNormal;
-
         let tabStyle = {} as React.CSSProperties;
         tabStyle.display = (this.state.showChart || this.state.showMap) ? "flex" : "none";
 
+        // tool tip styling
         let tipBackground = theme.tooltip.background;
         let tipForeground = theme.tooltip.color;
+
         return (
+            // Root of application
             <div className="app-root" >
                 <div className="app-main" style={contentStyle}>
+                    {/*Header*/}
                     <div className="app-toolbar" style={toolbarStyle}>
                         <div className="app-toolbar-title">COVID Dashboard</div>
                             <Tooltip background={tipBackground} color={tipForeground}
@@ -184,8 +185,10 @@ export class AppView extends React.Component<any, AppState> {
                             </Tooltip>
                     </div>
 
+                    {/*Index Map and ListView*/}
                     {this.state.visualisation === 1 &&
                         <div className="app-content">
+                            {/*Total Deaths List*/}
                             {this.state.showLists && this.state.showTotalDeathList &&
                                 <ListView
                                     valuePropertyPath="totalDeaths"
@@ -203,6 +206,7 @@ export class AppView extends React.Component<any, AppState> {
                                     style={theme.list} />
                             }
 
+                            {/*Total Infections List*/}
                             {this.state.showLists && this.state.showTotalInfectionList &&
                                 <ListView
                                     valuePropertyPath="totalInfections"
@@ -220,6 +224,7 @@ export class AppView extends React.Component<any, AppState> {
                                     style={theme.list} />
                             }
 
+                            {/*Total Recoveries List*/}
                             {this.state.showLists && this.state.showTotalRecoveries &&
                             <ListView
                               valuePropertyPath="totalRecoveries"
@@ -237,8 +242,8 @@ export class AppView extends React.Component<any, AppState> {
                               style={theme.list} />
                             }
 
+                            {/*Data type toggle*/}
                             <div className="app-center" style={cardStyle}>
-
                                 <div id="second-step" className="app-button-row" style={tabStyle}>
                                     <div className="app-button-tab" style={tdButtonStyle}
                                         onClick={() => this.onClickPlotDeaths()}>
@@ -254,6 +259,7 @@ export class AppView extends React.Component<any, AppState> {
                                     </div>
                                 </div>
 
+                                {/*Chart View Component*/}
                                 <div className="app-stack" style={{ flexDirection: this.state.displayMode }}>
                                     <ChartView ref={this.onCreatedChart}
                                         isVisible={this.state.showChart}
@@ -274,6 +280,7 @@ export class AppView extends React.Component<any, AppState> {
                         </div>
                     }
 
+                    {/*Chloropleth Map*/}
                     {this.state.visualisation === 2 &&
                         <div className="app-stack" style={{color: theme.card.color, background: theme.card.background, padding: "1.2rem"}}>
                           <div className="app-button-row" style={tabStyle}>
@@ -294,6 +301,7 @@ export class AppView extends React.Component<any, AppState> {
                         </div>
                     }
 
+                    {/*StackBar Map*/}
                     {this.state.visualisation === 3 &&
                         <div className="app-content">
                             <div className="app-center" style={cardStyle}>
@@ -320,6 +328,7 @@ export class AppView extends React.Component<any, AppState> {
                         </div>
                     }
 
+                    {/*Slider For Live Data Visualisation*/}
                     {(this.state.visualisation === 1 || this.state.visualisation === 2) &&
                         <div id="third-step" className="app-actionbar" style={footerStyle}>
                           <IconButton onClick={this.onClickStart} style={playStyle} edge="start">
@@ -334,18 +343,21 @@ export class AppView extends React.Component<any, AppState> {
                             onChange={this.onSliderChangeIndex}/>
 
                           <div className="app-actionbar-date" style={theme.sourceInfo}>{this.state.currentDate}</div>
-
                         </div>
                     }
                 </div>
-                {/* isLoading={this.state.isLoading} */}
+
+                {/*Splashscreen to be displayed while processing data*/}
                 <SplashScreen ref={this.onCreatedSplash} />
+
+                {/*Onboarding component*/}
                 <Tour
                     steps={steps}
                     rounded={10}
                     accentColor={"#1d8cf8"}
                     isOpen={this.state.isTourOpen}
                     onRequestClose={() => this.setState({ isTourOpen: false })}
+                    showNavigationNumber={false}
         />
             </div>
         );
@@ -360,15 +372,12 @@ export class AppView extends React.Component<any, AppState> {
     }
 
     public onCreatedListViewInfections(listView: ListView) {
-        // this.lists.push(listView);
         this.listInfections = listView;
     }
     public onCreatedListViewDeaths(listView: ListView) {
-        // this.lists.push(listView);
         this.listDeaths = listView;
     }
     public onCreatedListViewRecoveries(listView: ListView) {
-        // this.lists.push(listView);
         this.listRecoveries = listView;
     }
 
@@ -376,6 +385,7 @@ export class AppView extends React.Component<any, AppState> {
         this.lists.push(listView);
     }
 
+    // Adjust size based on window resizes
     public validateSize() {
         if (window.innerWidth !== this.state.width) {
             if (window.innerWidth < 950) {
@@ -399,7 +409,6 @@ export class AppView extends React.Component<any, AppState> {
     }
 
     public componentDidMount() {
-
         window.addEventListener("resize", this.onResize);
 
         const sds = new IgrShapeDataSource();
@@ -410,18 +419,10 @@ export class AppView extends React.Component<any, AppState> {
     }
 
     public onShapesLoaded(sds: IgrShapeDataSource, e: any) {
-
         const shapes = sds.getPointData();
         console.log('App shapes ' + shapes.length);
 
         DataService.getOutbreakReport(shapes).then(outbreak => {
-            // Add pre processing here
-            // console.log("App locations: " + outbreak.locations.length);
-            console.log("App countries: " + outbreak.countries.length);
-            console.log("App history: " + outbreak.countries[0].history.length);
-            console.log(outbreak);
-
-
             let last = outbreak.countries[0].history.length - 1;
             this.setState({
                 countriesStats: outbreak.countries,
@@ -447,16 +448,14 @@ export class AppView extends React.Component<any, AppState> {
         if (this.state.updateActive) { return; }
 
         let index = e.target.value = parseInt(e.target.value, 10);
-
-        // console.log("App onSliderChanged " + index);
         this.updateData(index);
-    }
+    };
 
     public onClickStart(event: React.MouseEvent) {
         this.toggleAnimation();
     }
 
-    // James
+    // Set states of various component based on the visualisation button clicked.
     public setVisualisation(v: number) {
         if (this.state.showDailyDeaths || this.state.showDailyInfections) {
             this.onClickPlotDeaths()
@@ -473,20 +472,20 @@ export class AppView extends React.Component<any, AppState> {
             this.onClickPlotDeaths();
         }
         this.setState({ visualisation: v }, () => {
-            console.log(this.state.visualisation)
+            // console.log(this.state.visualisation)
         });
     }
 
     public onClickTogglePropStats(event: React.MouseEvent) {
         let usePropStats = !this.state.usePropStats;
 
-        // console.log('App usePropStats ' + usePropStats.toString());
         this.setState({ usePropStats: usePropStats }, () => {
             this.updateRanges(this.state.countriesSelected, usePropStats);
             this.updateData(null, usePropStats);
         });
     }
 
+    // fetch the data requested by stackedBar data based on props.state flags
     public getStackedBarData() {
         if(this.state.yAxisMemberPath == 'weeklyInfections') {
             return this.state.stackedChartData;
@@ -502,6 +501,7 @@ export class AppView extends React.Component<any, AppState> {
         }
     }
 
+    // Set only showTotalDeathList flag to true
     public onClickPlotDeaths() {
         this.setState({
             yAxisMemberPath: "weeklyDeaths",
@@ -515,6 +515,8 @@ export class AppView extends React.Component<any, AppState> {
         },
             this.updateColumns);
     }
+
+    // Set only showTotalInfectionList flag to true
     public onClickPlotInfections() {
         this.setState({
             yAxisMemberPath: "weeklyInfections",
@@ -529,6 +531,7 @@ export class AppView extends React.Component<any, AppState> {
             this.updateColumns);
     }
 
+    // Set only showTotalRecoveries flag to true
     public onClickPlotRecoveries() {
         this.setState({
             yAxisMemberPath: "weeklyRecoveries",
@@ -542,6 +545,7 @@ export class AppView extends React.Component<any, AppState> {
         }, this.updateColumns);
     }
 
+    // Set only showDailyDeaths flag to true
     public onClickPlotDailyDeaths() {
         this.setState({
             yAxisMemberPath: "dailyDeaths",
@@ -554,6 +558,7 @@ export class AppView extends React.Component<any, AppState> {
         }, this.updateColumns);
     }
 
+    // Set only showDailyInfections flag to true
     public onClickPlotDailyInfections() {
         this.setState({
             yAxisMemberPath: "dailyInfections",
@@ -579,11 +584,9 @@ export class AppView extends React.Component<any, AppState> {
         if (this.frameInterval >= 0) {
             window.clearInterval(this.frameInterval);
             this.frameInterval = -1;
-            console.log("App animation stopped");
             this.updateQuery();
 
         } else {
-            console.log("App animation starting");
             let index = this.state.currentIndex;
             if (index >= this.state.dataIndexMax) {
                 index = 0;
@@ -593,6 +596,7 @@ export class AppView extends React.Component<any, AppState> {
         }
     }
 
+    // Set the index of the data that is being used by visualisation while showing live data animation.
     public tick(): void {
         let index = this.state.currentIndex + 1;
         if (index > this.state.dataIndexMax) {
@@ -602,8 +606,8 @@ export class AppView extends React.Component<any, AppState> {
         }
     }
 
+    // add selected countries to list and update chart accordingly
     public onCountrySelected = (event: any) => {
-
         const country = event.currentTarget.id;
         let newSelection = this.state.countriesSelected;
 
@@ -613,23 +617,21 @@ export class AppView extends React.Component<any, AppState> {
             newSelection.push(country);
         }
 
-        console.log("on Selected Country     " + newSelection.join(' '));
         this.setState({ countriesSelected: newSelection, },
             () => {
                 this.listInfections.selectData(newSelection);
                 this.listDeaths.selectData(newSelection);
                 this.listRecoveries.selectData(newSelection);
-                // this.refreshLists(newSelection)
                 this.updateData();
             });
     };
 
+    // set listInfections state with newly added countries.
     public onSelectedListInfections(s: ListView, items: string[]) {
         if (this.state.updateActive) { return; }
         if (this.listsUpdating) { return; }
 
         this.listsUpdating = true;
-        console.log("App SelectedList " + items.join(' '));
         this.setState({ countriesSelected: items, },
             () => {
                 this.listInfections.selectData(items);
@@ -638,12 +640,12 @@ export class AppView extends React.Component<any, AppState> {
             });
     }
 
+    // set listDeaths state with newly added countries.
     public onSelectedListDeaths(s: ListView, items: string[]) {
         if (this.state.updateActive) { return; }
         if (this.listsUpdating) { return; }
 
         this.listsUpdating = true;
-        console.log("App SelectedList " + items.join(' '));
         this.setState({ countriesSelected: items, },
             () => {
                 this.listDeaths.selectData(items);
@@ -652,12 +654,12 @@ export class AppView extends React.Component<any, AppState> {
             });
     }
 
+    // set listRecoveries state with newly added countries.
     public onSelectedListRecoveries(s: ListView, items: string[]) {
         if (this.state.updateActive) { return; }
         if (this.listsUpdating) { return; }
 
         this.listsUpdating = true;
-        console.log("App SelectedList " + items.join(' '));
         this.setState({ countriesSelected: items, },
             () => {
                 this.listRecoveries.selectData(items);
@@ -666,8 +668,8 @@ export class AppView extends React.Component<any, AppState> {
             });
     }
 
+    // set the ranges (min and max) of the graphs so that the data fits within the range
     public updateRanges(selectedCountries: string[], usePropStats?: boolean) {
-
         if (usePropStats === undefined || usePropStats === null) {
             usePropStats = this.state.usePropStats;
         }
@@ -741,7 +743,7 @@ export class AppView extends React.Component<any, AppState> {
         });
     }
 
-
+    // update data for all visualisations based on the index of the outbreak list
     public updateData(index?: number, usePropStats?: boolean) {
         if (index === undefined || index === null) {
             index = this.state.currentIndex;
@@ -838,8 +840,6 @@ export class AppView extends React.Component<any, AppState> {
             }
         }
 
-        // console.log('App updateData ' + index + '  ' + usePropStats + '  ' + date);
-
         this.setState({
             currentIndex: index,
             currentDate: date,
@@ -872,6 +872,7 @@ export class AppView extends React.Component<any, AppState> {
         }
     }
 
+    // updates all visualisations after on call.
     public refreshAll() {
         if (this.chart) {
             this.chart.updateData(this.state.countriesStats, this.state.countriesSelected, this.state.currentDate);
@@ -893,6 +894,7 @@ export class AppView extends React.Component<any, AppState> {
         }
     }
 
+    // Query that displays the apps current state as a URL on the browser (for testing)
     public parseQuery() {
         // http://localhost:3500/?prop=false&log=true&show=totalInfections&items=USA+CHN+POL+ITA+KOR+URY
 
