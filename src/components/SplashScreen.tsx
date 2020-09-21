@@ -1,9 +1,7 @@
-
 import * as React from "react";
 import "./SplashScreen.css";
 
 export class SplashScreen extends React.Component<any, any> {
-
     public splashFadeRef: React.RefObject<any>;
     public splashLoadRef: React.RefObject<any>;
 
@@ -19,6 +17,7 @@ export class SplashScreen extends React.Component<any, any> {
     }
 
 
+    // Sets fade out styling once the data processing is complete.
     public fadeOut() {
         if (this.state.isComplete) { return; }
 
@@ -48,7 +47,6 @@ export class SplashScreen extends React.Component<any, any> {
     };
 
     render() {
-        // className={`app-splash-loading ${this.props.classNames}`}
         let splashMode = { display: this.state.displayMode };
         let splashProgress = this.state.isComplete ? { width: "100%" } : { } ;
 
@@ -58,6 +56,7 @@ export class SplashScreen extends React.Component<any, any> {
                 onAnimationStart={this.onFadingStart}
                 onAnimationEnd={this.onFadingEnd}/>
 
+                {/*Loading bar and Dashboard title*/}
                 <div className="app-splash-loading" ref={this.splashLoadRef}>
                     <div className="app-splash-center">
                         <div className="app-splash-progress">
@@ -73,5 +72,4 @@ export class SplashScreen extends React.Component<any, any> {
             </div>
         );
     }
-
 }

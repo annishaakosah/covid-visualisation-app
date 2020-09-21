@@ -29,27 +29,20 @@ IgrDataChartInteractivityModule.register();
 IgrNumberAbbreviatorModule.register();
 
 export class ChartView extends React.Component<any, AppState> {
-
+    // Colour scheme and font styling of various components of the application.
     public themes: any = {
         dark:  {
             name: "dark",
-            // series:     { color: "#8B80FF", fill: "black", text: "rgba(98, 98, 110, 1)" },
 
             infections: { color: "#1d8cf8", fill: "#262a3c" },
             deaths:     { color: "#FF3D60", fill: "#262a3c" },
             recoveries: { color: "#4CAF50", fill: "#262a3c" },
-
-            // primary:    { color: "white", background: "#131416" },
-            // infections: { color: "#8B80FF", background: "#222327", borderBottom: "1px solid #222327" },
-            // recoveries: { color: "#4CAF50", background: "#222327", borderBottom: "1px solid #222327" },
-            // deaths:     { color: "#FF3D60", background: "#222327", borderBottom: "1px solid #222327"},
 
             plot:       { color: "white", background: "#262a3c" },
             tooltip:    { color: "#242241", background: "#FFFFFF" },
             axisTitles: { color: "rgba(255, 255, 255, 0.4)", fontFamily: "Poppins" },
             axisLabels: { color: "rgba(255, 255, 255, 0.7)", fontFamily: "Poppins" },
             axisLines:  { color: "rgba(29, 140, 248, 0.25)", border: "0.5px solid" },
-
         },
     };
 
@@ -82,7 +75,6 @@ export class ChartView extends React.Component<any, AppState> {
 
 
     public render() {
-
         let theme = this.themes[this.props.theme || "dark"];
 
         let xAxisIsLogarithmic = this.getProp("xAxisIsLogarithmic", true);
@@ -156,7 +148,6 @@ export class ChartView extends React.Component<any, AppState> {
     public onSeriesMouseEnter(s: IgrSeriesViewer, e: IgrChartMouseEventArgs) {
         let location = e.item as OutbreakLocation;
         if (location === null || location === undefined) { return; }
-        // console.log("Chart onSeriesMouseEnter " + location.iso);
 
         this.highlightSeries.dataSource = [];
 
@@ -170,13 +161,10 @@ export class ChartView extends React.Component<any, AppState> {
     }
 
     public onSeriesMouseLeave(s: IgrSeriesViewer, e: IgrChartMouseEventArgs) {
-
         this.highlightSeries.dataSource = [];
 
         let location = e.item as OutbreakLocation;
         if (location === null || location === undefined) { return; }
-
-        // console.log("onSeriesMouseLeave " + location.iso);
     }
 
     public onChartRef(chart: IgrDataChart) {
@@ -197,49 +185,37 @@ export class ChartView extends React.Component<any, AppState> {
         this.chart.series.add(this.highlightSeries);
 
         this.markerSeries = this.createMarkerSeries("Large Countries");
-        // this.markerSeries.showDefaultTooltip = true;
         this.chart.series.add(this.markerSeries);
 
         this.updateMarkers();
-        // this.tooltipLayer = new IgrItemToolTipLayer({ name: "itemTooltipLayer" });
-        // this.chart.series.add(this.tooltipLayer);
     }
 
-    public createMarkerSeries(title: string): IgrScatterSeries
-    {
-        // let theme = this.themes[this.props.theme || "dark"];
-
+    public createMarkerSeries(title: string): IgrScatterSeries {
         let xAxisMemberPath = this.props.xAxisMemberPath || "totalInfections";
         let yAxisMemberPath = this.props.yAxisMemberPath || "weeklyInfections";
 
-        // console.log("Chart createMarkerSeries " );
         const id = "series" + this.chart.series.count;
         const series = new IgrScatterSeries({ name: id });
         series.title = title;
         series.markerType = MarkerType.Circle;
-        // series.markerOutline = theme.series.color;
-        // series.markerBrush = theme.series.fill;
+
         series.xMemberPath = xAxisMemberPath;
         series.yMemberPath = yAxisMemberPath;
         series.xAxisName = "xAxis";
         series.yAxisName = "yAxis";
         series.showDefaultTooltip = false;
         series.tooltipTemplate = this.getTooltip;
-        // series.transitionDuration = this.props.updateInterval || 500;
-        // series.markerTemplate = this.getMarker(theme.series, false);
-        // series.markerTemplate = this.markersWithISO;
         return series;
     }
 
-    public createHistorySeries(): IgrScatterLineSeries
-    {
+    public createHistorySeries(): IgrScatterLineSeries {
         let xAxisMemberPath = this.props.xAxisMemberPath || "totalInfections";
         let yAxisMemberPath = this.props.yAxisMemberPath || "weeklyInfections";
 
         const id = "series" + this.chart.series.count;
         const series = new IgrScatterLineSeries({ name: id });
         series.markerType = MarkerType.None;
-        // series.brush = theme.infections.color;
+
         series.brush = "gray";
         series.thickness = 2;
         series.xMemberPath = xAxisMemberPath;
@@ -251,7 +227,6 @@ export class ChartView extends React.Component<any, AppState> {
     }
 
     public updateMarkers() {
-
         let theme = this.themes[this.props.theme || "dark"];
         let xAxisMemberPath = this.props.xAxisMemberPath || "totalInfections";
 
@@ -289,14 +264,11 @@ export class ChartView extends React.Component<any, AppState> {
         if (this.chart === undefined) { return; }
 
         if (selectedNames.length > this.historySeriesCount) {
-            // this.chart.series.remove(this.markerSeries);
             for (let i = 0; i < selectedNames.length - this.historySeriesCount; i++) {
                 let series = this.createHistorySeries();
                 this.chart.series.insert(0, series);
-                // this.chart.series.add(series);
                 this.historySeries.push(series);
             }
-            // this.chart.series.add(this.markerSeries);
             this.historySeriesCount = selectedNames.length;
         }
 
@@ -369,8 +341,6 @@ export class ChartView extends React.Component<any, AppState> {
         const radius = size / 2;
         return {
             measure: function (measureInfo: DataTemplateMeasureInfo) {
-                // measureInfo.width  = size;
-                // measureInfo.height = size;
                 const data = measureInfo.data;
                 const context = measureInfo.context;
                 let name = "null";
@@ -433,6 +403,4 @@ export class ChartView extends React.Component<any, AppState> {
             }
         }
     }
-
-
 }

@@ -8,7 +8,6 @@ export class Locations {
         if (query !== undefined) {
             query = query.replace("?","");
 
-            // console.log("Locations query " + query);
             let parameters: string[];
             if (query.contains("&")) {
                 parameters = query.split("&");
