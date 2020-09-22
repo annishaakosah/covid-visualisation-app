@@ -1,5 +1,5 @@
 {
-  "short_name": "COVID Dashboard",
+  "short_name": "COVID-19 Dashboard",
   "name": "Dashboard to keep track of COVID stats",
   "start_url": "./index.html",
   "display": "standalone",
