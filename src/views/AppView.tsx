@@ -164,7 +164,7 @@ export class AppView extends React.Component<any, AppState> {
                 <div className="app-main" style={contentStyle}>
                     {/*Header*/}
                     <div className="app-toolbar" style={toolbarStyle}>
-                        <div className="app-toolbar-title">COVID Dashboard</div>
+                        <div className="app-toolbar-title">COVID-19 Dashboard</div>
                             <Tooltip background={tipBackground} color={tipForeground}
                                 message="Index Chart" >
                                 <IconButton id="first-step" onClick={() => this.setVisualisation(1)} style={toggleThemeStyle} edge="start" >
