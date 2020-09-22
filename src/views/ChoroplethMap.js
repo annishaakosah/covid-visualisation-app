@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './ChoroplethMap.css';
+import './../assets/css/ChoroplethMap.css';
 import L from 'leaflet';
 
 function ChoroplethMap(props) {
