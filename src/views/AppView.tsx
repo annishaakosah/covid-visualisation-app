@@ -81,8 +81,6 @@ export class AppView extends React.Component<any, AppState> {
         super(props);
 
         this.parseQuery();
-        // this.updateQuery();
-
         this.onClickStart = this.onClickStart.bind(this);
         this.onSliderChangeIndex = this.onSliderChangeIndex.bind(this);
         this.onCreatedChart = this.onCreatedChart.bind(this);
@@ -103,7 +101,6 @@ export class AppView extends React.Component<any, AppState> {
         this.onClickPlotInfections = this.onClickPlotInfections.bind(this);
         this.onClickPlotDeaths = this.onClickPlotDeaths.bind(this);
         this.onClickPlotRecoveries = this.onClickPlotRecoveries.bind(this);
-        this.updateQuery = this.updateQuery.bind(this);
         this.setVisualisation = this.setVisualisation.bind(this);
     }
 
@@ -462,7 +459,6 @@ export class AppView extends React.Component<any, AppState> {
         if (v === 1) {
             this.setState({showLists: true},
                 () => {
-                    this.updateQuery();
                     this.refreshAll();
                 });
         }
@@ -583,7 +579,6 @@ export class AppView extends React.Component<any, AppState> {
         if (this.frameInterval >= 0) {
             window.clearInterval(this.frameInterval);
             this.frameInterval = -1;
-            this.updateQuery();
 
         } else {
             let index = this.state.currentIndex;
@@ -852,7 +847,6 @@ export class AppView extends React.Component<any, AppState> {
         }
         this.updateRanges(this.state.countriesSelected);
         this.updateData();
-        this.updateQuery();
     }
 
     public refreshLists(newItems?: string[]) {
@@ -887,10 +881,6 @@ export class AppView extends React.Component<any, AppState> {
             this.listRecoveries.updateData(this.state.countriesStats, this.state.countriesSelected);
         }
         this.listsUpdating = false;
-
-        if (!this.state.updateActive) {
-            this.updateQuery();
-        }
     }
 
     // Query that displays the apps current state as a URL on the browser (for testing)
@@ -961,29 +951,6 @@ export class AppView extends React.Component<any, AppState> {
             // James
             visualisation: 1
         };
-    }
-
-    public updateQuery() {
-
-        let parameters = [];
-
-        parameters.push("theme=" + this.state.theme);
-        parameters.push("1m=" + this.state.usePropStats);
-        parameters.push("map=" + this.state.showMap);
-        parameters.push("chart=" + this.state.showChart);
-        parameters.push("barGraph=" + this.state.showBarGraph);
-        parameters.push("list=" + this.state.showLists);
-        parameters.push("log=" + this.state.xAxisIsLogarithmic);
-        parameters.push("show=" + this.state.xAxisMemberPath.replaceAll("total", "").toLowerCase());
-        if (this.state.countriesSelected.length > 0) {
-            parameters.push("items=" + this.state.countriesSelected.join("+"));
-        }
-
-        const query = "?" + parameters.join("&");
-        if (parameters.length !== 0 && query !== window.location.search) {
-            this.props.history.push(`${query}`);
-        }
-
     }
 }
 
