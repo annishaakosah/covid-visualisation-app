@@ -895,8 +895,6 @@ export class AppView extends React.Component<any, AppState> {
 
     // Query that displays the apps current state as a URL on the browser (for testing)
     public parseQuery() {
-        // http://localhost:3500/?prop=false&log=true&show=totalInfections&items=USA+CHN+POL+ITA+KOR+URY
-
         let query = this.props.location;
         let parameters = Locations.parse(query);
 
@@ -969,7 +967,6 @@ export class AppView extends React.Component<any, AppState> {
 
         let parameters = [];
 
-        // parameters.push("index=" + this.state.currentIndex);
         parameters.push("theme=" + this.state.theme);
         parameters.push("1m=" + this.state.usePropStats);
         parameters.push("map=" + this.state.showMap);
@@ -982,12 +979,8 @@ export class AppView extends React.Component<any, AppState> {
             parameters.push("items=" + this.state.countriesSelected.join("+"));
         }
 
-        // parameters.push("index=" + this.state.currentIndex);
-        // http://localhost:3500/?prop=false&log=true&show=totalInfections&items=USA+CHN+POL+ITA+KOR+URY
-
         const query = "?" + parameters.join("&");
         if (parameters.length !== 0 && query !== window.location.search) {
-            // console.log("DV query " + query);
             this.props.history.push(`${query}`);
         }
 
