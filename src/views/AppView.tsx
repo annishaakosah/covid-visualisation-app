@@ -501,7 +501,6 @@ export class AppView extends React.Component<any, AppState> {
         this.setState({
             yAxisMemberPath: "weeklyDeaths",
             xAxisMemberPath: "totalDeaths",
-            bubbleMemberPath: "totalDeaths",
             showTotalInfectionList: false,
             showTotalDeathList: true,
             showTotalRecoveries: false,
@@ -516,7 +515,6 @@ export class AppView extends React.Component<any, AppState> {
         this.setState({
             yAxisMemberPath: "weeklyInfections",
             xAxisMemberPath: "totalInfections",
-            bubbleMemberPath: "totalInfections",
             showTotalDeathList: false,
             showTotalInfectionList: true,
             showTotalRecoveries: false,
@@ -531,7 +529,6 @@ export class AppView extends React.Component<any, AppState> {
         this.setState({
             yAxisMemberPath: "weeklyRecoveries",
             xAxisMemberPath: "totalRecoveries",
-            bubbleMemberPath: "totalRecoveries",
             showTotalDeathList: false,
             showTotalInfectionList: false,
             showTotalRecoveries: true,
@@ -938,8 +935,6 @@ export class AppView extends React.Component<any, AppState> {
             showIndex: false,
             width: 0,
 
-            bubbleMemberPath: xAxisMemberPath,
-            bubbleIsLogarithmic: logScale,
             xAxisIsLogarithmic: logScale,
             yAxisIsLogarithmic: logScale,
             yAxisMemberPath: yAxisMemberPath,

@@ -31,11 +31,7 @@ export interface AppState
     isLoading?: boolean,
     isTourOpen?: boolean,
 
-
     frameInfo?: string,
-
-    bubbleMemberPath?: string,
-    bubbleIsLogarithmic?: boolean,
 
     xAxisMemberPath?: string,
     yAxisMemberPath?: string,
