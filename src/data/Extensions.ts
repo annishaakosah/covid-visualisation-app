@@ -43,7 +43,7 @@ interface Array<T> {
     matches(str: string): boolean;
     matchFirst(str: string, defaultTo: string): string;
     combine(array: any[]): void;
-    remove(item: any): void, // : any[],
+    remove(item: any): void, 
 }
 
 Array.prototype.contains = function (item: any): boolean {
@@ -97,38 +97,4 @@ Array.prototype.remove = function (item: any): void { // }: any[] {
             _self.splice(i, 1);
         }
     }
-    // return _self.filter((arrayItem, i, arr) => arrayItem !== item);
 }
-
-// if (!Array.prototype.remove) {
-//     Array.prototype.remove = function<T>(this: T[], elem: T): T[] {
-//       return this.filter(e => e !== elem);
-//     }
-//   }
-
-// interface Date {
-//     format(strFormat: string): string;
-// }
-
-// Date.prototype.format = function (strFormat: string): string {
-//     // tslint:disable-next-line:array-type
-//     const _self = this as Date;
-//     if (strFormat.indexOf('MM') > 0) {
-
-//     }
-//     return _self.filter((arrayItem, i, arr) => arrayItem !== item);
-// }
-
-// public static getDateString(date: Date, showYear?: boolean): string {
-//     if (showYear === undefined) { showYear = true; }
-//     let ret = '';
-//     let mm = date.getMonth();
-//     let dd = date.getDate();
-//     let yy = date.getFullYear();
-
-//     ret += this.months[mm] + ' ' + this.pad(dd, 2);
-//     if (showYear) {
-//         ret += ', ' + yy;
-//     }
-//     return ret;
-// }

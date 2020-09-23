@@ -55,7 +55,6 @@ export class AppView extends React.Component<any, AppState> {
             listItem: { color: "rgba(255, 255, 255, 0.7)", fontWeight: "normal" },
             listSelected: { color: "rgba(39,103,182, 0.5)", fontWeight: "bold" },
             listValue: { color: "#ddddde", fontWeight: "bold" },
-            listFlag: { border: "1px solid #5b5858" },
 
             buttonSelected: { color: "#ffffff", background: "#1d8cf8", width: "auto" },
             buttonNormal: { color: "#ffffff", background: "#262a3c", width: "auto" },

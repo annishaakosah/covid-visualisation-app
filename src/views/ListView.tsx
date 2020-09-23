@@ -7,7 +7,7 @@ import { IgrNumericColumn } from 'igniteui-react-grids';
 import { IgrPrimaryKeyValue } from 'igniteui-react-grids';
 import { IgrGridSelectedKeysChangedEventArgs } from 'igniteui-react-grids';
 
-import { IgrTemplateColumn, IIgrCellTemplateProps } from 'igniteui-react-grids';
+import { IgrTemplateColumn } from 'igniteui-react-grids';
 import { IgrTemplateCellUpdatingEventArgs } from 'igniteui-react-grids';
 
 import { DataService, OutbreakLocation } from "../data/DataService";
@@ -206,7 +206,6 @@ export class ListView extends React.Component<any, any> {
         for (let i = 0; i < this.dataLocations.length; i++) {
                 let dataKey = this.dataLocations[i].iso;
                 let dataSelected = selectedItemKeys.contains(dataKey);
-                // let dataRow = new IgrPrimaryKeyValue([dataKey], [this.dataLocations[i]]);
                 let dataRow = new IgrPrimaryKeyValue(null, [this.dataLocations[i]]);
                 if (dataSelected) {
                     this.grid.selectedKeys.add(dataRow);

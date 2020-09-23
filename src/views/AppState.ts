@@ -30,12 +30,9 @@ export interface AppState
     width?: number,
     isLoading?: boolean,
     isTourOpen?: boolean,
-
     frameInfo?: string,
-
     xAxisMemberPath?: string,
     yAxisMemberPath?: string,
-
     xAxisMinimumValue?: number,
     xAxisMaximumValue?: number,
     yAxisMinimumValue?: number,

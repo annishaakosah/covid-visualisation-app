@@ -20,7 +20,6 @@ export class DataService {
     public static SHAPE_URL = DataService.XPLAT_URL + 'shapes/';
 
     public static dataSets = [DataType.Infections, DataType.Recoveries, DataType.Deaths];
-
     public static mapRecords: Map<string, IgrShapefileRecord> = new Map();
 
     public static dataColumns = {
@@ -332,7 +331,6 @@ export class DataService {
                 }
             }
 
-
             for (let i = origin; i >= 0; i--) {
                 location.history[i].weeklyInfections = location.history[i].totalInfections;
             }
@@ -392,7 +390,6 @@ export class DataService {
         }
 
         for (const shape of shapes) {
-
             let key = shape.fieldValues.Name;
             if (!mapCountries.has(key)) {
 
@@ -411,7 +408,6 @@ export class DataService {
             mapCountries.get(key).population = parseInt(shape.fieldValues['Population'], 10);
             mapCountries.get(key).iso = shape.fieldValues['Code'].toString();
             mapCountries.get(key).flag = this.FLAGS_URL + mapCountries.get(key).iso.toLowerCase() + ".svg"
-
         }
 
         let countries: OutbreakLocation[] = [];
@@ -534,7 +530,6 @@ export class DataService {
     }
 
     public static async getDailySeries(outbreakDate: string, outbreakDay: number, loadFromCache: boolean): Promise<OutbreakDailyReport> {
-
         const report = new OutbreakDailyReport();
         report.date = outbreakDate;
         report.index = outbreakDay;

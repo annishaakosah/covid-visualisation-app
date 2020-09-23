@@ -8,8 +8,6 @@
 .app-root {
     height: 100%;
     width: 100%;
-    /* background: rgb(134, 134, 134); */
-    /* padding: 1rem; */
     display: flex;
     flex-direction: row;
     overflow-y: hidden;
@@ -18,53 +16,35 @@
 
 .app-main {
     min-height: 100vh;
-    /* height: 100%; */
     width: 100%;
-    /* background: rgb(148, 243, 124); */
     display: flex;
     flex-direction: column;
-    /* padding: 1rem; */
 }
 
 .app-center {
     width: calc(100% - 1.2rem);
-    /* padding-right: 1.2rem; */
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    /* padding-left: 1rem; */
     border: 1px solid transparent;
     border-radius: .2857rem;
     padding: 1.2rem;
-    /* background: orange; */
 }
 
 .app-stack {
     height: 100%;
     width: 100%;
-    /* width: calc(100% - 1.2rem); */
-    /* padding-right: 1.2rem; */
     padding-right: 0rem;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     border: 1px solid transparent;
-    /* background: green; */
 }
 .app-stack-chart {
-    /* margin-top: .75rem; */
-    /* margin-bottom: .75rem; */
     margin: 0rem;
     height: 100%;
     width: 100%;
     padding-top: 1.2rem;
-    /* width: calc(100% - 1rem); */
-    /* width: 100%; */
-    /* padding-right: 1rem; */
-    /* background: yellow; */
-    /* z-index: 101; */
-    /* padding-top: 0.5rem; */
-    /* padding-bottom: 0.5rem; */
 }
 .app-stack-map {
     margin: 0rem;
@@ -72,58 +52,25 @@
     margin-right: 1.2rem;
     height: calc(100% - 1.2rem);
     width: calc(100% - 1.2rem);
-
-    /* margin-left: 0.5rem;
-    margin-right: 0.5rem; */
-    /* width: calc(100% - 1rem); */
-    /* height: calc(100% - 1rem); */
-    /* background: white; */
-    /* z-index: 101; */
-    /* padding-top: 0.5rem; */
-    /* padding-bottom: 0.5rem; */
 }
 
 .app-columns {
     overflow-y: hidden;
     overflow-x: hidden;
-    /* background-color: rgb(153, 153, 153); */
     width: 100%;
     height: 100%;
-    /* height: calc(100% - 1rem);
-    width: calc(100% - 1rem);
-    padding: 0.5rem; */
-
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    /* z-index: 10000; */
 }
 
 .app-content {
-    /* overflow-y: hidden; */
-    /* overflow-x: hidden; */
-    /* background: rgb(241, 160, 160); */
-    /* to offset overflow in tutorial */
     height: 80%; 
-    /* height: calc(100% - 1.5rem); */
-    /* width: calc(100% - 0.75rem); */
     padding: 1.2rem;
-
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    /* align-items: stretch; */
-    /* z-index: 10000; */
 }
-
-/*
-.app-icon {
-    margin-left: 0.15rem;
-    margin-rightLeft: "0.25rem";
-    font-size: 2.5rem;
-    display: inline-block;
-} */
-
 
 .app-note {
     display: block;
@@ -149,5 +96,4 @@
 
 .app-note > div {
     padding-top: 1rem;
-
 }

@@ -4,7 +4,7 @@ export class Locations {
     public static parse(location: any): any {
 
         let ret = { };
-        let query = location.search; // ?components=gauge&shapes=circle&functions=all&keyword=anim
+        let query = location.search; 
         if (query !== undefined) {
             query = query.replace("?","");
 

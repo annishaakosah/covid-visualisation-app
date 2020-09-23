@@ -1,7 +1,5 @@
 .app-list-header-light,
 .app-list-header-dark {
-    /* padding: 1.0rem; */
-    /* padding-bottom: 0.5rem; */
     padding: 0.75rem;
     font-weight: 600;
     display: flex;

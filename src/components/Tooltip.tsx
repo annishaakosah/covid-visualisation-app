@@ -16,39 +16,30 @@ export class Tooltip extends React.Component<any, any> {
         }
 
         this.startTimer = this.startTimer.bind(this)
-        // this.stopTimer = this.stopTimer.bind(this)
-        // this.resetTimer = this.resetTimer.bind(this)
 
         this.hide = this.hide.bind(this);
         this.show = this.show.bind(this);
     }
 
     public render() {
-        const tipBackground = this.props.background || "#ffffff"; // "#bebebe";
-        const tipForeground = this.props.color || "#262a3c"; // e4e4e4 "#202020";
+        const tipBackground = this.props.background || "#ffffff";
+        const tipForeground = this.props.color || "#262a3c"; 
         const tipBorder = this.props.borderColor || tipBackground;
         const width = this.props.minWidth || "300px"
 
         const message = this.props.message;
         const position = this.props.position || "bottomCenter";
         const containerDisplay = this.props.display === undefined ? "inline-block" : "block";
-        // const containerDisplay = this.props.display === undefined ? "inline" : "block";
         const containerStyle = { display: containerDisplay, } as React.CSSProperties;
         const tooltipDisplay = this.state.displayTooltip && message !== undefined ? "block" : "none";
         const tooltipStyle = { minWidth: width, display: tooltipDisplay, borderColor: tipBorder  } as React.CSSProperties;
         const messageStyle = { color: tipForeground, background: tipBackground, borderColor: tipBorder } as React.CSSProperties;
 
         return (
-            // onMouseOver={this.show} onMouseEnter={this.show} onMouseEnter={this.hide} onMouseLeave={this.hide}
           <span className='Tooltip' onMouseLeave={this.hide} style={containerStyle}>
             <span className='Tooltip-trigger' onMouseEnter={this.show} >
               {this.props.children}
             </span>
-            {/* {!this.state.displayTooltip ? <span/> :
-                <div className={`Tooltip-bubble Tooltip-${position}`} style={tooltipStyle} >
-                    <div className='Tooltip-message' style={textStyle}>{message}</div>
-                </div>
-            } */}
             <div className={`Tooltip-bubble Tooltip-${position}`} style={tooltipStyle}
                 onMouseEnter={this.hide} onMouseLeave={this.hide}>
                 <div className='Tooltip-message' style={messageStyle}>{message}</div>
@@ -73,7 +64,6 @@ export class Tooltip extends React.Component<any, any> {
 
     public tick(): void {
         this.timerCount += 1;
-        // console.log("Tooltip tick " + this.timerCount);
         this.stopTimer();
         this.setState({displayTooltip: false});
     }
@@ -82,8 +72,6 @@ export class Tooltip extends React.Component<any, any> {
         if (!this.tooltipOpen) {
             return;
         }
-        // console.log("Tooltip hide");
-        // this.startTimer();
         this.tooltipOpen = false;
         this.setState({displayTooltip: false});
         if (ev) {
@@ -95,15 +83,11 @@ export class Tooltip extends React.Component<any, any> {
         if (this.tooltipOpen) {
             return;
         }
-        // console.log("Tooltip show");
         this.tooltipOpen = true;
         this.setState({displayTooltip: true});
         if (ev) {
             ev.preventDefault();
-            // console.log("Tooltip show preventDefault");
-        } else {
-            // console.log("Tooltip show");
-        }
+        } 
     }
 
 

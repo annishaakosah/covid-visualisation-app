@@ -63,18 +63,6 @@ export class TimeUtils {
         return format;
     }
 
-    // public static getDateTimeString(date: Date): string {
-    //     return this.getDateString(date, false) + ' ' + this.getTimeString(date);
-    // }
-
-    // public static getTimeString(date: Date): string {
-    //     if (date === undefined) { return ''; }
-    //     let hh = date.getHours();
-    //     let mm = date.getMinutes();
-    //     let ss = date.getSeconds();
-    //     return this.pad(hh, 2) + ':' + this.pad(mm, 2) + ':' + this.pad(ss, 2);
-    // }
-
     public static getTimeInterval(date1: Date, date2: Date): TimeInterval {
         let totalMS = date1.getTime() - date2.getTime();
         return new TimeInterval(totalMS);
@@ -89,7 +77,6 @@ export class TimeUtils {
     private static months: string[] = [
         'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
         'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC' ];
-
 }
 
 export class TimeInterval {
@@ -108,5 +95,4 @@ export class TimeInterval {
         this.days = this.hours / 24;
         this.years = this.days / 365;
     }
-
 }
