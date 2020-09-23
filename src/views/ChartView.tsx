@@ -77,9 +77,6 @@ export class ChartView extends React.Component<any, AppState> {
     public render() {
         let theme = this.themes[this.props.theme || "dark"];
 
-        let xAxisIsLogarithmic = this.getProp("xAxisIsLogarithmic", true);
-        let yAxisIsLogarithmic = this.getProp("yAxisIsLogarithmic", true);
-
         let xAxisMinimumValue = this.getProp("xAxisMinimumValue", 1);
         let xAxisMaximumValue = this.getProp("xAxisMaximumValue", 100);
 
@@ -112,7 +109,7 @@ export class ChartView extends React.Component<any, AppState> {
                     stroke={theme.axisLines.color}
                     strokeThickness="0.75"
                     abbreviateLargeNumbers={true}
-                    isLogarithmic={xAxisIsLogarithmic}
+                    isLogarithmic={false}
                     minimumValue={xAxisMinimumValue}
                     maximumValue={xAxisMaximumValue}
                     title={ DataService.GetDisplayName(this.props.xAxisMemberPath, this.props.usePropStats)}
@@ -130,7 +127,7 @@ export class ChartView extends React.Component<any, AppState> {
                     stroke={theme.axisLines.color}
                     strokeThickness="0.75"
                     abbreviateLargeNumbers={true}
-                    isLogarithmic={yAxisIsLogarithmic}
+                    isLogarithmic={false}
                     minimumValue={yAxisMinimumValue}
                     maximumValue={yAxisMaximumValue}
                     title={ DataService.GetDisplayName(this.props.yAxisMemberPath, this.props.usePropStats)}

@@ -61,9 +61,9 @@ export class AppView extends React.Component<any, AppState> {
             buttonNormal: { color: "#ffffff", background: "#262a3c", width: "auto" },
 
             sourceInfo: { color: "#ffffff" },
-            infections: { color: "#1d8cf8" }, // background: "#222327", borderBottom: "1px solid #222327" },
-            recoveries: { color: "#4CAF50" }, // background: "#222327", borderBottom: "1px solid #222327" },
-            deaths: { color: "#FF3D60" }, // background: "#222327", borderBottom: "1px solid #222327"},
+            infections: { color: "#1d8cf8" },
+            recoveries: { color: "#4CAF50" }, 
+            deaths: { color: "#FF3D60" }, 
         },
     };
 
@@ -265,8 +265,6 @@ export class AppView extends React.Component<any, AppState> {
                                         usePropStats={this.state.usePropStats}
                                         xAxisMemberPath={this.state.xAxisMemberPath}
                                         yAxisMemberPath={this.state.yAxisMemberPath}
-                                        xAxisIsLogarithmic={this.state.xAxisIsLogarithmic}
-                                        yAxisIsLogarithmic={this.state.yAxisIsLogarithmic}
                                         xAxisMinimumValue={this.state.xAxisMinimumValue}
                                         xAxisMaximumValue={this.state.xAxisMaximumValue}
                                         yAxisMinimumValue={this.state.yAxisMinimumValue}
@@ -467,7 +465,6 @@ export class AppView extends React.Component<any, AppState> {
             this.onClickPlotDeaths();
         }
         this.setState({ visualisation: v }, () => {
-            // console.log(this.state.visualisation)
         });
     }
 
@@ -900,7 +897,7 @@ export class AppView extends React.Component<any, AppState> {
         let showTotalDeathList = xAxisMemberPath !== "totalInfections";
         let showTotalRecoveryList = false;
 
-        let selection = ["USA", "RUS", "GBR", "ITA", "KOR", "CHN"];
+        let selection = ["USA", "BRA", "GBR", "NZL", "IND", "CHN"];
         if (parameters.items !== undefined) {
             let items = parameters.items.toString();
             selection = items.split("+");
@@ -935,8 +932,6 @@ export class AppView extends React.Component<any, AppState> {
             showIndex: false,
             width: 0,
 
-            xAxisIsLogarithmic: logScale,
-            yAxisIsLogarithmic: logScale,
             yAxisMemberPath: yAxisMemberPath,
             xAxisMemberPath: xAxisMemberPath,
             xAxisMinimumValue: 1,
@@ -948,4 +943,3 @@ export class AppView extends React.Component<any, AppState> {
         };
     }
 }
-

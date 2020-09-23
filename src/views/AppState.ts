@@ -35,8 +35,6 @@ export interface AppState
 
     xAxisMemberPath?: string,
     yAxisMemberPath?: string,
-    xAxisIsLogarithmic?: boolean,
-    yAxisIsLogarithmic?: boolean,
 
     xAxisMinimumValue?: number,
     xAxisMaximumValue?: number,

@@ -21,9 +21,6 @@ export class DataService {
 
     public static dataSets = [DataType.Infections, DataType.Recoveries, DataType.Deaths];
 
-    public static countries: string[] = ['Germany', 'France', 'Poland'];
-    public static populationThreshold = 10000; // Threshold
-
     public static mapRecords: Map<string, IgrShapefileRecord> = new Map();
 
     public static dataColumns = {
@@ -419,7 +416,7 @@ export class DataService {
 
         let countries: OutbreakLocation[] = [];
         for (let country of mapCountries.values()) {
-            if (country.population > this.populationThreshold) {
+            if (country.population > 10000) {
 
                 // setting stat of a country to last/current day in history
                 let last = country.history.length;
@@ -703,7 +700,6 @@ export class DataService {
         }
         return Math.round(largeValue).toString();
     }
-
 }
 
 export class OutbreakStats {
