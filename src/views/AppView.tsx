@@ -168,7 +168,7 @@ export class AppView extends React.Component<any, AppState> {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip background={tipBackground} color={tipForeground}
-                                message="Geo Graph" >
+                                message="Choropleth Map" >
                                 <IconButton onClick={() => this.setVisualisation(2)} style={toggleThemeStyle} edge="start" >
                                     <i className="tim-icons icon-world" />
                                 </IconButton>
