@@ -218,7 +218,9 @@ export class DataService {
                 let isWithinStackedChartData = reportSummary.stackedChartData.find(elem => {
                     return elem.date === location.history[i].date
                 });
+                // Extracts the data stacked chart which hold data for each continent
                 if (!isWithinStackedChartData && location.continent.length > 1) {
+                    // Initialises data to hold information for different data variable
                     let newItem: StackedChartData = {
                         date: location.history[i].date,
                         northAmerica: 0,
@@ -255,6 +257,7 @@ export class DataService {
                         oceania: 0,
                         africa: 0
                     };
+                    // Update data for each data variable per continent
                     if (location.continent.contains('North America')) {
                         newItem.northAmerica += location.history[i].totalInfections;
                         newDeathItem.northAmerica += location.history[i].totalDeaths;
@@ -286,6 +289,7 @@ export class DataService {
                         newDailyItem.africa += location.history[i].dailyInfections;
                         newDailyDeathItem.africa += location.history[i].dailyDeaths;
                     }
+                    // Adds the stacked chart data into the report summary
                     reportSummary.stackedChartData.push(newItem);
                     reportSummary.stackedDeathChartData.push(newDeathItem);
                     reportSummary.stackedDailyChartData.push(newDailyItem);

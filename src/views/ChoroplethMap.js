@@ -195,7 +195,6 @@ function ChoroplethMap(props) {
             for (var i = 0; i < grades.length; i++) {
                 from = grades[i];
                 to = grades[i + 1];
-
                 labels.push(
                     '<i style="background:' + getColor(from + 1) + '"></i> ' +
                     from + (to ? '&ndash;' + to : '+'));
@@ -217,7 +216,5 @@ function ChoroplethMap(props) {
         <div id="map"></div>
     );
 }
-
-
 
 export default ChoroplethMap;
