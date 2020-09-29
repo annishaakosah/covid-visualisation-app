@@ -11,6 +11,7 @@ export enum DataType {
 }
 
 export class DataService {
+    // Constant variables that hold the URLs from which COVID-19 data are extracted from
     public static COVID_URL = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data';
     public static TIME_SERIES = 'csse_covid_19_time_series';
     public static DAILY_SERIES = 'csse_covid_19_daily_reports';
@@ -19,9 +20,12 @@ export class DataService {
     public static FLAGS_URL = DataService.XPLAT_URL + 'images/flags/';
     public static SHAPE_URL = DataService.XPLAT_URL + 'shapes/';
 
+    // Holds the data sets of given Infection, Recoveries and Deaths
     public static dataSets = [DataType.Infections, DataType.Recoveries, DataType.Deaths];
+    // Holds the overall data
     public static mapRecords: Map<string, IgrShapefileRecord> = new Map();
 
+    // Data columns to structure data
     public static dataColumns = {
         totalDeaths: "Total Deaths",
         totalInfections: "Total Cases",
@@ -31,7 +35,12 @@ export class DataService {
         weeklyRecoveries: "Weekly Recoveries",
     }
 
+    /**
+     * Combines Geojson data with COVID-19 data and returns it.
+     * @param allCountries 
+     */
     public static aggregateGeoCovidData(allCountries: OutbreakLocation[]) {
+        // Gets the Geojson data
         let data = JSON.parse(JSON.stringify(geoData));
         for (const country2 of allCountries) {
             for (const country1 of data.features) {
@@ -46,6 +55,11 @@ export class DataService {
         return data;
     }
 
+    /**
+     * Returns the display name for the given data column
+     * @param dataColumn 
+     * @param usePropStats 
+     */
     public static GetDisplayName(dataColumn: string, usePropStats: boolean): string {
         let name: string = this.dataColumns[dataColumn] || "";
         if (usePropStats) {
@@ -54,6 +68,10 @@ export class DataService {
         return name;
     }
 
+    /**
+     * Extracts the COVID-19 data report 
+     * @param shapes 
+     */
     public static async getOutbreakReport(shapes: IgrShapefileRecord[]): Promise<OutbreakReport> {
         let reportSummary = new OutbreakReport();
         let locationsWithDeaths: OutbreakLocation[] = [];
