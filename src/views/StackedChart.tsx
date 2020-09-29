@@ -16,9 +16,13 @@ export class StackedChart extends React.Component<any, any> {
         super(props);
     }
 
+    /**
+     * The stack bar chart as described by Recharts
+     */
     public render() {
         return (
             <ResponsiveContainer height={"100%"} maxHeight={"80vh"}>
+                {/* Takes in well-formed data from the data service */}
                 <BarChart
                     data={this.props.data}
                     margin={{top: 20, right: 50, left: 50, bottom: 5}}
@@ -32,6 +36,7 @@ export class StackedChart extends React.Component<any, any> {
                     />
                     <Legend/>
 
+                    {/* Each Bar object represent the regions number (of deaths/cases) per day. */}
                     <Bar name="Asia" dataKey="asia" stackId="a" fill="#eb4d4b" color="#ffffff"/>
                     <Bar name="Africa" dataKey="africa" stackId="a" fill="#f9ca24"/>
                     <Bar name="North America" dataKey="northAmerica" stackId="a" fill="#6ab04c"/>
@@ -42,7 +47,11 @@ export class StackedChart extends React.Component<any, any> {
             </ResponsiveContainer>
         );
     }
-
+    
+    /**
+     * Utility method for formatting the number of cases/deaths with commas
+     * @param x the unformatted number
+     */
     public numberWithCommas(x: number | string | undefined): string | undefined {
         if (x === undefined || x === null) {
             return undefined;
@@ -51,5 +60,9 @@ export class StackedChart extends React.Component<any, any> {
     }
 }
 
+/**
+ * Utility metyhod for formatting the x axis of dates in the stacked bar chart
+ * @param tickItem the unformatted, full-length date
+ */
 const formatXAxis: TickFormatterFunction = (tickItem: string) =>
     tickItem.slice(0, -6)
