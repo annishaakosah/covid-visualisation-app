@@ -13,13 +13,6 @@ export class AppRouter extends React.Component<any, any> {
         super(props);
         this.Routes = [];
 
-        let location = window.location;
-
-        console.log("App origin '" + location.origin + "'");
-        console.log("App pathname '" + location.pathname + "'");
-        console.log("App URL  " + location.href);
-        // console.log("App base " + App.baseURL);
-
         this.Routes.push(this.create(LinearSlider, "/gauge", true));
         this.Routes.push(this.create(AppView, "/", false));
 
@@ -31,8 +24,6 @@ export class AppRouter extends React.Component<any, any> {
         if (path === undefined) {
             path = "/" + comp.name.toString();
         }
-        // path = "/" + App.basename + path;
-
         if (isExact === undefined) {
             isExact = true;
         }
@@ -45,7 +36,6 @@ export class AppRouter extends React.Component<any, any> {
 
         let data = {
             label: lbl,
-            // path: path,
             link: <div key={path}><a href={path}>{path}</a></div>,
             element: <Route exact={isExact} path={path} key={lbl} component={comp}/>
         }
@@ -53,13 +43,10 @@ export class AppRouter extends React.Component<any, any> {
     }
 
     public render() {
-        // console.log("AppRouter rendering " + window.location);
         return (
-            // <div className="app-root">
                 <Switch>
                     {this.RouteElements}
                 </Switch>
-            // </div>
         );
     }
 

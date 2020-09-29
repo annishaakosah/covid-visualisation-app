@@ -61,7 +61,7 @@ export class StackedChart extends React.Component<any, any> {
 }
 
 /**
- * Utility metyhod for formatting the x axis of dates in the stacked bar chart
+ * Utility method for formatting the x axis of dates in the stacked bar chart
  * @param tickItem the unformatted, full-length date
  */
 const formatXAxis: TickFormatterFunction = (tickItem: string) =>
