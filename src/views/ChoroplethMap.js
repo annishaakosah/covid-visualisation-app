@@ -55,23 +55,23 @@ function ChoroplethMap(props) {
          */
         function getColor(d) {
             if (props.state.xAxisMemberPath === "totalInfections") {
-                return d > 300000 ? '#074F9D' :
-                    d > 50000 ? '#0863C4' :
-                        d > 10000 ? '#0A77EB' :
-                            d > 100 ? '#9DCAFB' :
-                                '#C4E0FD';
+                return d > 300000 ? '#08519c' :
+                    d > 50000 ? '#3182bd' :
+                        d > 10000 ? '#6baed6' :
+                            d > 100 ? '#bdd7e7' :
+                                '#eff3ff';
             } else if (props.state.xAxisMemberPath === "totalDeaths") {
-                return d > 300000 ? '#B80022' :
-                    d > 50000 ? '#F5002D' :
-                        d > 10000 ? '#FF3358' :
-                            d > 100 ? '#FF859B' :
-                                '#FFC2CD';
+                return d > 300000 ? '#a50f15' :
+                    d > 50000 ? '#de2d26' :
+                        d > 10000 ? '#e7645f' :
+                            d > 100 ? '#ef9895' :
+                                '#FADDDC';
             } else if (props.state.xAxisMemberPath === "totalRecoveries") {
                 return d > 300000 ? '#2C632E' :
                     d > 50000 ? '#3E8E42' :
                         d > 10000 ? '#55B45A' :
                             d > 100 ? '#7FC783' :
-                                '#AADAAC';
+                                '#D5ECD6';
             }
         };
         /**
